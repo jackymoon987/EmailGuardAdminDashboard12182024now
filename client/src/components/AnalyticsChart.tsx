@@ -26,7 +26,7 @@ export function AnalyticsChart({ data, type }: AnalyticsChartProps) {
           <XAxis dataKey="date" />
           <YAxis />
           <Tooltip />
-          <Line type="monotone" dataKey="count" stroke="#8884d8" />
+          <Line type="monotone" dataKey="count" stroke="#96BDA1" />
         </LineChart>
       </ResponsiveContainer>
     );
@@ -52,8 +52,8 @@ export function AnalyticsChart({ data, type }: AnalyticsChartProps) {
           outerRadius={80}
           paddingAngle={5}
         >
-          <Cell fill="#ef4444" />
-          <Cell fill="#22c55e" />
+          <Cell fill="#D5E5DA" />
+          <Cell fill="#FFE4D4" />
         </Pie>
         <Tooltip />
       </PieChart>
