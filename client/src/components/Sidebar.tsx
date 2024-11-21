@@ -39,7 +39,7 @@ export default function Sidebar({
         <div className="p-4 space-y-4">
           <div className="flex items-center justify-center h-12 mb-8">
             <h1 className={cn("font-bold text-xl", !open && "hidden")}>
-              Email Admin
+              Bulletproof Inbox
             </h1>
           </div>
 

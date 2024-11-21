@@ -49,7 +49,7 @@ export default function AuthPage() {
             <Shield className="h-12 w-12 text-primary" />
           </div>
           <CardTitle className="text-2xl text-center">
-            Email Admin Dashboard
+            Bulletproof Inbox
           </CardTitle>
         </CardHeader>
         <CardContent>
