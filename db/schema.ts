@@ -4,7 +4,9 @@ import { z } from "zod";
 
 export const users = pgTable("users", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  username: text("username").unique().notNull(),
+  firstName: text("first_name").notNull(),
+  lastName: text("last_name").notNull(),
+  email: text("email").unique().notNull(),
   password: text("password").notNull(),
   role: text("role").notNull().default("user"),
   createdAt: timestamp("created_at").defaultNow(),

@@ -4,17 +4,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { useUser } from "../hooks/use-user";
-import { Shield } from "lucide-react";
+import { Shield, Loader2 } from "lucide-react";
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const { login, register } = useUser();
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
     
     try {
       const result = await (isLogin ? login : register)({ username, password });
@@ -38,6 +40,8 @@ export default function AuthPage() {
         title: "Error",
         description: "An unexpected error occurred",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -70,13 +74,25 @@ export default function AuthPage() {
                 required
               />
             </div>
-            <Button type="submit" className="w-full">
-              {isLogin ? "Login" : "Register"}
+            <Button 
+              type="submit" 
+              className="w-full" 
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  {isLogin ? "Logging in..." : "Registering..."}
+                </>
+              ) : (
+                isLogin ? "Login" : "Register"
+              )}
             </Button>
             <Button
               type="button"
               variant="ghost"
               className="w-full"
+              disabled={isLoading}
               onClick={() => setIsLogin(!isLogin)}
             >
               {isLogin ? "Need an account?" : "Already have an account?"}

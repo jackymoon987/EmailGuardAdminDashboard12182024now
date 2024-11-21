@@ -18,15 +18,19 @@ export function UserTable({ users }: UserTableProps) {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Username</TableHead>
-          <TableHead>Role</TableHead>
-          <TableHead>Created At</TableHead>
+          <TableHead>First Name</TableHead>
+          <TableHead>Last Name</TableHead>
+          <TableHead>Email</TableHead>
+          <TableHead>Permission Level</TableHead>
+          <TableHead>Connected Since</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {users.map((user) => (
           <TableRow key={user.id}>
-            <TableCell>{user.username}</TableCell>
+            <TableCell>{user.firstName}</TableCell>
+            <TableCell>{user.lastName}</TableCell>
+            <TableCell>{user.email}</TableCell>
             <TableCell>
               <Badge variant={user.role === 'admin' ? 'default' : 'secondary'}>
                 {user.role}
