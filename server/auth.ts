@@ -146,7 +146,9 @@ export function setupAuth(app: Express) {
   });
 
   app.post("/api/login", (req, res, next) => {
-    const result = insertUserSchema.safeParse(req.body);
+    // Only validate email and password for login
+    const loginSchema = insertUserSchema.pick({ email: true, password: true });
+    const result = loginSchema.safeParse(req.body);
     if (!result.success) {
       return res
         .status(400)
@@ -169,7 +171,7 @@ export function setupAuth(app: Express) {
 
         return res.json({
           message: "Login successful",
-          user: { id: user.id, username: user.username, role: user.role },
+          user: { id: user.id, email: user.email, firstName: user.firstName, lastName: user.lastName, role: user.role },
         });
       });
     })(req, res, next);
