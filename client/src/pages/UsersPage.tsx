@@ -20,31 +20,28 @@ export default function UsersPage() {
         const message = await res.text();
         throw new Error(message || 'Failed to fetch users');
       }
-      return res.json();
-    },
-    onSuccess: (data) => {
-      if (!data) {
-        throw new Error('No data received from server');
+      const data = await res.json();
+      if (!Array.isArray(data)) {
+        throw new Error('Invalid response format');
       }
-    },
-    onError: (err: Error) => {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: err.message || "Failed to load users"
-      });
+      return data;
     }
   });
 
   // Use useEffect for navigation with loading state handling
   useEffect(() => {
-    if (!isLoading && user && user.role !== 'admin') {
-      toast({
-        variant: "destructive",
-        title: "Access Denied",
-        description: "Only administrators can access this page"
-      });
-      setLocation('/');
+    if (!isLoading && user) {
+      // Add small delay to allow server role update
+      setTimeout(() => {
+        if (user.role !== 'admin') {
+          toast({
+            variant: "destructive",
+            title: "Access Denied",
+            description: "Only administrators can access this page"
+          });
+          setLocation('/');
+        }
+      }, 500);
     }
   }, [user, isLoading, setLocation, toast]);
 

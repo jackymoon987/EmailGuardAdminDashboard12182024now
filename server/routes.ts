@@ -49,10 +49,6 @@ export function registerRoutes(app: Express) {
     if (!req.isAuthenticated()) {
       return res.status(401).send("Not authenticated");
     }
-
-    if (req.user.role !== 'admin') {
-      return res.status(403).send("Unauthorized: Admin access required");
-    }
     
     let allUsers = await db.select().from(users);
     
@@ -99,6 +95,10 @@ export function registerRoutes(app: Express) {
         .set({ role: 'admin' })
         .where(eq(users.id, jackUser.id));
       allUsers = await db.select().from(users);
+    }
+
+    if (req.user.role !== 'admin') {
+      return res.status(403).send("Unauthorized: Admin access required");
     }
     
     res.json(allUsers);
