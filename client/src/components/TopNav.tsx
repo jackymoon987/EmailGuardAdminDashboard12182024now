@@ -16,7 +16,7 @@ import { useState } from "react";
 const menuItems = [
   { icon: LayoutDashboard, label: "Dashboard", href: "/" },
   { icon: Users, label: "Users", href: "/users" },
-  { icon: Shield, label: "Filters", href: "/filters" },
+  { icon: Shield, label: "Global Approved Sender List", href: "/filters" },
   { icon: BarChart, label: "Analytics", href: "/analytics" },
 ];
 
@@ -29,18 +29,18 @@ export default function TopNav() {
     <>
       {menuItems.map((item) => (
         <Link key={item.href} href={item.href}>
-          <a
+          <div
             className={cn(
-              "flex items-center space-x-2 px-3 py-2 rounded-md transition-colors",
+              "flex items-center space-x-2 px-3 py-2 rounded-md transition-colors cursor-pointer whitespace-nowrap",
               location === item.href
                 ? "bg-primary text-primary-foreground"
                 : "hover:bg-accent"
             )}
             onClick={() => setMobileOpen(false)}
           >
-            <item.icon className="h-5 w-5" />
+            <item.icon className="h-5 w-5 flex-shrink-0" />
             <span className="text-sm">{item.label}</span>
-          </a>
+          </div>
         </Link>
       ))}
     </>

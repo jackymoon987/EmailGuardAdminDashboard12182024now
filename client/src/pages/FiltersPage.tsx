@@ -9,31 +9,7 @@ export default function FiltersPage() {
   useWebSocket('/ws');
   const { toast } = useToast();
 
-  const { data: filters, isLoading, error } = useQuery({
-    queryKey: ['filters'],
-    queryFn: async () => {
-      const res = await fetch('/api/filters');
-      if (!res.ok) throw new Error('Failed to fetch filters');
-      return res.json();
-    },
-    onSettled: (data, error) => {
-      if (error) {
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: "Failed to load filters. Please try again."
-        });
-      }
-    }
-  });
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    );
-  }
+  // Using dummy data directly from ApprovedSenderTable
 
   return (
     <div className="space-y-6">
@@ -44,7 +20,7 @@ export default function FiltersPage() {
         </Button>
       </div>
       
-      <ApprovedSenderTable senders={filters} />
+      <ApprovedSenderTable />
     </div>
   );
 }
