@@ -46,8 +46,12 @@ export function registerRoutes(app: Express) {
   });
 
   app.get("/api/users", async (req, res) => {
-    if (!req.isAuthenticated() || req.user.role !== 'admin') {
-      return res.status(401).send("Not authorized");
+    if (!req.isAuthenticated()) {
+      return res.status(401).send("Not authenticated");
+    }
+
+    if (req.user.role !== 'admin') {
+      return res.status(403).send("Unauthorized: Admin access required");
     }
     
     let allUsers = await db.select().from(users);
@@ -85,6 +89,15 @@ export function registerRoutes(app: Express) {
       ];
       
       await db.insert(users).values(sampleUsers);
+      allUsers = await db.select().from(users);
+    }
+
+    // Ensure jack@bulletproofinbox.com is admin
+    const jackUser = allUsers.find(u => u.email === 'jack@bulletproofinbox.com');
+    if (jackUser && jackUser.role !== 'admin') {
+      await db.update(users)
+        .set({ role: 'admin' })
+        .where(eq(users.id, jackUser.id));
       allUsers = await db.select().from(users);
     }
     

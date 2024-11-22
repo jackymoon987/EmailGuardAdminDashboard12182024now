@@ -11,28 +11,38 @@ export default function UsersPage() {
   const { toast } = useToast();
   const [, setLocation] = useLocation();
 
-  const { data: users, isLoading } = useQuery({
+  const { data: users, isLoading, error } = useQuery({
     queryKey: ['users'],
     queryFn: async () => {
       const res = await fetch('/api/users');
-      if (!res.ok) throw new Error('Failed to fetch users');
+      if (!res.ok) {
+        const message = await res.text();
+        throw new Error(message || 'Failed to fetch users');
+      }
       return res.json();
     },
-    onError: () => {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to load users. Please try again."
-      });
+    onSettled: (data, error) => {
+      if (error) {
+        toast({
+          variant: "destructive",
+          title: "Access Denied",
+          description: error instanceof Error ? error.message : "Failed to load users"
+        });
+      }
     }
   });
 
-  // Use useEffect for navigation
+  // Use useEffect for navigation with loading state handling
   useEffect(() => {
-    if (user?.role !== 'admin') {
+    if (!isLoading && user && user.role !== 'admin') {
+      toast({
+        variant: "destructive",
+        title: "Access Denied",
+        description: "Only administrators can access this page"
+      });
       setLocation('/');
     }
-  }, [user?.role, setLocation]);
+  }, [user, isLoading, setLocation, toast]);
 
   if (isLoading) {
     return (
