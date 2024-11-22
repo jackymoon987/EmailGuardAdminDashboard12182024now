@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useUser } from "../hooks/use-user";
 import { UserTable } from "../components/UserTable";
 import { useToast } from "@/hooks/use-toast";
@@ -10,29 +11,28 @@ export default function UsersPage() {
   const { toast } = useToast();
   const [, setLocation] = useLocation();
 
-  const { data: users, isLoading, error } = useQuery({
+  const { data: users, isLoading } = useQuery({
     queryKey: ['users'],
     queryFn: async () => {
       const res = await fetch('/api/users');
       if (!res.ok) throw new Error('Failed to fetch users');
       return res.json();
     },
-    onSettled: (data, error) => {
-      if (error) {
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: "Failed to load users. Please try again."
-        });
-      }
+    onError: () => {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to load users. Please try again."
+      });
     }
   });
 
-  // Redirect non-admin users
-  if (user?.role !== 'admin') {
-    setLocation('/');
-    return null;
-  }
+  // Use useEffect for navigation
+  useEffect(() => {
+    if (user?.role !== 'admin') {
+      setLocation('/');
+    }
+  }, [user?.role, setLocation]);
 
   if (isLoading) {
     return (
