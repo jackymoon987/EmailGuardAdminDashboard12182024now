@@ -6,22 +6,22 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import type { ApprovedSender } from "@db/schema";
 
 const dummyData = [
-  { id: 1, domain: "google.com", active: true, dateAdded: "2024-03-15", emailsReceived: 15234 },
-  { id: 2, domain: "microsoft.com", active: true, dateAdded: "2024-02-28", emailsReceived: 12567 },
-  { id: 3, domain: "apple.com", active: true, dateAdded: "2024-03-01", emailsReceived: 8943 },
-  { id: 4, domain: "amazon.com", active: true, dateAdded: "2024-03-10", emailsReceived: 7821 },
-  { id: 5, domain: "github.com", active: true, dateAdded: "2024-02-15", emailsReceived: 6543 },
-  { id: 6, domain: "linkedin.com", active: false, dateAdded: "2024-01-20", emailsReceived: 4321 },
-  { id: 7, domain: "salesforce.com", active: true, dateAdded: "2024-03-05", emailsReceived: 3876 },
-  { id: 8, domain: "dropbox.com", active: true, dateAdded: "2024-02-10", emailsReceived: 2987 },
-  { id: 9, domain: "slack.com", active: true, dateAdded: "2024-03-12", emailsReceived: 2654 },
-  { id: 10, domain: "zoom.us", active: false, dateAdded: "2024-01-30", emailsReceived: 1987 }
+  { id: 1, domain: "google.com", active: Math.random() < 0.7, dateAdded: "2024-03-15", emailsReceived: 15234 },
+  { id: 2, domain: "microsoft.com", active: Math.random() < 0.7, dateAdded: "2024-02-28", emailsReceived: 12567 },
+  { id: 3, domain: "apple.com", active: Math.random() < 0.7, dateAdded: "2024-03-01", emailsReceived: 8943 },
+  { id: 4, domain: "amazon.com", active: Math.random() < 0.7, dateAdded: "2024-03-10", emailsReceived: 7821 },
+  { id: 5, domain: "github.com", active: Math.random() < 0.7, dateAdded: "2024-02-15", emailsReceived: 6543 },
+  { id: 6, domain: "linkedin.com", active: Math.random() < 0.7, dateAdded: "2024-01-20", emailsReceived: 4321 },
+  { id: 7, domain: "salesforce.com", active: Math.random() < 0.7, dateAdded: "2024-03-05", emailsReceived: 3876 },
+  { id: 8, domain: "dropbox.com", active: Math.random() < 0.7, dateAdded: "2024-02-10", emailsReceived: 2987 },
+  { id: 9, domain: "slack.com", active: Math.random() < 0.7, dateAdded: "2024-03-12", emailsReceived: 2654 },
+  { id: 10, domain: "zoom.us", active: Math.random() < 0.7, dateAdded: "2024-01-30", emailsReceived: 1987 }
 ];
 
 interface ApprovedSenderTableProps {
@@ -77,12 +77,22 @@ export function ApprovedSenderTable({ senders = dummyData }: ApprovedSenderTable
             <TableCell>{new Date(sender.dateAdded).toLocaleDateString()}</TableCell>
             <TableCell>{sender.emailsReceived.toLocaleString()}</TableCell>
             <TableCell>
-              <Switch
-                checked={sender.active}
-                onCheckedChange={(checked) => 
-                  toggleMutation.mutate({ id: sender.id!, active: checked })
-                }
-              />
+              <div className="flex gap-2">
+                <Button 
+                  size="sm" 
+                  variant={sender.active ? "default" : "outline"}
+                  onClick={() => toggleMutation.mutate({ id: sender.id!, active: true })}
+                >
+                  Approved
+                </Button>
+                <Button 
+                  size="sm" 
+                  variant={!sender.active ? "destructive" : "outline"}
+                  onClick={() => toggleMutation.mutate({ id: sender.id!, active: false })}
+                >
+                  Blocked
+                </Button>
+              </div>
             </TableCell>
           </TableRow>
         ))}
