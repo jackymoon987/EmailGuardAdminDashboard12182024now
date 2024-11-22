@@ -9,19 +9,21 @@ export default function FiltersPage() {
   useWebSocket('/ws');
   const { toast } = useToast();
 
-  const { data: filters, isLoading } = useQuery({
+  const { data: filters, isLoading, error } = useQuery({
     queryKey: ['filters'],
     queryFn: async () => {
       const res = await fetch('/api/filters');
       if (!res.ok) throw new Error('Failed to fetch filters');
       return res.json();
     },
-    onError: () => {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to load filters. Please try again."
-      });
+    onSettled: (data, error) => {
+      if (error) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to load filters. Please try again."
+        });
+      }
     }
   });
 

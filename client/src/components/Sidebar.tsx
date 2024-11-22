@@ -46,9 +46,9 @@ export default function Sidebar({
           <nav className="space-y-2">
             {menuItems.map((item) => (
               <Link key={item.href} href={item.href}>
-                <a
+                <div
                   className={cn(
-                    "flex items-center space-x-3 px-3 py-2 rounded-md transition-colors",
+                    "flex items-center space-x-3 px-3 py-2 rounded-md transition-colors cursor-pointer",
                     location === item.href
                       ? "bg-primary text-primary-foreground"
                       : "hover:bg-accent",
@@ -59,7 +59,7 @@ export default function Sidebar({
                   <span className={cn("text-sm", !open && "hidden")}>
                     {item.label}
                   </span>
-                </a>
+                </div>
               </Link>
             ))}
           </nav>

@@ -10,19 +10,21 @@ export default function UsersPage() {
   const { toast } = useToast();
   const [, setLocation] = useLocation();
 
-  const { data: users, isLoading } = useQuery({
+  const { data: users, isLoading, error } = useQuery({
     queryKey: ['users'],
     queryFn: async () => {
       const res = await fetch('/api/users');
       if (!res.ok) throw new Error('Failed to fetch users');
       return res.json();
     },
-    onError: () => {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to load users. Please try again."
-      });
+    onSettled: (data, error) => {
+      if (error) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to load users. Please try again."
+        });
+      }
     }
   });
 
