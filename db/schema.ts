@@ -12,18 +12,18 @@ export const users = pgTable("users", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
-export const emailFilters = pgTable("email_filters", {
+export const approvedSenders = pgTable("approved_senders", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  sender: text("sender").notNull(),
-  type: text("type").notNull(), // whitelist/blacklist
-  createdBy: integer("created_by").references(() => users.id),
-  createdAt: timestamp("created_at").defaultNow(),
+  domain: text("domain").notNull(),
   active: boolean("active").default(true),
+  dateAdded: timestamp("date_added").defaultNow(),
+  emailsReceived: integer("emails_received").default(0),
+  createdBy: integer("created_by").references(() => users.id),
 });
 
 export const filterLogs = pgTable("filter_logs", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  filterId: integer("filter_id").references(() => emailFilters.id),
+  filterId: integer("filter_id").references(() => approvedSenders.id),
   action: text("action").notNull(),
   metadata: jsonb("metadata"),
   timestamp: timestamp("timestamp").defaultNow(),
@@ -31,9 +31,9 @@ export const filterLogs = pgTable("filter_logs", {
 
 export const insertUserSchema = createInsertSchema(users);
 export const selectUserSchema = createSelectSchema(users);
-export const insertFilterSchema = createInsertSchema(emailFilters);
-export const selectFilterSchema = createSelectSchema(emailFilters);
+export const insertApprovedSenderSchema = createInsertSchema(approvedSenders);
+export const selectApprovedSenderSchema = createSelectSchema(approvedSenders);
 
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = z.infer<typeof selectUserSchema>;
-export type EmailFilter = z.infer<typeof selectFilterSchema>;
+export type ApprovedSender = z.infer<typeof selectApprovedSenderSchema>;

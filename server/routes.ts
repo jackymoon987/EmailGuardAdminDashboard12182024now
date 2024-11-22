@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { setupAuth } from "./auth";
 import { db } from "../db";
-import { emailFilters, filterLogs, users } from "@db/schema";
+import { approvedSenders, filterLogs, users } from "@db/schema";
 import { eq } from "drizzle-orm";
 import { WebSocketServer } from 'ws';
 
@@ -15,7 +15,7 @@ export function registerRoutes(app: Express) {
       return res.status(401).send("Not authenticated");
     }
     
-    const filters = await db.select().from(emailFilters);
+    const filters = await db.select().from(approvedSenders);
     res.json(filters);
   });
 
@@ -24,7 +24,7 @@ export function registerRoutes(app: Express) {
       return res.status(401).send("Not authenticated");
     }
     
-    const filter = await db.insert(emailFilters).values({
+    const filter = await db.insert(approvedSenders).values({
       ...req.body,
       createdBy: req.user.id,
     }).returning();
