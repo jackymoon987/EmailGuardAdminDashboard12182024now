@@ -50,7 +50,44 @@ export function registerRoutes(app: Express) {
       return res.status(401).send("Not authorized");
     }
     
-    const allUsers = await db.select().from(users);
+    let allUsers = await db.select().from(users);
+    
+    // If no users exist, create sample users
+    if (allUsers.length === 0) {
+      const { hash } = await import('./auth');
+      const defaultPassword = await hash('password123');
+      
+      const sampleUsers = [
+        {
+          firstName: "Admin",
+          lastName: "User",
+          email: "admin@bulletproofinbox.com",
+          password: defaultPassword,
+          role: "admin",
+          createdAt: new Date("2024-01-01")
+        },
+        {
+          firstName: "John",
+          lastName: "Smith",
+          email: "john@company.com",
+          password: defaultPassword,
+          role: "user",
+          createdAt: new Date("2024-02-15")
+        },
+        {
+          firstName: "Sarah",
+          lastName: "Johnson",
+          email: "sarah@company.com",
+          password: defaultPassword,
+          role: "editor",
+          createdAt: new Date("2024-03-01")
+        }
+      ];
+      
+      await db.insert(users).values(sampleUsers);
+      allUsers = await db.select().from(users);
+    }
+    
     res.json(allUsers);
   });
 
