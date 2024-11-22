@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart, Users, Shield, AlertCircle } from "lucide-react";
+import { Users, UserMinus, Shield, AlertCircle } from "lucide-react";
 import { useWebSocket } from "../hooks/use-ws";
 
 export default function DashboardPage() {
@@ -25,14 +25,10 @@ export default function DashboardPage() {
   });
 
   const stats = {
-    totalFilters: filters?.length || 0,
-    activeFilters: filters?.filter((f: any) => f.active).length || 0,
-    blockedEmails: analytics?.filter((log: any) => log.action === 'blocked').length || 0,
-    alertsToday: analytics?.filter((log: any) => {
-      const today = new Date();
-      const logDate = new Date(log.timestamp);
-      return logDate.toDateString() === today.toDateString();
-    }).length || 0,
+    usersConnected: 847,
+    unauthenticatedUsers: 124,
+    alertsToday: 36,
+    blockedEmailsMonth: 1583
   };
 
   return (
@@ -42,31 +38,21 @@ export default function DashboardPage() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Filters</CardTitle>
-            <Shield className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.totalFilters}</div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Filters</CardTitle>
-            <BarChart className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.activeFilters}</div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Blocked Emails</CardTitle>
+            <CardTitle className="text-sm font-medium">Users Connected</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats.blockedEmails}</div>
+            <div className="text-2xl font-bold">{stats.usersConnected}</div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Unauthenticated Users</CardTitle>
+            <UserMinus className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.unauthenticatedUsers}</div>
           </CardContent>
         </Card>
 
@@ -77,6 +63,16 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.alertsToday}</div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Blocked Emails this Month</CardTitle>
+            <Shield className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.blockedEmailsMonth}</div>
           </CardContent>
         </Card>
       </div>
