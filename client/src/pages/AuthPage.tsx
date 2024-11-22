@@ -8,8 +8,10 @@ import { Shield, Loader2 } from "lucide-react";
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { login, register } = useUser();
   const { toast } = useToast();
@@ -19,7 +21,10 @@ export default function AuthPage() {
     setIsLoading(true);
     
     try {
-      const result = await (isLogin ? login : register)({ username, password });
+      const userData = isLogin 
+        ? { email, password }
+        : { email, password, firstName, lastName };
+      const result = await (isLogin ? login : register)(userData);
       
       if (!result.ok) {
         toast({
@@ -59,11 +64,29 @@ export default function AuthPage() {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
+              {!isLogin && (
+                <>
+                  <Input
+                    type="text"
+                    placeholder="First Name"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    required={!isLogin}
+                  />
+                  <Input
+                    type="text"
+                    placeholder="Last Name"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    required={!isLogin}
+                  />
+                </>
+              )}
               <Input
-                type="text"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
               <Input
