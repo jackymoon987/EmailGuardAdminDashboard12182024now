@@ -66,7 +66,7 @@ export function ApprovedSenderTable({ senders = dummyData }: ApprovedSenderTable
           <TableHead>Status</TableHead>
           <TableHead>Date Added</TableHead>
           <TableHead>Emails Received</TableHead>
-          <TableHead>Active</TableHead>
+          <TableHead>Status</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
