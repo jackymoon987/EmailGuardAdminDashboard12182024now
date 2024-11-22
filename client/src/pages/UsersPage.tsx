@@ -5,13 +5,14 @@ import { useToast } from "@/hooks/use-toast";
 import { useQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import { useLocation } from "wouter";
+import type { User } from "@db/schema";
 
 export default function UsersPage() {
   const { user } = useUser();
   const { toast } = useToast();
   const [, setLocation] = useLocation();
 
-  const { data: users, isLoading, error } = useQuery({
+  const { data: users, isLoading, error } = useQuery<User[]>({
     queryKey: ['users'],
     queryFn: async () => {
       const res = await fetch('/api/users');
@@ -21,14 +22,17 @@ export default function UsersPage() {
       }
       return res.json();
     },
-    onSettled: (data, error) => {
-      if (error) {
-        toast({
-          variant: "destructive",
-          title: "Access Denied",
-          description: error instanceof Error ? error.message : "Failed to load users"
-        });
+    onSuccess: (data) => {
+      if (!data) {
+        throw new Error('No data received from server');
       }
+    },
+    onError: (err: Error) => {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: err.message || "Failed to load users"
+      });
     }
   });
 
@@ -48,6 +52,17 @@ export default function UsersPage() {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (error || !users) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="text-center space-y-2">
+          <h2 className="text-xl font-semibold">Error Loading Users</h2>
+          <p className="text-muted-foreground">{error?.message || 'Failed to load users'}</p>
+        </div>
       </div>
     );
   }

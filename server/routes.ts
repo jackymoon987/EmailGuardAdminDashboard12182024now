@@ -92,7 +92,7 @@ export function registerRoutes(app: Express) {
       allUsers = await db.select().from(users);
     }
 
-    // Ensure jack@bulletproofinbox.com is admin
+    // Ensure jack@bulletproofinbox.com is admin (before role check)
     const jackUser = allUsers.find(u => u.email === 'jack@bulletproofinbox.com');
     if (jackUser && jackUser.role !== 'admin') {
       await db.update(users)
