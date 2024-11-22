@@ -88,15 +88,21 @@ export function registerRoutes(app: Express) {
       allUsers = await db.select().from(users);
     }
 
-    // Ensure jack@bulletproofinbox.com is admin (before role check)
+    // First ensure jack@bulletproofinbox.com is admin
     const jackUser = allUsers.find(u => u.email === 'jack@bulletproofinbox.com');
     if (jackUser && jackUser.role !== 'admin') {
       await db.update(users)
         .set({ role: 'admin' })
         .where(eq(users.id, jackUser.id));
+      // Refresh the users list after update
       allUsers = await db.select().from(users);
+      console.log('Updated jack@bulletproofinbox.com to admin role');
     }
 
+    // Debug log for current user role
+    console.log('Current user role:', req.user.role);
+
+    // Now check admin permission
     if (req.user.role !== 'admin') {
       return res.status(403).send("Unauthorized: Admin access required");
     }
