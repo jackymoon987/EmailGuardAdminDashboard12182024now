@@ -18,19 +18,31 @@ export default function AuthPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
+    if (isLoading) return;
     
+    setIsLoading(true);
     try {
+      // Validate required fields
+      if (!email || !password || (!isLogin && (!firstName || !lastName))) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Please fill in all required fields",
+        });
+        return;
+      }
+
       const userData = isLogin 
         ? { email, password }
         : { email, password, firstName, lastName };
+      
       const result = await (isLogin ? login : register)(userData);
       
       if (!result.ok) {
         toast({
           variant: "destructive",
           title: "Error",
-          description: result.message,
+          description: result.message || "Authentication failed. Please try again.",
         });
         return;
       }
@@ -39,11 +51,12 @@ export default function AuthPage() {
         title: "Success",
         description: `${isLogin ? "Login" : "Registration"} successful!`,
       });
-    } catch (error) {
+    } catch (error: any) {
+      console.error('Authentication error:', error);
       toast({
         variant: "destructive",
         title: "Error",
-        description: "An unexpected error occurred",
+        description: error?.message || "An unexpected error occurred. Please try again.",
       });
     } finally {
       setIsLoading(false);
