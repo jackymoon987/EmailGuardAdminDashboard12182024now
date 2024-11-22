@@ -84,7 +84,7 @@ export default function TopNav() {
           <Button
             variant="ghost"
             className="h-9 w-9 px-0"
-            onClick={() => logout({})}
+            onClick={() => logout()}
           >
             <LogOut className="h-5 w-5" />
             <span className="sr-only">Logout</span>

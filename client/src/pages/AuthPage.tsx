@@ -32,11 +32,19 @@ export default function AuthPage() {
         return;
       }
 
-      const userData = isLogin 
-        ? { email, password }
-        : { email, password, firstName, lastName };
-      
-      const result = await (isLogin ? login : register)(userData);
+      if (isLogin) {
+        const result = await login({ email, password, firstName: "", lastName: "" });
+      } else {
+        if (!firstName || !lastName) {
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Please fill in all required fields",
+          });
+          return;
+        }
+        const result = await register({ email, password, firstName, lastName });
+      }
       
       if (!result.ok) {
         toast({

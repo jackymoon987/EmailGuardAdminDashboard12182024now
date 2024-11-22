@@ -68,7 +68,7 @@ export default function Sidebar({
             <Button
               variant="ghost"
               className="w-full justify-start"
-              onClick={() => logout({})}
+              onClick={() => logout()}
             >
               <LogOut className="h-5 w-5 mr-2" />
               <span className={cn(!open && "hidden")}>Logout</span>
