@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { useUser } from "../hooks/use-user";
 import { Shield, Loader2 } from "lucide-react";
@@ -12,6 +14,7 @@ export default function AuthPage() {
   const [, setLocation] = useLocation();
   const [showInitialSetup, setShowInitialSetup] = useState(false);
   const [isLogin, setIsLogin] = useState(false); // Default to sign up view
+  const [accountType, setAccountType] = useState<"individual" | "business">("individual");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -141,6 +144,26 @@ export default function AuthPage() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="space-y-6 mb-6">
+            <div className="space-y-2">
+              <h3 className="text-lg font-medium text-center">Do you need an individual account or a business account?</h3>
+              <RadioGroup
+                value={accountType}
+                onValueChange={(value) => setAccountType(value as "individual" | "business")}
+                className="flex gap-4 justify-center"
+              >
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="individual" id="individual" />
+                  <Label htmlFor="individual">Individual</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="business" id="business" />
+                  <Label htmlFor="business">Business</Label>
+                </div>
+              </RadioGroup>
+            </div>
+          </div>
+
           <Button 
             type="button" 
             variant="outline" 
