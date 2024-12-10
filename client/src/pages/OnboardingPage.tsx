@@ -38,8 +38,8 @@ export default function OnboardingPage() {
         description: "Your information has been saved"
       });
 
-      // Redirect to email provider selection
-      setLocation('/email-provider');
+      // After successful save, redirect to the email provider selection page
+      setLocation('/get-started');
       
     } catch (error) {
       toast({

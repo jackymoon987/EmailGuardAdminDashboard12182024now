@@ -38,10 +38,22 @@ function Router() {
     return <OnboardingPage />;
   }
 
-  // Show email provider selection after onboarding
-  if (!user.emailProvider) {
-    return <EmailProviderPage />;
-  }
+  return (
+    <Switch>
+      <Route path="/get-started" component={EmailProviderPage} />
+      <Route path="/" component={DashboardPage} />
+      <Route path="/users" component={UsersPage} />
+      <Route path="/filters" component={FiltersPage} />
+      <Route path="/analytics">
+        <AnalyticsPage />
+      </Route>
+      <Route path="/analytics/:userId">
+        <AnalyticsPage />
+      </Route>
+      <Route path="/approved-senders/:userId" component={ApprovedSendersPage} />
+      <Route>404 Page Not Found</Route>
+    </Switch>
+  );
 
   // Show initial setup for new users
   if (user.showInitialSetup) {
