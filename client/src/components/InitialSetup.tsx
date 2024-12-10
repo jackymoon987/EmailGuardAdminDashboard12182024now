@@ -16,8 +16,8 @@ interface InitialSetupProps {
 }
 
 export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps) {
-  const [surveyEmailDefault, setSurveyEmailDefault] = useState<DefaultValue>("yes"); // Default to "yes"
-  const [evaluatingFolderDefault, setEvaluatingFolderDefault] = useState<DefaultValue>("no"); // Default to "no"
+  const [surveyEmailDefault, setSurveyEmailDefault] = useState<DefaultValue>("no"); // Default to "no" (Turn it off)
+  const [evaluatingFolderDefault, setEvaluatingFolderDefault] = useState<DefaultValue>("yes"); // Default to "yes" (Leave it on)
 
   const handleComplete = (reviewNow: boolean) => {
     // Save the user's preferences
@@ -29,6 +29,15 @@ export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps)
     // If they want to review senders now, redirect them
     if (reviewNow) {
       onReviewSenders();
+    }
+  };
+
+  // Handle evaluating folder change with automatic survey email update
+  const handleEvaluatingFolderChange = (value: DefaultValue) => {
+    setEvaluatingFolderDefault(value);
+    // If turning off evaluating folder, automatically turn off survey email
+    if (value === "no") {
+      setSurveyEmailDefault("no");
     }
   };
 
@@ -57,12 +66,12 @@ export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps)
                 className="flex flex-col space-y-2"
               >
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="yes" id="survey-yes" />
-                  <Label htmlFor="survey-yes">Yes, turn on by default</Label>
+                  <RadioGroupItem value="no" id="survey-no" />
+                  <Label htmlFor="survey-no">Turn it off</Label>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="no" id="survey-no" />
-                  <Label htmlFor="survey-no">No, keep it turned off</Label>
+                  <RadioGroupItem value="yes" id="survey-yes" />
+                  <Label htmlFor="survey-yes">Leave it on</Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="later" id="survey-later" />
@@ -74,18 +83,18 @@ export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps)
             <div className="space-y-3">
               <h3 className="font-medium">Evaluating Folder Default Setting</h3>
               <RadioGroup
-                defaultValue="no"
+                defaultValue="yes"
                 value={evaluatingFolderDefault}
-                onValueChange={(value) => setEvaluatingFolderDefault(value as DefaultValue)}
+                onValueChange={(value) => handleEvaluatingFolderChange(value as DefaultValue)}
                 className="flex flex-col space-y-2"
               >
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="yes" id="folder-yes" />
-                  <Label htmlFor="folder-yes">Yes, turn on by default</Label>
+                  <RadioGroupItem value="no" id="folder-no" />
+                  <Label htmlFor="folder-no">Turn it off</Label>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="no" id="folder-no" />
-                  <Label htmlFor="folder-no">No, keep it turned off</Label>
+                  <RadioGroupItem value="yes" id="folder-yes" />
+                  <Label htmlFor="folder-yes">Leave it on</Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="later" id="folder-later" />
