@@ -1,11 +1,13 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useUser } from "../hooks/use-user";
 import { UserTable } from "../components/UserTable";
+import { UserSettingsTable } from "../components/UserSettingsTable";
 import { useToast } from "@/hooks/use-toast";
 import { useQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import { useLocation } from "wouter";
 import type { User } from "@db/schema";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function UsersPage() {
   const { user } = useUser();
@@ -70,7 +72,18 @@ export default function UsersPage() {
         <h1 className="text-3xl font-bold">User Management</h1>
       </div>
       
-      <UserTable users={users} />
+      <Tabs defaultValue="users">
+        <TabsList>
+          <TabsTrigger value="users">Users</TabsTrigger>
+          <TabsTrigger value="settings">User Settings</TabsTrigger>
+        </TabsList>
+        <TabsContent value="users">
+          <UserTable users={users} />
+        </TabsContent>
+        <TabsContent value="settings">
+          <UserSettingsTable />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
