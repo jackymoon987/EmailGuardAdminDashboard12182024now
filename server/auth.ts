@@ -77,6 +77,7 @@ export function setupAuth(app: Express) {
         }
         return done(null, user);
       } catch (err) {
+        console.error('Authentication error:', err);
         return done(err);
       }
     })
@@ -101,14 +102,16 @@ export function setupAuth(app: Express) {
 
   app.post("/api/register", async (req, res, next) => {
     try {
-      const result = insertUserSchema.safeParse(req.body);
+      // Only validate email and password for initial registration
+      const registrationSchema = insertUserSchema.pick({ email: true, password: true });
+      const result = registrationSchema.safeParse(req.body);
       if (!result.success) {
         return res
           .status(400)
           .send("Invalid input: " + result.error.issues.map(i => i.message).join(", "));
       }
 
-      const { email, password, firstName, lastName } = result.data;
+      const { email, password } = result.data;
 
       // Check for existing user
       const [existingUser] = await db
@@ -123,16 +126,15 @@ export function setupAuth(app: Express) {
 
       const hashedPassword = await crypto.hash(password);
 
-      // Create a completely new user with no connections to other accounts
+      // Create a new user with minimal information
       const [newUser] = await db
         .insert(users)
         .values({
           email,
           password: hashedPassword,
-          firstName,
-          lastName,
           role: "user", // Always start as regular user
           createdAt: new Date(),
+          showInitialSetup: true, // Flag for new users
         })
         .returning();
 
