@@ -104,8 +104,17 @@ export function UserSettingsTable({ settings: initialSettings = dummySettings }:
       });
       return;
     }
+
+    // If turning off evaluating folder, also turn off survey email
+    if (actionField === 'evaluatingFolder' && !actionValue) {
+      toggleMutation.mutate({ 
+        ids: selectedUsers, 
+        field: 'surveyEmail', 
+        value: false 
+      });
+    }
     
-    // Persist changes (which now also updates the UI)
+    // Persist changes for the main action
     toggleMutation.mutate({ 
       ids: selectedUsers, 
       field: actionField, 
@@ -121,13 +130,37 @@ export function UserSettingsTable({ settings: initialSettings = dummySettings }:
           <div className="flex gap-4">
             <div className="flex items-center gap-2">
               <span className="text-sm">Survey Email:</span>
-              <Button size="sm" onClick={() => handleBatchToggle('surveyEmail', true)}>Enable</Button>
-              <Button size="sm" variant="outline" onClick={() => handleBatchToggle('surveyEmail', false)}>Disable</Button>
+              <Button 
+                size="sm" 
+                variant="default"
+                onClick={() => handleBatchToggle('surveyEmail', true)}
+              >
+                Enable
+              </Button>
+              <Button 
+                size="sm" 
+                variant="destructive"
+                onClick={() => handleBatchToggle('surveyEmail', false)}
+              >
+                Disable
+              </Button>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-sm">Evaluating Folder:</span>
-              <Button size="sm" onClick={() => handleBatchToggle('evaluatingFolder', true)}>Enable</Button>
-              <Button size="sm" variant="outline" onClick={() => handleBatchToggle('evaluatingFolder', false)}>Disable</Button>
+              <Button 
+                size="sm" 
+                variant="default"
+                onClick={() => handleBatchToggle('evaluatingFolder', true)}
+              >
+                Enable
+              </Button>
+              <Button 
+                size="sm" 
+                variant="destructive"
+                onClick={() => handleBatchToggle('evaluatingFolder', false)}
+              >
+                Disable
+              </Button>
             </div>
           </div>
         </div>
@@ -174,11 +207,21 @@ export function UserSettingsTable({ settings: initialSettings = dummySettings }:
                 <Switch
                   checked={setting.evaluatingFolder}
                   onCheckedChange={(checked) => {
-                    setSettings(currentSettings =>
-                      currentSettings.map(s =>
-                        s.id === setting.id ? { ...s, evaluatingFolder: checked } : s
-                      )
-                    );
+                    // If turning off evaluating folder, also turn off survey email
+                    if (!checked) {
+                      setSettings(currentSettings =>
+                        currentSettings.map(s =>
+                          s.id === setting.id ? { ...s, evaluatingFolder: false, surveyEmail: false } : s
+                        )
+                      );
+                      toggleMutation.mutate({ ids: [setting.id], field: 'surveyEmail', value: false });
+                    } else {
+                      setSettings(currentSettings =>
+                        currentSettings.map(s =>
+                          s.id === setting.id ? { ...s, evaluatingFolder: true } : s
+                        )
+                      );
+                    }
                     toggleMutation.mutate({ ids: [setting.id], field: 'evaluatingFolder', value: checked });
                   }}
                 />
