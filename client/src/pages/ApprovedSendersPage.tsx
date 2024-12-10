@@ -18,9 +18,10 @@ export default function ApprovedSendersPage() {
     email: 'new@test7.com',
     firstName: 'John',
     lastName: 'Smith',
+    password: '', // Required by type but not used in UI
     role: 'user',
     status: 'connected',
-    createdAt: new Date().toISOString(),
+    createdAt: new Date(),
     showInitialSetup: false
   };
 

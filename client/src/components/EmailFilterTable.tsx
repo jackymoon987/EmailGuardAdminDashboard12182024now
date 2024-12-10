@@ -10,10 +10,17 @@ import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
-import { EmailFilter } from "@db/schema";
+
+interface Filter {
+  id: number;
+  sender: string;
+  type: 'whitelist' | 'blacklist';
+  active: boolean;
+  createdAt: string;
+}
 
 interface EmailFilterTableProps {
-  filters: EmailFilter[];
+  filters: Filter[];
 }
 
 export function EmailFilterTable({ filters }: EmailFilterTableProps) {
@@ -67,12 +74,12 @@ export function EmailFilterTable({ filters }: EmailFilterTableProps) {
               </Badge>
             </TableCell>
             <TableCell>{filter.active ? 'Active' : 'Inactive'}</TableCell>
-            <TableCell>{new Date(filter.createdAt!).toLocaleDateString()}</TableCell>
+            <TableCell>{new Date(filter.createdAt).toLocaleDateString()}</TableCell>
             <TableCell>
               <Switch
                 checked={filter.active}
                 onCheckedChange={(checked) => 
-                  toggleMutation.mutate({ id: filter.id!, active: checked })
+                  toggleMutation.mutate({ id: filter.id, active: checked })
                 }
               />
             </TableCell>

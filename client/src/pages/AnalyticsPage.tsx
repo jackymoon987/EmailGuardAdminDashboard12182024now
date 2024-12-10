@@ -12,9 +12,9 @@ export default function AnalyticsPage() {
   const { isLoading: isLoadingAnalytics } = useQuery({
     queryKey: ['analytics', timeRange],
     queryFn: async () => {
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 500));
-      return {};
+      const res = await fetch('/api/analytics');
+      if (!res.ok) throw new Error('Failed to fetch analytics');
+      return res.json();
     }
   });
 
@@ -30,7 +30,7 @@ export default function AnalyticsPage() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold">Company wide stats</h1>
-        <Tabs defaultValue="monthly">
+        <Tabs defaultValue="monthly" onValueChange={setTimeRange}>
           <TabsList>
             <TabsTrigger value="monthly">Monthly</TabsTrigger>
             <TabsTrigger value="ytd">Year to date</TabsTrigger>
