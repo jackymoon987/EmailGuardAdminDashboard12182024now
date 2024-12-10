@@ -44,17 +44,20 @@ export function UserSettingsTable({ settings: initialSettings = dummySettings }:
   const [settings, setSettings] = useState(initialSettings);
   const [selectedUsers, setSelectedUsers] = useState<number[]>([]);
 
+  type ToggleMutationVariables = {
+    ids: number[];
+    field: 'surveyEmail' | 'evaluatingFolder';
+    value: boolean;
+  };
+
   const toggleMutation = useMutation({
-    mutationFn: async ({ ids, field, value }: { ids: number[]; field: 'surveyEmail' | 'evaluatingFolder'; value: boolean }) => {
+    mutationFn: async (variables: ToggleMutationVariables) => {
+      const { ids, field, value } = variables;
       // For demo purposes, we'll just update the state locally
       // In a real application, this would make an API call
-      return { success: true };
-    },
-    onSuccess: () => {
-      // Update the local state to reflect the changes
       setSettings(currentSettings => 
         currentSettings.map(setting => {
-          if (selectedUsers.includes(setting.id)) {
+          if (ids.includes(setting.id)) {
             return {
               ...setting,
               [field]: value
@@ -63,7 +66,9 @@ export function UserSettingsTable({ settings: initialSettings = dummySettings }:
           return setting;
         })
       );
-      
+      return { success: true };
+    },
+    onSuccess: () => {
       toast({
         title: "Success",
         description: "User settings updated successfully"
@@ -90,7 +95,7 @@ export function UserSettingsTable({ settings: initialSettings = dummySettings }:
     );
   };
 
-  const handleBatchToggle = (field: 'surveyEmail' | 'evaluatingFolder', value: boolean) => {
+  const handleBatchToggle = (actionField: 'surveyEmail' | 'evaluatingFolder', actionValue: boolean) => {
     if (selectedUsers.length === 0) {
       toast({
         variant: "destructive",
@@ -100,17 +105,12 @@ export function UserSettingsTable({ settings: initialSettings = dummySettings }:
       return;
     }
     
-    // Immediately update UI
-    setSettings(currentSettings =>
-      currentSettings.map(setting =>
-        selectedUsers.includes(setting.id)
-          ? { ...setting, [field]: value }
-          : setting
-      )
-    );
-    
-    // Persist changes
-    toggleMutation.mutate({ ids: selectedUsers, field, value });
+    // Persist changes (which now also updates the UI)
+    toggleMutation.mutate({ 
+      ids: selectedUsers, 
+      field: actionField, 
+      value: actionValue 
+    });
   };
 
   return (
