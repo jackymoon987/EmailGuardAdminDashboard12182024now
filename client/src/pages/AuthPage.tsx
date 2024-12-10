@@ -67,11 +67,7 @@ export default function AuthPage() {
 
         // Always show initial setup for new registrations
         setShowInitialSetup(true);
-        toast({
-          title: "Welcome!",
-          description: "Registration successful! Let's set up your account preferences.",
-          duration: 500
-        });
+        
       }
     } catch (error: any) {
       console.error('Authentication error:', error);
