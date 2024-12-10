@@ -11,6 +11,7 @@ import FiltersPage from "./pages/FiltersPage";
 import AnalyticsPage from "./pages/AnalyticsPage";
 import AuthPage from "./pages/AuthPage";
 import OnboardingPage from "./pages/OnboardingPage";
+import EmailProviderPage from "./pages/EmailProviderPage";
 import ApprovedSendersPage from "./pages/ApprovedSendersPage";
 import Layout from "./components/Layout";
 import { useUser } from "./hooks/use-user";
@@ -35,6 +36,11 @@ function Router() {
   // Show onboarding for new users
   if (!user.firstName || !user.lastName) {
     return <OnboardingPage />;
+  }
+
+  // Show email provider selection after onboarding
+  if (!user.emailProvider) {
+    return <EmailProviderPage />;
   }
 
   // Show initial setup for new users
