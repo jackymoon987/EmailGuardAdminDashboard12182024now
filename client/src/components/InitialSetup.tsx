@@ -18,7 +18,6 @@ interface InitialSetupProps {
 export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps) {
   const [surveyEmailDefault, setSurveyEmailDefault] = useState<DefaultValue>("yes"); // Default to "yes"
   const [evaluatingFolderDefault, setEvaluatingFolderDefault] = useState<DefaultValue>("no"); // Default to "no"
-  const [showReviewOptions, setShowReviewOptions] = useState(false);
 
   const handleComplete = (reviewNow: boolean) => {
     // Save the user's preferences
@@ -52,6 +51,7 @@ export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps)
             <div className="space-y-3">
               <h3 className="font-medium">Survey Email Default Setting</h3>
               <RadioGroup
+                defaultValue="yes"
                 value={surveyEmailDefault}
                 onValueChange={(value) => setSurveyEmailDefault(value as DefaultValue)}
                 className="flex flex-col space-y-2"
@@ -74,6 +74,7 @@ export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps)
             <div className="space-y-3">
               <h3 className="font-medium">Evaluating Folder Default Setting</h3>
               <RadioGroup
+                defaultValue="no"
                 value={evaluatingFolderDefault}
                 onValueChange={(value) => setEvaluatingFolderDefault(value as DefaultValue)}
                 className="flex flex-col space-y-2"
