@@ -57,7 +57,7 @@ function Router() {
         <Route path="/" component={DashboardPage} />
         <Route path="/users" component={UsersPage} />
         <Route path="/filters" component={FiltersPage} />
-        <Route path="/analytics" component={AnalyticsPage} />
+        <Route path="/analytics/:userId" component={AnalyticsPage} />
         <Route path="/approved-senders/:userId" component={ApprovedSendersPage} />
         <Route>404 Page Not Found</Route>
       </Switch>
