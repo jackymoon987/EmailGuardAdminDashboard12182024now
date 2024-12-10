@@ -1,0 +1,119 @@
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useToast } from "@/hooks/use-toast";
+import { useLocation } from "wouter";
+
+export default function OnboardingPage() {
+  const [, setLocation] = useLocation();
+  const { toast } = useToast();
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    phoneNumber: "",
+    referralEmail: ""
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    try {
+      const response = await fetch('/api/user/onboarding', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to save user information');
+      }
+
+      toast({
+        title: "Success",
+        description: "Your information has been saved"
+      });
+
+      // Redirect to the next page (e.g., dashboard)
+      setLocation('/');
+      
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to save your information. Please try again."
+      });
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-background p-4">
+      <div className="w-full max-w-md space-y-8">
+        <div className="text-center">
+          <h1 className="text-2xl font-semibold">Tell us about yourself</h1>
+          <p className="text-sm text-muted-foreground mt-2">
+            This info will be used to improve your experience.
+          </p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="firstName">First name</Label>
+              <Input
+                id="firstName"
+                value={formData.firstName}
+                onChange={(e) => setFormData(prev => ({ ...prev, firstName: e.target.value }))}
+                required
+                placeholder="Your first name"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="lastName">Last name</Label>
+              <Input
+                id="lastName"
+                value={formData.lastName}
+                onChange={(e) => setFormData(prev => ({ ...prev, lastName: e.target.value }))}
+                required
+                placeholder="Your last name"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="phoneNumber">Phone number (optional)</Label>
+              <Input
+                id="phoneNumber"
+                type="tel"
+                pattern="[0-9\-]+"
+                value={formData.phoneNumber}
+                onChange={(e) => setFormData(prev => ({ ...prev, phoneNumber: e.target.value }))}
+                placeholder="xxx-xxx-xxxx"
+              />
+            </div>
+
+            <div className="bg-muted/50 p-4 rounded-lg space-y-2">
+              <h3 className="font-medium">Did someone refer you?</h3>
+              <p className="text-sm text-muted-foreground">
+                Add their email address or promo code and you'll both get a month free!
+              </p>
+              <Input
+                id="referralEmail"
+                type="email"
+                value={formData.referralEmail}
+                onChange={(e) => setFormData(prev => ({ ...prev, referralEmail: e.target.value }))}
+                placeholder="john@email.com"
+              />
+            </div>
+          </div>
+
+          <Button type="submit" className="w-full">
+            Save & continue
+          </Button>
+        </form>
+      </div>
+    </div>
+  );
+}

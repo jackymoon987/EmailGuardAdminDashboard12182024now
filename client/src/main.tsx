@@ -10,6 +10,7 @@ import UsersPage from "./pages/UsersPage";
 import FiltersPage from "./pages/FiltersPage";
 import AnalyticsPage from "./pages/AnalyticsPage";
 import AuthPage from "./pages/AuthPage";
+import OnboardingPage from "./pages/OnboardingPage";
 import ApprovedSendersPage from "./pages/ApprovedSendersPage";
 import Layout from "./components/Layout";
 import { useUser } from "./hooks/use-user";
@@ -29,6 +30,11 @@ function Router() {
 
   if (!user) {
     return <AuthPage />;
+  }
+
+  // Show onboarding for new users
+  if (!user.firstName || !user.lastName) {
+    return <OnboardingPage />;
   }
 
   // Show initial setup for new users
