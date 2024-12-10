@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import { Shield } from "lucide-react";
 import { useState } from "react";
 
@@ -55,7 +56,7 @@ export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps)
             Let's configure some default settings for your company
           </p>
         </CardHeader>
-        <CardContent className="space-y-8">
+        <CardContent>
           <div className="space-y-8">
             <div className="space-y-3">
               <h3 className="font-medium text-lg">Step 1: Survey Email Default Setting</h3>
@@ -104,7 +105,7 @@ export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps)
             </div>
 
             <div className="space-y-3">
-              <h3 className="font-medium text-lg">Step 3: Company-wide Approved Sender List</h3>
+              <h3 className="font-medium text-lg">Step 3: Approved Sender List</h3>
               <p className="text-sm text-muted-foreground">
                 Would you like to review and configure your company's approved sender list now?
               </p>
@@ -127,26 +128,30 @@ export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps)
               <p className="text-sm text-muted-foreground">
                 Would you like to invite your team members to join your company's email filtering system?
               </p>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-3 pt-4">
-              <Button 
-                variant="outline" 
-                onClick={() => handleComplete(false)} 
-                className="flex-1"
-              >
-                Do later
-              </Button>
-              <Button 
-                onClick={() => handleComplete(true)} 
-                className="flex-1"
-              >
-                Next
-              </Button>
+              <Input
+                type="email"
+                placeholder="Enter email addresses (separated by commas)"
+                className="mt-2"
+              />
             </div>
           </div>
         </CardContent>
       </Card>
+      <div className="flex flex-col sm:flex-row gap-3 mt-6 max-w-2xl mx-auto">
+        <Button 
+          variant="outline" 
+          onClick={() => handleComplete(false)} 
+          className="flex-1"
+        >
+          Do later
+        </Button>
+        <Button 
+          onClick={() => handleComplete(true)} 
+          className="flex-1"
+        >
+          Next
+        </Button>
+      </div>
     </div>
   );
 }
