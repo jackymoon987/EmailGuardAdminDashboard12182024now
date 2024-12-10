@@ -70,6 +70,7 @@ export default function AuthPage() {
         toast({
           title: "Welcome!",
           description: "Registration successful! Let's set up your account preferences.",
+          duration: 500
         });
       }
     } catch (error: any) {
