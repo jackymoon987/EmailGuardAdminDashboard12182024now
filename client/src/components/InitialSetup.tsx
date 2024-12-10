@@ -17,33 +17,29 @@ interface InitialSetupProps {
 }
 
 export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps) {
-  const [surveyEmailDefault, setSurveyEmailDefault] = useState<DefaultValue>("no"); // Default to "no" (Turn it off)
-  const [evaluatingFolderDefault, setEvaluatingFolderDefault] = useState<DefaultValue>("yes"); // Default to "yes" (Leave it on)
+  const [surveyEmailDefault, setSurveyEmailDefault] = useState<DefaultValue>("no");
+  const [evaluatingFolderDefault, setEvaluatingFolderDefault] = useState<DefaultValue>("yes");
 
   const handleComplete = (reviewNow: boolean) => {
-    // Save the user's preferences
     onComplete({
       surveyEmailDefault,
       evaluatingFolderDefault,
     });
     
-    // If they want to review senders now, redirect them
     if (reviewNow) {
       onReviewSenders();
     }
   };
 
-  // Handle evaluating folder change with automatic survey email update
   const handleEvaluatingFolderChange = (value: DefaultValue) => {
     setEvaluatingFolderDefault(value);
-    // If turning off evaluating folder, automatically turn off survey email
     if (value === "no") {
       setSurveyEmailDefault("no");
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-background p-4">
       <div className="w-full max-w-2xl">
         <Card>
           <CardHeader className="space-y-1">
@@ -51,8 +47,11 @@ export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps)
               <Shield className="h-12 w-12 text-primary" />
             </div>
             <CardTitle className="text-2xl text-center">
-              Bulletproof Inbox
+              Company Wide Settings
             </CardTitle>
+            <p className="text-sm text-center text-muted-foreground">
+              Let's configure some default settings for your company
+            </p>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
