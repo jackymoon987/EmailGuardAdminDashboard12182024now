@@ -22,16 +22,16 @@ type UserSetting = {
 };
 
 const dummySettings: UserSetting[] = [
-  { id: 1, email: "john.doe@company.com", surveyEmail: true, evaluatingFolder: false },
-  { id: 2, email: "sarah.smith@company.com", surveyEmail: false, evaluatingFolder: true },
-  { id: 3, email: "michael.brown@company.com", surveyEmail: true, evaluatingFolder: true },
-  { id: 4, email: "emily.wilson@company.com", surveyEmail: false, evaluatingFolder: false },
-  { id: 5, email: "david.miller@company.com", surveyEmail: true, evaluatingFolder: false },
-  { id: 6, email: "lisa.taylor@company.com", surveyEmail: false, evaluatingFolder: true },
-  { id: 7, email: "james.anderson@company.com", surveyEmail: true, evaluatingFolder: true },
-  { id: 8, email: "jessica.thomas@company.com", surveyEmail: false, evaluatingFolder: false },
-  { id: 9, email: "robert.martin@company.com", surveyEmail: true, evaluatingFolder: true },
-  { id: 10, email: "amanda.white@company.com", surveyEmail: false, evaluatingFolder: true }
+  { id: 1, email: "new@test7.com", surveyEmail: true, evaluatingFolder: false },
+  { id: 2, email: "new@test8.com", surveyEmail: false, evaluatingFolder: true },
+  { id: 3, email: "jack.rice@company.com", surveyEmail: true, evaluatingFolder: true },
+  { id: 4, email: "emma.wilson@company.com", surveyEmail: false, evaluatingFolder: false },
+  { id: 5, email: "david.chen@company.com", surveyEmail: true, evaluatingFolder: false },
+  { id: 6, email: "sarah.taylor@company.com", surveyEmail: false, evaluatingFolder: true },
+  { id: 7, email: "michael.johnson@company.com", surveyEmail: true, evaluatingFolder: true },
+  { id: 8, email: "lisa.brown@company.com", surveyEmail: false, evaluatingFolder: false },
+  { id: 9, email: "robert.smith@company.com", surveyEmail: true, evaluatingFolder: true },
+  { id: 10, email: "anna.white@company.com", surveyEmail: false, evaluatingFolder: true }
 ];
 
 interface UserSettingsTableProps {
