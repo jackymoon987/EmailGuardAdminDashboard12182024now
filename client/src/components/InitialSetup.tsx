@@ -49,18 +49,18 @@ export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps)
             <Shield className="h-12 w-12 text-primary" />
           </div>
           <CardTitle className="text-2xl text-center mb-2">
-            Initial Setup
+            Initial Setup for Company Settings
           </CardTitle>
           <p className="text-center text-muted-foreground">
-            Let's configure some default settings for your email filtering system
+            Let's configure some default settings for your company
           </p>
         </CardHeader>
         <CardContent className="space-y-8">
-          <div className="space-y-4">
+          <div className="space-y-8">
             <div className="space-y-3">
-              <h3 className="font-medium">Survey Email Default Setting</h3>
+              <h3 className="font-medium text-lg">Step 1: Survey Email Default Setting</h3>
               <RadioGroup
-                defaultValue="yes"
+                defaultValue="no"
                 value={surveyEmailDefault}
                 onValueChange={(value) => setSurveyEmailDefault(value as DefaultValue)}
                 className="flex flex-col space-y-2"
@@ -81,7 +81,7 @@ export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps)
             </div>
 
             <div className="space-y-3">
-              <h3 className="font-medium">Evaluating Folder Default Setting</h3>
+              <h3 className="font-medium text-lg">Step 2: Evaluating Folder Default Setting</h3>
               <RadioGroup
                 defaultValue="yes"
                 value={evaluatingFolderDefault}
@@ -104,7 +104,7 @@ export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps)
             </div>
 
             <div className="space-y-3">
-              <h3 className="font-medium">Company-wide Approved Sender List</h3>
+              <h3 className="font-medium text-lg">Step 3: Company-wide Approved Sender List</h3>
               <p className="text-sm text-muted-foreground">
                 Would you like to review and configure your company's approved sender list now?
               </p>
@@ -120,6 +120,29 @@ export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps)
                   Add later
                 </Button>
               </div>
+            </div>
+
+            <div className="space-y-3">
+              <h3 className="font-medium text-lg">Step 4: Invite Your Teammates</h3>
+              <p className="text-sm text-muted-foreground">
+                Would you like to invite your team members to join your company's email filtering system?
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-3 pt-4">
+              <Button 
+                variant="outline" 
+                onClick={() => handleComplete(false)} 
+                className="flex-1"
+              >
+                Do later
+              </Button>
+              <Button 
+                onClick={() => handleComplete(true)} 
+                className="flex-1"
+              >
+                Next
+              </Button>
             </div>
           </div>
         </CardContent>
