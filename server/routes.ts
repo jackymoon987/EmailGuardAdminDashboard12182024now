@@ -109,6 +109,45 @@ export function registerRoutes(app: Express) {
     
     res.json(allUsers);
   });
+  app.post("/api/user/onboarding", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).send("Not authenticated");
+    }
+    
+    const { firstName, lastName, phoneNumber, referralEmail, accountType } = req.body;
+    
+    try {
+      await db.update(users)
+        .set({ 
+          firstName,
+          lastName,
+          phoneNumber: phoneNumber || null,
+          referralEmail: referralEmail || null,
+          accountType: accountType || 'individual',
+          role: req.user.role // Preserve existing role
+        })
+        .where(eq(users.id, req.user.id));
+      
+      res.json({ 
+        message: "User information updated successfully",
+        user: {
+          ...req.user,
+          firstName,
+          lastName,
+          phoneNumber,
+          referralEmail,
+          accountType
+        }
+      });
+    } catch (error) {
+      console.error('Error updating user information:', error);
+      res.status(500).json({ 
+        error: "Failed to update user information",
+        details: error.message
+      });
+    }
+  });
+
   app.post("/api/user/preferences", async (req, res) => {
     if (!req.isAuthenticated()) {
       return res.status(401).send("Not authenticated");

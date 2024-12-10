@@ -21,28 +21,45 @@ export default function OnboardingPage() {
     e.preventDefault();
     
     try {
+      // Validate required fields
+      if (!formData.firstName || !formData.lastName) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Please fill in all required fields"
+        });
+        return;
+      }
+
       const response = await fetch('/api/user/onboarding', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify(formData)
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        throw new Error('Failed to save user information');
+        throw new Error(data.error || 'Failed to save user information');
       }
 
-      const data = await response.json();
+      toast({
+        title: "Success",
+        description: "Your information has been saved"
+      });
+
+      // Use setLocation for client-side routing
+      setLocation('/get-started');
       
-      // Redirect to the email provider selection page
-      window.location.href = '/get-started';
-      
-    } catch (error) {
+    } catch (error: any) {
+      console.error('Onboarding error:', error);
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to save your information. Please try again."
+        description: error.message || "Failed to save your information. Please try again."
       });
     }
   };
