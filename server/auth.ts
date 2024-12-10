@@ -149,6 +149,7 @@ export function setupAuth(app: Express) {
             firstName: newUser.firstName,
             lastName: newUser.lastName,
             role: newUser.role,
+            showInitialSetup: true, // Flag for new users
           },
         });
       });

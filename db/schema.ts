@@ -10,6 +10,7 @@ export const users = pgTable("users", {
   password: text("password").notNull(),
   role: text("role").notNull().default("user"),
   createdAt: timestamp("created_at").defaultNow(),
+  showInitialSetup: boolean("show_initial_setup").default(true),
 });
 
 export const approvedSenders = pgTable("approved_senders", {

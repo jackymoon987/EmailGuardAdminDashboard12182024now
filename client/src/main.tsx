@@ -13,6 +13,7 @@ import AuthPage from "./pages/AuthPage";
 import Layout from "./components/Layout";
 import { useUser } from "./hooks/use-user";
 import { Loader2 } from "lucide-react";
+import { InitialSetup } from "./components/InitialSetup";
 
 function Router() {
   const { user, isLoading } = useUser();
@@ -27,6 +28,26 @@ function Router() {
 
   if (!user) {
     return <AuthPage />;
+  }
+
+  // Show initial setup for new users
+  if (user.showInitialSetup) {
+    return (
+      <InitialSetup
+        onComplete={async (settings) => {
+          // Update user preferences in the database
+          await fetch('/api/user/preferences', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(settings)
+          });
+          window.location.href = '/';
+        }}
+        onReviewSenders={() => {
+          window.location.href = '/filters';
+        }}
+      />
+    );
   }
 
   return (

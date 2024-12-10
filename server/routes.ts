@@ -109,6 +109,29 @@ export function registerRoutes(app: Express) {
     
     res.json(allUsers);
   });
+  app.post("/api/user/preferences", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).send("Not authenticated");
+    }
+    
+    // Update user preferences
+    const { surveyEmailDefault, evaluatingFolderDefault } = req.body;
+    
+    try {
+      await db.update(users)
+        .set({ 
+          role: req.user.role, // Preserve existing role
+          showInitialSetup: false // Mark setup as complete
+        })
+        .where(eq(users.id, req.user.id));
+      
+      res.json({ message: "Preferences updated successfully" });
+    } catch (error) {
+      console.error('Error updating preferences:', error);
+      res.status(500).send("Failed to update preferences");
+    }
+  });
+
 
   return wss;
 }
