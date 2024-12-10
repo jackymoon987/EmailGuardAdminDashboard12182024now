@@ -1,14 +1,11 @@
 import { useEffect } from "react";
 import { useUser } from "../hooks/use-user";
 import { UserTable } from "../components/UserTable";
-import { ApprovedSenderTable } from "../components/ApprovedSenderTable";
 import { useToast } from "@/hooks/use-toast";
 import { useQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import { useLocation } from "wouter";
 import type { User } from "@db/schema";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function UsersPage() {
   const { user } = useUser();
@@ -73,40 +70,7 @@ export default function UsersPage() {
         <h1 className="text-3xl font-bold">User Management</h1>
       </div>
       
-      <Tabs defaultValue="users" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="users">Users</TabsTrigger>
-          <TabsTrigger value="approved-senders">Approved Senders</TabsTrigger>
-        </TabsList>
-        
-        <TabsContent value="users">
-          <Card>
-            <CardHeader>
-              <CardTitle>User List</CardTitle>
-              <CardDescription>
-                Manage user accounts and their permissions
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <UserTable users={users} />
-            </CardContent>
-          </Card>
-        </TabsContent>
-        
-        <TabsContent value="approved-senders">
-          <Card>
-            <CardHeader>
-              <CardTitle>Approved Sender List</CardTitle>
-              <CardDescription>
-                Manage email senders and their survey modes
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ApprovedSenderTable />
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+      <UserTable users={users} />
     </div>
   );
 }
