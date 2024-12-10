@@ -6,10 +6,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 
 type Domain = {
   id: number;
@@ -61,15 +62,20 @@ export function DomainsTable() {
           <TableRow key={domain.id}>
             <TableCell>{domain.domain}</TableCell>
             <TableCell>
-              <div className="flex items-center space-x-2">
-                <Switch
-                  checked={domain.approved}
-                  onCheckedChange={() => toggleApproval(domain.id)}
-                />
-                <span className="text-sm text-muted-foreground">
-                  {domain.approved ? "Approved" : "Blocked"}
-                </span>
-              </div>
+              <RadioGroup
+                defaultValue={domain.approved ? "approved" : "blocked"}
+                onValueChange={(value) => toggleApproval(domain.id)}
+                className="flex items-center space-x-4"
+              >
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="approved" id={`approved-${domain.id}`} />
+                  <Label htmlFor={`approved-${domain.id}`}>Approved</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="blocked" id={`blocked-${domain.id}`} />
+                  <Label htmlFor={`blocked-${domain.id}`}>Blocked</Label>
+                </div>
+              </RadioGroup>
             </TableCell>
             <TableCell>
               <Button

@@ -6,10 +6,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 
 type Sender = {
   id: number;
@@ -64,15 +65,20 @@ export function SendersTable() {
             <TableCell>{sender.name}</TableCell>
             <TableCell>{sender.email}</TableCell>
             <TableCell>
-              <div className="flex items-center space-x-2">
-                <Switch
-                  checked={sender.approved}
-                  onCheckedChange={() => toggleApproval(sender.id)}
-                />
-                <span className="text-sm text-muted-foreground">
-                  {sender.approved ? "Approved" : "Blocked"}
-                </span>
-              </div>
+              <RadioGroup
+                defaultValue={sender.approved ? "approved" : "blocked"}
+                onValueChange={(value) => toggleApproval(sender.id)}
+                className="flex items-center space-x-4"
+              >
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="approved" id={`approved-${sender.id}`} />
+                  <Label htmlFor={`approved-${sender.id}`}>Approved</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="blocked" id={`blocked-${sender.id}`} />
+                  <Label htmlFor={`blocked-${sender.id}`}>Blocked</Label>
+                </div>
+              </RadioGroup>
             </TableCell>
             <TableCell>
               <Button
