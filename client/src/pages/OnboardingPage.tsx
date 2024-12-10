@@ -51,8 +51,8 @@ export default function OnboardingPage() {
         description: "Your information has been saved"
       });
 
-      // Use setLocation for client-side routing
-      setLocation('/get-started');
+      // Navigate to the email provider selection page
+      window.location.href = '/get-started';
       
     } catch (error: any) {
       console.error('Onboarding error:', error);

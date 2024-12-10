@@ -38,13 +38,9 @@ function Router() {
     return <OnboardingPage />;
   }
 
-  // Show email provider selection after onboarding
-  if (window.location.pathname === '/get-started') {
-    return <EmailProviderPage />;
-  }
-
   return (
     <Switch>
+      <Route path="/get-started" component={EmailProviderPage} />
       <Route path="/" component={DashboardPage} />
       <Route path="/users" component={UsersPage} />
       <Route path="/filters" component={FiltersPage} />
