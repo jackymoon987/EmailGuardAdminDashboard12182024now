@@ -1,47 +1,24 @@
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent } from "@/components/ui/card";
 import { Loader2, Clock } from "lucide-react";
-import { useParams } from "wouter";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { EmailStatusPieChart } from "../components/charts/EmailStatusPieChart";
 import { EmailMonthlyChart } from "../components/charts/EmailMonthlyChart";
 
 export default function AnalyticsPage() {
-  const { userId } = useParams();
   const [timeRange, setTimeRange] = useState("monthly");
 
-  // Using dummy data for now
-  const dummyUser = {
-    id: parseInt(userId || '1'),
-    email: 'new@test7.com',
-    firstName: 'John',
-    lastName: 'Smith',
-    role: 'user',
-    status: 'connected',
-    createdAt: new Date().toISOString(),
-    showInitialSetup: false
-  };
-
-  const { data: user, isLoading: isLoadingUser } = useQuery({
-    queryKey: ['user', userId],
+  const { isLoading: isLoadingAnalytics } = useQuery({
+    queryKey: ['analytics', timeRange],
     queryFn: async () => {
       // Simulate API delay
       await new Promise(resolve => setTimeout(resolve, 500));
-      return dummyUser;
+      return {};
     }
   });
 
-  const { data: analytics, isLoading: isLoadingAnalytics } = useQuery({
-    queryKey: ['analytics', userId, timeRange],
-    queryFn: async () => {
-      const res = await fetch(`/api/analytics/${userId}?timeRange=${timeRange}`);
-      if (!res.ok) throw new Error('Failed to fetch analytics');
-      return res.json();
-    }
-  });
-
-  if (isLoadingUser || isLoadingAnalytics) {
+  if (isLoadingAnalytics) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -49,19 +26,11 @@ export default function AnalyticsPage() {
     );
   }
 
-  if (!user) {
-    return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <p>User not found</p>
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Stats for {user.email}</h1>
-        <Tabs defaultValue="monthly" onValueChange={setTimeRange}>
+        <h1 className="text-3xl font-bold">Company wide stats</h1>
+        <Tabs defaultValue="monthly">
           <TabsList>
             <TabsTrigger value="monthly">Monthly</TabsTrigger>
             <TabsTrigger value="ytd">Year to date</TabsTrigger>
@@ -73,21 +42,20 @@ export default function AnalyticsPage() {
       <div className="grid gap-6">
         <Card>
           <CardContent className="pt-6">
+            <h3 className="text-lg font-medium">Time savings</h3>
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
-                <h3 className="text-lg font-medium">Time savings</h3>
-                <div className="flex items-center gap-2">
-                  <Clock className="h-4 w-4 text-muted-foreground" />
-                  <div className="text-2xl font-bold">0h 1m</div>
-                  <span className="text-sm text-muted-foreground">Last 60 days</span>
-                </div>
-              </div>
-              <div className="space-y-2">
-                <h3 className="text-lg font-medium">&nbsp;</h3>
                 <div className="flex items-center gap-2">
                   <Clock className="h-4 w-4 text-muted-foreground" />
                   <div className="text-2xl font-bold">--</div>
                   <span className="text-sm text-muted-foreground">Last 30 days</span>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <Clock className="h-4 w-4 text-muted-foreground" />
+                  <div className="text-2xl font-bold">0h 1m</div>
+                  <span className="text-sm text-muted-foreground">Last 60 days</span>
                 </div>
               </div>
             </div>
