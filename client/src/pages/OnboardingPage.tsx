@@ -33,13 +33,10 @@ export default function OnboardingPage() {
         throw new Error('Failed to save user information');
       }
 
-      toast({
-        title: "Success",
-        description: "Your information has been saved"
-      });
-
-      // After successful save, redirect to the email provider selection page
-      setLocation('/get-started');
+      const data = await response.json();
+      
+      // Redirect to the email provider selection page
+      window.location.href = '/get-started';
       
     } catch (error) {
       toast({
