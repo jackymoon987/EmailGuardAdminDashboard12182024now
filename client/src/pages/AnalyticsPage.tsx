@@ -11,12 +11,24 @@ export default function AnalyticsPage() {
   const { userId } = useParams();
   const [timeRange, setTimeRange] = useState("monthly");
 
+  // Using dummy data for now
+  const dummyUser = {
+    id: parseInt(userId || '1'),
+    email: 'new@test7.com',
+    firstName: 'John',
+    lastName: 'Smith',
+    role: 'user',
+    status: 'connected',
+    createdAt: new Date().toISOString(),
+    showInitialSetup: false
+  };
+
   const { data: user, isLoading: isLoadingUser } = useQuery({
     queryKey: ['user', userId],
     queryFn: async () => {
-      const res = await fetch(`/api/users/${userId}`);
-      if (!res.ok) throw new Error('Failed to fetch user');
-      return res.json();
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 500));
+      return dummyUser;
     }
   });
 
