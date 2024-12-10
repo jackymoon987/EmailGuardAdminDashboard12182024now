@@ -26,7 +26,19 @@ export default function AuthPage() {
     
     setIsLoading(true);
     try {
-      if (!email || !password || (!isLogin && (!firstName || !lastName))) {
+      // Basic email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Please enter a valid email address",
+        });
+        setIsLoading(false);
+        return;
+      }
+
+      if (!email || !password) {
         toast({
           variant: "destructive",
           title: "Error",
