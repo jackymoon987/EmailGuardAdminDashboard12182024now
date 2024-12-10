@@ -22,7 +22,7 @@ export function UserTable({ users }: UserTableProps) {
           <TableHead>Last Name</TableHead>
           <TableHead>Email</TableHead>
           <TableHead>Permission Level</TableHead>
-          <TableHead>Connected Since</TableHead>
+          <TableHead>Status</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -36,7 +36,19 @@ export function UserTable({ users }: UserTableProps) {
                 {user.role}
               </Badge>
             </TableCell>
-            <TableCell>{new Date(user.createdAt!).toLocaleDateString()}</TableCell>
+            <TableCell>
+              <Badge 
+                variant={
+                  user.status === 'connected' ? 'default' :
+                  user.status === 'disconnected' ? 'secondary' :
+                  'destructive'
+                }
+              >
+                {user.status === 'connected' ? 'Connected' :
+                 user.status === 'disconnected' ? 'Disconnected' :
+                 'Unauthenticated'}
+              </Badge>
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>
