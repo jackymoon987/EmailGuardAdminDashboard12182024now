@@ -73,7 +73,7 @@ export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps)
                   </div>
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="later" id="survey-later" />
-                    <Label htmlFor="survey-later">Decide later</Label>
+                    <Label htmlFor="survey-later">Let the user decide</Label>
                   </div>
                 </RadioGroup>
               </div>
@@ -96,7 +96,7 @@ export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps)
                   </div>
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="later" id="folder-later" />
-                    <Label htmlFor="folder-later">Decide later</Label>
+                    <Label htmlFor="folder-later">Let the user decide</Label>
                   </div>
                 </RadioGroup>
               </div>
