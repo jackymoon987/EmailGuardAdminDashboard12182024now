@@ -99,6 +99,17 @@ export function UserSettingsTable({ settings: initialSettings = dummySettings }:
       });
       return;
     }
+    
+    // Immediately update UI
+    setSettings(currentSettings =>
+      currentSettings.map(setting =>
+        selectedUsers.includes(setting.id)
+          ? { ...setting, [field]: value }
+          : setting
+      )
+    );
+    
+    // Persist changes
     toggleMutation.mutate({ ids: selectedUsers, field, value });
   };
 
@@ -149,17 +160,27 @@ export function UserSettingsTable({ settings: initialSettings = dummySettings }:
               <TableCell>
                 <Switch
                   checked={setting.surveyEmail}
-                  onCheckedChange={(checked) => 
-                    toggleMutation.mutate({ ids: [setting.id], field: 'surveyEmail', value: checked })
-                  }
+                  onCheckedChange={(checked) => {
+                    setSettings(currentSettings =>
+                      currentSettings.map(s =>
+                        s.id === setting.id ? { ...s, surveyEmail: checked } : s
+                      )
+                    );
+                    toggleMutation.mutate({ ids: [setting.id], field: 'surveyEmail', value: checked });
+                  }}
                 />
               </TableCell>
               <TableCell>
                 <Switch
                   checked={setting.evaluatingFolder}
-                  onCheckedChange={(checked) => 
-                    toggleMutation.mutate({ ids: [setting.id], field: 'evaluatingFolder', value: checked })
-                  }
+                  onCheckedChange={(checked) => {
+                    setSettings(currentSettings =>
+                      currentSettings.map(s =>
+                        s.id === setting.id ? { ...s, evaluatingFolder: checked } : s
+                      )
+                    );
+                    toggleMutation.mutate({ ids: [setting.id], field: 'evaluatingFolder', value: checked });
+                  }}
                 />
               </TableCell>
             </TableRow>
