@@ -1,15 +1,16 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Plus, Loader2 } from "lucide-react";
+import { Plus, Loader2, ArrowLeft } from "lucide-react";
 import { SendersTable } from "../components/SendersTable";
 import { DomainsTable } from "../components/DomainsTable";
-import { useParams } from "wouter";
+import { useParams, useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import type { User } from "@db/schema";
 
 export default function ApprovedSendersPage() {
   const { userId } = useParams();
+  const [, setLocation] = useLocation();
   
   // Using dummy data for now
   const dummyUser = {
@@ -50,9 +51,18 @@ export default function ApprovedSendersPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold">
-        Approved sender list for {user.email}
-      </h1>
+      <div className="flex items-center gap-4">
+        <Button 
+          variant="ghost" 
+          size="icon"
+          onClick={() => setLocation('/users')}
+        >
+          <ArrowLeft className="h-4 w-4" />
+        </Button>
+        <h1 className="text-3xl font-bold">
+          Approved sender list for {user.email}
+        </h1>
+      </div>
       
       <Tabs defaultValue="senders">
         <TabsList>
