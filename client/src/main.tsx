@@ -10,6 +10,7 @@ import UsersPage from "./pages/UsersPage";
 import FiltersPage from "./pages/FiltersPage";
 import AnalyticsPage from "./pages/AnalyticsPage";
 import AuthPage from "./pages/AuthPage";
+import ApprovedSendersPage from "./pages/ApprovedSendersPage";
 import Layout from "./components/Layout";
 import { useUser } from "./hooks/use-user";
 import { Loader2 } from "lucide-react";
@@ -57,6 +58,7 @@ function Router() {
         <Route path="/users" component={UsersPage} />
         <Route path="/filters" component={FiltersPage} />
         <Route path="/analytics" component={AnalyticsPage} />
+        <Route path="/approved-senders/:userId" component={ApprovedSendersPage} />
         <Route>404 Page Not Found</Route>
       </Switch>
     </Layout>
