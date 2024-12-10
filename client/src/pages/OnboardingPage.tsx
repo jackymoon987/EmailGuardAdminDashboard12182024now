@@ -12,7 +12,8 @@ export default function OnboardingPage() {
     firstName: "",
     lastName: "",
     phoneNumber: "",
-    referralEmail: ""
+    referralEmail: "",
+    accountType: "individual" as "individual" | "business"
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -59,7 +60,24 @@ export default function OnboardingPage() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="space-y-4">
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <h3 className="text-lg font-medium">Do you need an individual account or a business account?</h3>
+              <RadioGroup
+                value={formData.accountType}
+                onValueChange={(value) => setFormData(prev => ({ ...prev, accountType: value as "individual" | "business" }))}
+                className="flex gap-4"
+              >
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="individual" id="individual" />
+                  <Label htmlFor="individual">Individual</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="business" id="business" />
+                  <Label htmlFor="business">Business</Label>
+                </div>
+              </RadioGroup>
+            </div>
             <div className="space-y-2">
               <Label htmlFor="firstName">First name</Label>
               <Input
