@@ -11,7 +11,16 @@ export default function AnalyticsPage() {
   const { userId } = useParams();
   const [timeRange, setTimeRange] = useState("monthly");
 
-  const { data: analytics, isLoading } = useQuery({
+  const { data: user, isLoading: isLoadingUser } = useQuery({
+    queryKey: ['user', userId],
+    queryFn: async () => {
+      const res = await fetch(`/api/users/${userId}`);
+      if (!res.ok) throw new Error('Failed to fetch user');
+      return res.json();
+    }
+  });
+
+  const { data: analytics, isLoading: isLoadingAnalytics } = useQuery({
     queryKey: ['analytics', userId, timeRange],
     queryFn: async () => {
       const res = await fetch(`/api/analytics/${userId}?timeRange=${timeRange}`);
@@ -20,7 +29,7 @@ export default function AnalyticsPage() {
     }
   });
 
-  if (isLoading) {
+  if (isLoadingUser || isLoadingAnalytics) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -28,10 +37,18 @@ export default function AnalyticsPage() {
     );
   }
 
+  if (!user) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <p>User not found</p>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Stats</h1>
+        <h1 className="text-3xl font-bold">Stats for {user.email}</h1>
         <Tabs defaultValue="monthly" onValueChange={setTimeRange}>
           <TabsList>
             <TabsTrigger value="monthly">Monthly</TabsTrigger>
