@@ -26,13 +26,13 @@ export default function AuthPage() {
     
     setIsLoading(true);
     try {
-      // Validate required fields
       if (!email || !password || (!isLogin && (!firstName || !lastName))) {
         toast({
           variant: "destructive",
           title: "Error",
           description: "Please fill in all required fields",
         });
+        setIsLoading(false);
         return;
       }
 
@@ -44,12 +44,14 @@ export default function AuthPage() {
             title: "Error",
             description: result.message || "Login failed. Please try again.",
           });
+          setIsLoading(false);
           return;
         }
         toast({
           title: "Success",
           description: "Login successful!",
         });
+        setLocation('/');
       } else {
         const result = await register({ email, password, firstName, lastName });
         if (!result.ok) {
@@ -58,9 +60,15 @@ export default function AuthPage() {
             title: "Error",
             description: result.message || "Registration failed. Please try again.",
           });
+          setIsLoading(false);
           return;
         }
-        setShowInitialSetup(true);
+        
+        if (result.user?.isNewUser) {
+          setShowInitialSetup(true);
+        } else {
+          setLocation('/');
+        }
       }
     } catch (error: any) {
       console.error('Authentication error:', error);
@@ -78,16 +86,14 @@ export default function AuthPage() {
     surveyEmailDefault: "yes" | "no" | "later";
     evaluatingFolderDefault: "yes" | "no" | "later";
   }) => {
-    // Here you would typically save these settings to your backend
     toast({
       title: "Success",
       description: "Initial setup completed successfully!",
     });
-    // Continue to the main application
+    setLocation('/');
   };
 
   const handleReviewSenders = () => {
-    // Navigate to the filters page
     setLocation('/filters');
   };
 

@@ -139,7 +139,7 @@ export function UserSettingsTable({ settings: initialSettings = dummySettings }:
               </Button>
               <Button 
                 size="sm" 
-                variant="destructive"
+                variant={!settings.some(s => selectedUsers.includes(s.id) && s.surveyEmail) ? "destructive" : "outline"}
                 onClick={() => handleBatchToggle('surveyEmail', false)}
               >
                 Disable
@@ -156,7 +156,7 @@ export function UserSettingsTable({ settings: initialSettings = dummySettings }:
               </Button>
               <Button 
                 size="sm" 
-                variant="destructive"
+                variant={!settings.some(s => selectedUsers.includes(s.id) && s.evaluatingFolder) ? "destructive" : "outline"}
                 onClick={() => handleBatchToggle('evaluatingFolder', false)}
               >
                 Disable

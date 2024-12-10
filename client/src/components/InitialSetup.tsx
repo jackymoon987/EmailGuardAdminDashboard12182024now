@@ -16,8 +16,9 @@ interface InitialSetupProps {
 }
 
 export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps) {
-  const [surveyEmailDefault, setSurveyEmailDefault] = useState<DefaultValue>("yes");
-  const [evaluatingFolderDefault, setEvaluatingFolderDefault] = useState<DefaultValue>("no");
+  const [surveyEmailDefault, setSurveyEmailDefault] = useState<DefaultValue>("yes"); // Default to "yes"
+  const [evaluatingFolderDefault, setEvaluatingFolderDefault] = useState<DefaultValue>("no"); // Default to "no"
+  const [showReviewOptions, setShowReviewOptions] = useState(false);
 
   const handleComplete = (reviewNow: boolean) => {
     if (reviewNow) {
