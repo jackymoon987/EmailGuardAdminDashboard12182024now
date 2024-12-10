@@ -5,8 +5,12 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { useUser } from "../hooks/use-user";
 import { Shield, Loader2 } from "lucide-react";
+import { useLocation } from "wouter";
+import { InitialSetup } from "../components/InitialSetup";
 
 export default function AuthPage() {
+  const [, setLocation] = useLocation();
+  const [showInitialSetup, setShowInitialSetup] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -34,31 +38,30 @@ export default function AuthPage() {
 
       if (isLogin) {
         const result = await login({ email, password, firstName: "", lastName: "" });
-      } else {
-        if (!firstName || !lastName) {
+        if (!result.ok) {
           toast({
             variant: "destructive",
             title: "Error",
-            description: "Please fill in all required fields",
+            description: result.message || "Login failed. Please try again.",
           });
           return;
         }
-        const result = await register({ email, password, firstName, lastName });
-      }
-      
-      if (!result.ok) {
         toast({
-          variant: "destructive",
-          title: "Error",
-          description: result.message || "Authentication failed. Please try again.",
+          title: "Success",
+          description: "Login successful!",
         });
-        return;
+      } else {
+        const result = await register({ email, password, firstName, lastName });
+        if (!result.ok) {
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: result.message || "Registration failed. Please try again.",
+          });
+          return;
+        }
+        setShowInitialSetup(true);
       }
-
-      toast({
-        title: "Success",
-        description: `${isLogin ? "Login" : "Registration"} successful!`,
-      });
     } catch (error: any) {
       console.error('Authentication error:', error);
       toast({
@@ -70,6 +73,32 @@ export default function AuthPage() {
       setIsLoading(false);
     }
   };
+
+  const handleInitialSetupComplete = (settings: {
+    surveyEmailDefault: "yes" | "no" | "later";
+    evaluatingFolderDefault: "yes" | "no" | "later";
+  }) => {
+    // Here you would typically save these settings to your backend
+    toast({
+      title: "Success",
+      description: "Initial setup completed successfully!",
+    });
+    // Continue to the main application
+  };
+
+  const handleReviewSenders = () => {
+    // Navigate to the filters page
+    setLocation('/filters');
+  };
+
+  if (showInitialSetup) {
+    return (
+      <InitialSetup
+        onComplete={handleInitialSetupComplete}
+        onReviewSenders={handleReviewSenders}
+      />
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
