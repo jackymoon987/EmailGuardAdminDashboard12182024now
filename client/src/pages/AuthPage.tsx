@@ -53,6 +53,7 @@ export default function AuthPage() {
         });
         setLocation('/');
       } else {
+        // Handle new user registration
         const result = await register({ email, password, firstName, lastName });
         if (!result.ok) {
           toast({
@@ -63,12 +64,13 @@ export default function AuthPage() {
           setIsLoading(false);
           return;
         }
-        
-        if (result.user?.isNewUser) {
-          setShowInitialSetup(true);
-        } else {
-          setLocation('/');
-        }
+
+        // Always show initial setup for new registrations
+        setShowInitialSetup(true);
+        toast({
+          title: "Welcome!",
+          description: "Registration successful! Let's set up your account preferences.",
+        });
       }
     } catch (error: any) {
       console.error('Authentication error:', error);

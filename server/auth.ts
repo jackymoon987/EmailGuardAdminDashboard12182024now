@@ -110,6 +110,7 @@ export function setupAuth(app: Express) {
 
       const { email, password, firstName, lastName } = result.data;
 
+      // Check for existing user
       const [existingUser] = await db
         .select()
         .from(users)
@@ -122,7 +123,7 @@ export function setupAuth(app: Express) {
 
       const hashedPassword = await crypto.hash(password);
 
-      // Create a new user with default settings
+      // Create a completely new user with no connections to other accounts
       const [newUser] = await db
         .insert(users)
         .values({
@@ -130,8 +131,8 @@ export function setupAuth(app: Express) {
           password: hashedPassword,
           firstName,
           lastName,
-          role: "user",
-          createdAt: new Date(), // Ensure we set the creation date
+          role: "user", // Always start as regular user
+          createdAt: new Date(),
         })
         .returning();
 
@@ -140,16 +141,14 @@ export function setupAuth(app: Express) {
         if (err) {
           return next(err);
         }
-        // Return a simple response without exposing internal data
         return res.json({
           message: "Registration successful",
-          user: { 
-            id: newUser.id, 
-            email: newUser.email, 
-            firstName: newUser.firstName, 
+          user: {
+            id: newUser.id,
+            email: newUser.email,
+            firstName: newUser.firstName,
             lastName: newUser.lastName,
             role: newUser.role,
-            isNewUser: true // Flag to indicate this is a new registration
           },
         });
       });

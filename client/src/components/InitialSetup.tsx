@@ -21,13 +21,15 @@ export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps)
   const [showReviewOptions, setShowReviewOptions] = useState(false);
 
   const handleComplete = (reviewNow: boolean) => {
+    // Save the user's preferences
+    onComplete({
+      surveyEmailDefault,
+      evaluatingFolderDefault,
+    });
+    
+    // If they want to review senders now, redirect them
     if (reviewNow) {
       onReviewSenders();
-    } else {
-      onComplete({
-        surveyEmailDefault,
-        evaluatingFolderDefault,
-      });
     }
   };
 
