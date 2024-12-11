@@ -13,6 +13,7 @@ import AuthPage from "./pages/AuthPage";
 import OnboardingPage from "./pages/OnboardingPage";
 import EmailProviderPage from "./pages/EmailProviderPage";
 import ApprovedSendersPage from "./pages/ApprovedSendersPage";
+import SettingsPage from "./pages/SettingsPage";
 import Layout from "./components/Layout";
 import { useUser } from "./hooks/use-user";
 import { Loader2 } from "lucide-react";
