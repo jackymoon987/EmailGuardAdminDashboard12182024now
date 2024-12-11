@@ -67,6 +67,14 @@ export default function UsersPage() {
     }
   }, [user, isLoading, setLocation, toast]);
 
+  // Update status filter when URL changes
+  useEffect(() => {
+    const status = getStatusFromUrl(location);
+    if (status) {
+      setStatusFilter(status);
+    }
+  }, [location]);
+
   // 5. Memoized values
   const filteredUsers = useMemo(() => {
     if (!users) return [];
@@ -77,7 +85,13 @@ export default function UsersPage() {
         user.email.toLowerCase().includes(searchTermLower) ||
         (user.firstName?.toLowerCase() || '').includes(searchTermLower) ||
         (user.lastName?.toLowerCase() || '').includes(searchTermLower);
-      const matchesStatus = statusFilter === 'all' || (user.status || 'disconnected') === statusFilter;
+      
+      // Handle status filter based on URL parameter
+      const matchesStatus = 
+        statusFilter === 'all' || 
+        (statusFilter === 'connected' && user.status === 'connected') ||
+        (statusFilter === 'unauthenticated' && user.status === 'unauthenticated');
+      
       return matchesSearch && matchesStatus;
     });
   }, [users, searchTerm, statusFilter]);
