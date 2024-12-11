@@ -52,7 +52,7 @@ export default function OnboardingPage() {
       });
 
       // Navigate to the email provider selection page
-      window.location.href = '/get-started';
+      setLocation('/get-started');
       
     } catch (error: any) {
       console.error('Onboarding error:', error);
