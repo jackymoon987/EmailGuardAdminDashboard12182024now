@@ -40,9 +40,8 @@ export default function OnboardingPage() {
         body: JSON.stringify(formData)
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
+        const data = await response.json();
         throw new Error(data.error || 'Failed to save user information');
       }
 
@@ -51,11 +50,8 @@ export default function OnboardingPage() {
         description: "Your information has been saved"
       });
 
-      // Use a small timeout to ensure toast is visible before navigation
-      setTimeout(() => {
-        setLocation('/get-started');
-      }, 500);
-      
+      // Navigate after successful save
+      setLocation('/get-started');
     } catch (error: any) {
       console.error('Onboarding error:', error);
       toast({
