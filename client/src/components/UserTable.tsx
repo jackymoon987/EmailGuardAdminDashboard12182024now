@@ -88,11 +88,7 @@ export function UserTable({ users }: UserTableProps) {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
-                      <DropdownMenuItem onClick={() => {
-                        // Handle reconnect
-                      }}>
-                        Reconnect
-                      </DropdownMenuItem>
+                      
                       <DropdownMenuItem onClick={() => setLocation(`/approved-senders/${user.id}`)}>
                         Approved sender list
                       </DropdownMenuItem>
