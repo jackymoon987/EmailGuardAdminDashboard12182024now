@@ -74,10 +74,10 @@ export default function UsersPage() {
   // Update status filter when URL changes
   useEffect(() => {
     const status = getStatusFromUrl(location);
-    if (status) {
+    if (status && status !== statusFilter) {
       setStatusFilter(status);
     }
-  }, [location]);
+  }, [location, statusFilter]);
 
   // 5. Memoized values
   const filteredUsers = useMemo(() => {

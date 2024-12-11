@@ -30,8 +30,8 @@ export default function AnalyticsPage() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold">
-          {location.includes('?email=') 
-            ? `Approved sender list for ${decodeURIComponent(location.split('?email=')[1])}`
+          {window.location.search.includes('?email=') 
+            ? `Approved sender list for ${decodeURIComponent(new URLSearchParams(window.location.search).get('email') || '')}`
             : 'Company wide stats'
           }
         </h1>
