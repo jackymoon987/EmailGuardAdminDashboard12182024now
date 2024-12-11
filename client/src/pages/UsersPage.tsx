@@ -25,9 +25,13 @@ function getStatusFromUrl(search: string): string {
 export default function UsersPage() {
   // 1. All state hooks
   const [searchTerm, setSearchTerm] = useState("");
-  const [location] = useLocation();
+  const [location, setLocation] = useLocation();
   const [statusFilter, setStatusFilter] = useState(getStatusFromUrl(location));
-  const [, setLocation] = useLocation();
+
+  const updateStatusFilter = (newStatus: string) => {
+    setStatusFilter(newStatus);
+    setLocation(newStatus === 'all' ? '/users' : `/users?status=${newStatus}`);
+  };
   
   // 2. Context hooks
   const { user } = useUser();
@@ -80,17 +84,17 @@ export default function UsersPage() {
     if (!users) return [];
     
     return users.filter(user => {
+      // Handle search filter
       const searchTermLower = searchTerm.toLowerCase();
       const matchesSearch = 
         user.email.toLowerCase().includes(searchTermLower) ||
         (user.firstName?.toLowerCase() || '').includes(searchTermLower) ||
         (user.lastName?.toLowerCase() || '').includes(searchTermLower);
       
-      // Handle status filter based on URL parameter
+      // Handle status filter
       const matchesStatus = 
         statusFilter === 'all' || 
-        (statusFilter === 'connected' && user.status === 'connected') ||
-        (statusFilter === 'unauthenticated' && user.status === 'unauthenticated');
+        user.status === statusFilter;
       
       return matchesSearch && matchesStatus;
     });
@@ -130,7 +134,10 @@ export default function UsersPage() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <Select value={statusFilter} onValueChange={setStatusFilter}>
+          <Select 
+            value={statusFilter} 
+            onValueChange={updateStatusFilter}
+          >
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Filter by status" />
             </SelectTrigger>
