@@ -18,12 +18,16 @@ import {
 } from "@/components/ui/select";
 
 export default function UsersPage() {
-  const { user } = useUser();
-  const { toast } = useToast();
-  const [, setLocation] = useLocation();
+  // 1. All state hooks
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
+  const [, setLocation] = useLocation();
+  
+  // 2. Context hooks
+  const { user } = useUser();
+  const { toast } = useToast();
 
+  // 3. Query hooks
   const { data: users, isLoading, error } = useQuery<User[]>({
     queryKey: ['users'],
     queryFn: async () => {
@@ -40,7 +44,7 @@ export default function UsersPage() {
     }
   });
 
-  // Use useEffect for navigation with loading state handling
+  // 4. Effect hooks
   useEffect(() => {
     if (!isLoading && user) {
       // Add small delay to allow server role update
@@ -57,6 +61,18 @@ export default function UsersPage() {
     }
   }, [user, isLoading, setLocation, toast]);
 
+  // 5. Memoized values
+  const filteredUsers = useMemo(() => {
+    if (!users) return [];
+    
+    return users.filter(user => {
+      const matchesSearch = user.email.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesStatus = !statusFilter || user.status === statusFilter;
+      return matchesSearch && matchesStatus;
+    });
+  }, [users, searchTerm, statusFilter]);
+
+  // 6. Loading and error states
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
@@ -75,16 +91,6 @@ export default function UsersPage() {
       </div>
     );
   }
-
-  const filteredUsers = useMemo(() => {
-    if (!users) return [];
-    
-    return users.filter(user => {
-      const matchesSearch = user.email.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesStatus = !statusFilter || user.status === statusFilter;
-      return matchesSearch && matchesStatus;
-    });
-  }, [users, searchTerm, statusFilter]);
 
   return (
     <div className="space-y-6">
