@@ -20,7 +20,7 @@ export default function EmailProviderPage() {
               <Button 
                 variant="outline" 
                 className="mt-4 w-full"
-                onClick={() => window.location.href = "/api/auth/google"}
+                onClick={() => setLocation('/settings')}
               >
                 Sign in to Google
               </Button>
@@ -41,7 +41,7 @@ export default function EmailProviderPage() {
               <Button 
                 variant="outline" 
                 className="mt-4 w-full"
-                onClick={() => window.location.href = "/api/auth/microsoft"}
+                onClick={() => setLocation('/settings')}
               >
                 Sign in to Microsoft
               </Button>
@@ -71,7 +71,7 @@ export default function EmailProviderPage() {
             <Button 
               variant="ghost" 
               className="text-sm text-muted-foreground"
-              onClick={() => window.location.href = "/"}
+              onClick={() => setLocation('/settings')}
             >
               Skip for now
             </Button>

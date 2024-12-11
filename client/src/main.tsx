@@ -41,6 +41,7 @@ function Router() {
   return (
     <Switch>
       <Route path="/get-started" component={EmailProviderPage} />
+      <Route path="/settings" component={SettingsPage} />
       <Route path="/" component={DashboardPage} />
       <Route path="/users" component={UsersPage} />
       <Route path="/filters" component={FiltersPage} />
