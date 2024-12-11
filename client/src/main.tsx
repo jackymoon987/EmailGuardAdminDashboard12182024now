@@ -64,6 +64,21 @@ function Router() {
       <Switch>
         <Route path="/get-started" component={EmailProviderPage} />
         <Route path="/settings" component={SettingsPage} />
+        <Route path="/company-settings">
+          <InitialSetup
+            onComplete={async (settings) => {
+              await fetch('/api/user/preferences', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(settings)
+              });
+              window.location.href = '/';
+            }}
+            onReviewSenders={() => {
+              window.location.href = '/filters';
+            }}
+          />
+        </Route>
         <Route path="/" component={DashboardPage} />
         <Route path="/users" component={UsersPage} />
         <Route path="/filters" component={FiltersPage} />

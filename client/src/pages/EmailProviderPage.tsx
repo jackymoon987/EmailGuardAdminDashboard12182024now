@@ -23,7 +23,11 @@ export default function EmailProviderPage() {
               <Button 
                 variant="outline" 
                 className="mt-4 w-full"
-                onClick={() => setLocation('/settings')}
+                onClick={() => {
+                  // In a real app, this would initiate Google OAuth
+                  // For now, simulate auth and go to company settings
+                  setLocation('/company-settings');
+                }}
               >
                 Sign in to Google
               </Button>
