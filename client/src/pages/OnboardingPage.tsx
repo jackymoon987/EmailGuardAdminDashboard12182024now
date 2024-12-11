@@ -51,8 +51,10 @@ export default function OnboardingPage() {
         description: "Your information has been saved"
       });
 
-      // Navigate to the email provider selection page
-      setLocation('/get-started');
+      // Use a small timeout to ensure toast is visible before navigation
+      setTimeout(() => {
+        setLocation('/get-started');
+      }, 500);
       
     } catch (error: any) {
       console.error('Onboarding error:', error);
