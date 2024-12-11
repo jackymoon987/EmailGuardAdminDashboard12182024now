@@ -40,21 +40,23 @@ function Router() {
   }
 
   return (
-    <Switch>
-      <Route path="/get-started" component={EmailProviderPage} />
-      <Route path="/settings" component={SettingsPage} />
-      <Route path="/" component={DashboardPage} />
-      <Route path="/users" component={UsersPage} />
-      <Route path="/filters" component={FiltersPage} />
-      <Route path="/analytics">
-        <AnalyticsPage />
-      </Route>
-      <Route path="/analytics/:userId">
-        <AnalyticsPage />
-      </Route>
-      <Route path="/approved-senders/:userId" component={ApprovedSendersPage} />
-      <Route>404 Page Not Found</Route>
-    </Switch>
+    <Layout>
+      <Switch>
+        <Route path="/get-started" component={EmailProviderPage} />
+        <Route path="/settings" component={SettingsPage} />
+        <Route path="/" component={DashboardPage} />
+        <Route path="/users" component={UsersPage} />
+        <Route path="/filters" component={FiltersPage} />
+        <Route path="/analytics">
+          <AnalyticsPage />
+        </Route>
+        <Route path="/analytics/:userId">
+          <AnalyticsPage />
+        </Route>
+        <Route path="/approved-senders/:userId" component={ApprovedSendersPage} />
+        <Route>404 Page Not Found</Route>
+      </Switch>
+    </Layout>
   );
 
   // Show initial setup for new users
