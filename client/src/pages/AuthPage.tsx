@@ -34,7 +34,6 @@ export default function AuthPage() {
           title: "Error",
           description: "Please enter a valid email address",
         });
-        setIsLoading(false);
         return;
       }
 
@@ -44,37 +43,47 @@ export default function AuthPage() {
           title: "Error",
           description: "Please fill in all required fields",
         });
-        setIsLoading(false);
         return;
       }
 
       if (isLogin) {
-        const result = await login({ email, password });
+        console.log('Attempting login with:', { email, password });
+        const result = await login({ 
+          email, 
+          password,
+          firstName: "",  // These are required by the schema but not used for login
+          lastName: ""
+        });
+        
         if (!result.ok) {
           toast({
             variant: "destructive",
             title: "Error",
             description: result.message || "Login failed. Please try again.",
           });
-          setIsLoading(false);
           return;
         }
+        
         toast({
           title: "Success",
           description: "Login successful!",
         });
+        
         setLocation('/');
       } else {
-        // For registration, we don't need firstName/lastName yet
-        // That will be collected in the onboarding page
-        const result = await register({ email, password });
+        const result = await register({ 
+          email, 
+          password,
+          firstName: "",  // These will be collected in onboarding
+          lastName: ""
+        });
+        
         if (!result.ok) {
           toast({
             variant: "destructive",
             title: "Error",
             description: result.message || "Registration failed. Please try again.",
           });
-          setIsLoading(false);
           return;
         }
 
@@ -83,7 +92,6 @@ export default function AuthPage() {
           description: "Account created successfully!",
         });
         
-        // Redirect to onboarding page
         setLocation('/');
       }
     } catch (error: any) {
@@ -204,14 +212,15 @@ export default function AuthPage() {
             type="submit" 
             className="w-full bg-primary text-primary-foreground hover:bg-primary/90" 
             disabled={isLoading}
+            onClick={handleSubmit}
           >
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Continue
+                {isLogin ? "Signing in..." : "Creating account..."}
               </>
             ) : (
-              "Continue"
+              isLogin ? "Sign in" : "Create account"
             )}
           </Button>
 
