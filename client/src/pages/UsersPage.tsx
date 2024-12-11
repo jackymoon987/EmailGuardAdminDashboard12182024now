@@ -74,10 +74,16 @@ export default function UsersPage() {
   // Update status filter when URL changes
   useEffect(() => {
     const status = getStatusFromUrl(location);
-    if (status && status !== statusFilter) {
-      setStatusFilter(status);
+    setStatusFilter(status);
+  }, [location]);
+
+  // Update URL when status filter changes
+  useEffect(() => {
+    const currentStatus = getStatusFromUrl(location);
+    if (currentStatus !== statusFilter) {
+      setLocation(statusFilter === 'all' ? '/users' : `/users?status=${statusFilter}`);
     }
-  }, [location, statusFilter]);
+  }, [statusFilter, setLocation]);
 
   // 5. Memoized values
   const filteredUsers = useMemo(() => {
@@ -92,9 +98,8 @@ export default function UsersPage() {
         (user.lastName?.toLowerCase() || '').includes(searchTermLower);
       
       // Handle status filter
-      const matchesStatus = 
-        statusFilter === 'all' || 
-        user.status === statusFilter;
+      const matchesStatus = statusFilter === 'all' || 
+        (user.status && user.status.toLowerCase() === statusFilter.toLowerCase());
       
       return matchesSearch && matchesStatus;
     });
