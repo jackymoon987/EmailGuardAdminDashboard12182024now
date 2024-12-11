@@ -40,8 +40,14 @@ function Router() {
     return <OnboardingPage />;
   }
 
-  // Show initial setup for new users
-  if (user.showInitialSetup) {
+  // After onboarding, show email provider selection
+  const path = window.location.pathname;
+  if (path === '/get-started') {
+    return <EmailProviderPage />;
+  }
+
+  // Show company settings only after email provider selection
+  if (path === '/company-settings') {
     return (
       <InitialSetup
         onComplete={async (settings) => {

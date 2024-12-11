@@ -28,6 +28,7 @@ export default function EmailProviderPage() {
                 className="mt-4 w-full"
                 variant="outline"
                 onClick={() => {
+                  // After Google sign in, redirect to company settings
                   window.location.href = '/company-settings';
                 }}
               >
