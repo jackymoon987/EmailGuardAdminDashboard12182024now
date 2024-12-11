@@ -79,8 +79,17 @@ export default function TopNav() {
           <NavContent />
         </nav>
 
-        {/* Logout Button - Always Visible */}
-        <div className="ml-auto">
+        {/* Admin Profile and Logout Buttons */}
+        <div className="ml-auto flex items-center gap-2">
+          {user?.role === 'admin' && (
+            <Button
+              variant="ghost"
+              className="h-9"
+              onClick={() => setLocation('/admin-profile')}
+            >
+              Admin Profile
+            </Button>
+          )}
           <Button
             variant="ghost"
             className="h-9 w-9 px-0"

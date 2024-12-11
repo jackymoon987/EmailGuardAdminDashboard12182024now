@@ -11,6 +11,7 @@ import FiltersPage from "./pages/FiltersPage";
 import AnalyticsPage from "./pages/AnalyticsPage";
 import AuthPage from "./pages/AuthPage";
 import OnboardingPage from "./pages/OnboardingPage";
+import AdminProfilePage from "./pages/AdminProfilePage";
 import EmailProviderPage from "./pages/EmailProviderPage";
 import ApprovedSendersPage from "./pages/ApprovedSendersPage";
 import SettingsPage from "./pages/SettingsPage";
@@ -96,6 +97,7 @@ function Router() {
           <AnalyticsPage />
         </Route>
         <Route path="/approved-senders/:userId" component={ApprovedSendersPage} />
+        <Route path="/admin-profile" component={AdminProfilePage} />
         <Route>404 Page Not Found</Route>
       </Switch>
     </Layout>
