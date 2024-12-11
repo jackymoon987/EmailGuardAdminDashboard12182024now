@@ -50,8 +50,10 @@ export default function OnboardingPage() {
         description: "Your information has been saved"
       });
 
-      // Force navigation to email provider page
-      window.location.href = '/get-started';
+      // Force a full page reload and navigation
+      setTimeout(() => {
+        window.location.replace('/get-started');
+      }, 100);
     } catch (error: any) {
       console.error('Onboarding error:', error);
       toast({
