@@ -39,7 +39,10 @@ export default function FiltersPage() {
         
         <TabsContent value="domains" className="space-y-4">
           <div className="flex justify-between items-center">
-            <div className="flex-1" /> {/* Spacer */}
+            <Input
+              placeholder="Search domains..."
+              className="max-w-sm"
+            />
             <Button>
               <Plus className="mr-2 h-4 w-4" /> Add Domain
             </Button>
