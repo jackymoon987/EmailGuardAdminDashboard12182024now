@@ -28,6 +28,7 @@ export default function AuthPage() {
           title: "Error",
           description: "Please enter a valid email address",
         });
+        setIsLoading(false);
         return;
       }
 
@@ -37,6 +38,7 @@ export default function AuthPage() {
           title: "Error",
           description: "Please fill in all required fields",
         });
+        setIsLoading(false);
         return;
       }
 
@@ -54,6 +56,7 @@ export default function AuthPage() {
             title: "Error",
             description: result.message || "Login failed. Please try again.",
           });
+          setIsLoading(false);
           return;
         }
         
@@ -77,6 +80,7 @@ export default function AuthPage() {
             title: "Error",
             description: result.message || "Registration failed. Please try again.",
           });
+          setIsLoading(false);
           return;
         }
 
