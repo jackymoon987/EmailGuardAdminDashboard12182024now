@@ -17,10 +17,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+function getStatusFromUrl(search: string): string {
+  const params = new URLSearchParams(search.slice(1));
+  return params.get('status') || 'all';
+}
+
 export default function UsersPage() {
   // 1. All state hooks
   const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
+  const [location] = useLocation();
+  const [statusFilter, setStatusFilter] = useState(getStatusFromUrl(location));
   const [, setLocation] = useLocation();
   
   // 2. Context hooks

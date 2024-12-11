@@ -1,9 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, UserMinus, Shield, AlertCircle } from "lucide-react";
+import { Users, UserMinus, Shield } from "lucide-react";
 import { useWebSocket } from "../hooks/use-ws";
+import { useLocation } from "wouter";
+import { cn } from "@/lib/utils";
 
 export default function DashboardPage() {
+  const [, setLocation] = useLocation();
   useWebSocket('/ws');
   
   const { data: filters } = useQuery({
@@ -35,8 +38,14 @@ export default function DashboardPage() {
     <div className="space-y-6">
       <h1 className="text-3xl font-bold">Dashboard</h1>
       
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <Card 
+          className={cn(
+            "transition-all duration-200 hover:shadow-md cursor-pointer",
+            "hover:border-primary/50"
+          )}
+          onClick={() => setLocation('/users?status=connected')}
+        >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Users Connected</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
@@ -46,23 +55,19 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card 
+          className={cn(
+            "transition-all duration-200 hover:shadow-md cursor-pointer",
+            "hover:border-primary/50"
+          )}
+          onClick={() => setLocation('/users?status=unauthenticated')}
+        >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Unauthenticated Users</CardTitle>
             <UserMinus className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.unauthenticatedUsers}</div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Alerts Today</CardTitle>
-            <AlertCircle className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.alertsToday}</div>
           </CardContent>
         </Card>
 
