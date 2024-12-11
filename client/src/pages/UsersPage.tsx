@@ -20,7 +20,7 @@ import {
 export default function UsersPage() {
   // 1. All state hooks
   const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
   const [, setLocation] = useLocation();
   
   // 2. Context hooks
@@ -67,7 +67,7 @@ export default function UsersPage() {
     
     return users.filter(user => {
       const matchesSearch = user.email.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesStatus = !statusFilter || user.status === statusFilter;
+      const matchesStatus = statusFilter === 'all' || user.status === statusFilter;
       return matchesSearch && matchesStatus;
     });
   }, [users, searchTerm, statusFilter]);
@@ -111,7 +111,7 @@ export default function UsersPage() {
               <SelectValue placeholder="Filter by status" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All statuses</SelectItem>
+              <SelectItem value="all">All statuses</SelectItem>
               <SelectItem value="connected">Connected</SelectItem>
               <SelectItem value="disconnected">Disconnected</SelectItem>
               <SelectItem value="unauthenticated">Unauthenticated</SelectItem>
