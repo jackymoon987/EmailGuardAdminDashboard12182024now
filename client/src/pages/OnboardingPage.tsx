@@ -50,8 +50,8 @@ export default function OnboardingPage() {
         description: "Your information has been saved"
       });
 
-      // Navigate after successful save
-      setLocation('/get-started');
+      // Force navigation to email provider page
+      window.location.href = '/get-started';
     } catch (error: any) {
       console.error('Onboarding error:', error);
       toast({
