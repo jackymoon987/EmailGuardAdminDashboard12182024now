@@ -66,7 +66,11 @@ export default function UsersPage() {
     if (!users) return [];
     
     return users.filter(user => {
-      const matchesSearch = user.email.toLowerCase().includes(searchTerm.toLowerCase());
+      const searchTermLower = searchTerm.toLowerCase();
+      const matchesSearch = 
+        user.email.toLowerCase().includes(searchTermLower) ||
+        (user.firstName?.toLowerCase() || '').includes(searchTermLower) ||
+        (user.lastName?.toLowerCase() || '').includes(searchTermLower);
       const matchesStatus = statusFilter === 'all' || (user.status || 'disconnected') === statusFilter;
       return matchesSearch && matchesStatus;
     });
@@ -101,7 +105,7 @@ export default function UsersPage() {
         
         <div className="flex gap-4">
           <Input
-            placeholder="Search by email..."
+            placeholder="Search by name or email..."
             className="max-w-sm"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
