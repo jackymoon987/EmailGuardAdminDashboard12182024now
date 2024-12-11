@@ -62,9 +62,7 @@ function Router() {
   return (
     <Layout>
       <Switch>
-        <Route path="/get-started">
-          <EmailProviderPage />
-        </Route>
+        <Route path="/get-started" component={EmailProviderPage} />
         <Route path="/settings" component={SettingsPage} />
         <Route path="/company-settings">
           <InitialSetup

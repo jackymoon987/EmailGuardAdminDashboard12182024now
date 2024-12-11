@@ -45,15 +45,22 @@ export default function OnboardingPage() {
         throw new Error(data.error || 'Failed to save user information');
       }
 
+      // Show success message and redirect
       toast({
         title: "Success",
         description: "Your information has been saved"
       });
 
-      // Force a full page reload and navigation
+      // Wait for toast to be visible then redirect
       setTimeout(() => {
-        window.location.replace('/get-started');
-      }, 100);
+        // Force a hard navigation to ensure clean state
+        window.location.href = '/get-started';
+        
+        // Fallback if the above doesn't work
+        setTimeout(() => {
+          window.location.replace('/get-started');
+        }, 100);
+      }, 500);
     } catch (error: any) {
       console.error('Onboarding error:', error);
       toast({
