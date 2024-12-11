@@ -13,7 +13,7 @@ import { InitialSetup } from "../components/InitialSetup";
 export default function AuthPage() {
   const [, setLocation] = useLocation();
   const [showInitialSetup, setShowInitialSetup] = useState(false);
-  const [isLogin, setIsLogin] = useState(false); // Default to sign up view
+  const [isLogin, setIsLogin] = useState(true); // Default to login view
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
