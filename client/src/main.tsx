@@ -39,6 +39,10 @@ function Router() {
     return <OnboardingPage />;
   }
 
+  if (!user) {
+    return <AuthPage />;
+  }
+
   return (
     <Layout>
       <Switch>
