@@ -9,6 +9,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
@@ -43,6 +44,7 @@ export function UserSettingsTable({ settings: initialSettings = dummySettings }:
   const { toast } = useToast();
   const [settings, setSettings] = useState(initialSettings);
   const [selectedUsers, setSelectedUsers] = useState<number[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   type ToggleMutationVariables = {
     ids: number[];
@@ -84,7 +86,7 @@ export function UserSettingsTable({ settings: initialSettings = dummySettings }:
   });
 
   const toggleAll = (checked: boolean) => {
-    setSelectedUsers(checked ? settings.map(s => s.id) : []);
+    setSelectedUsers(checked ? filteredSettings.map(s => s.id) : []);
   };
 
   const toggleUser = (userId: number, checked: boolean) => {
@@ -122,8 +124,19 @@ export function UserSettingsTable({ settings: initialSettings = dummySettings }:
     });
   };
 
+  // Filter settings based on search term
+  const filteredSettings = settings.filter(setting => 
+    setting.email.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="space-y-4">
+      <Input
+        placeholder="Search by email..."
+        className="max-w-sm"
+        value={searchTerm}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
+      />
       {selectedUsers.length > 0 && (
         <div className="flex gap-4 items-center bg-muted p-4 rounded-md">
           <span className="text-sm font-medium">{selectedUsers.length} users selected</span>
@@ -181,7 +194,7 @@ export function UserSettingsTable({ settings: initialSettings = dummySettings }:
           </TableRow>
         </TableHeader>
         <TableBody>
-          {settings.map((setting) => (
+          {filteredSettings.map((setting) => (
             <TableRow key={setting.id}>
               <TableCell>
                 <Checkbox
