@@ -21,8 +21,8 @@ const menuItems = [
 ];
 
 export default function TopNav() {
-  const [location] = useLocation();
-  const { logout } = useUser();
+  const [location, setLocation] = useLocation();
+  const { user, logout } = useUser();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const NavContent = () => (
