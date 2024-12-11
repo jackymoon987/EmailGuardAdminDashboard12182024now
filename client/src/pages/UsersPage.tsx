@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useUser } from "../hooks/use-user";
 import { UserTable } from "../components/UserTable";
 import { UserSettingsTable } from "../components/UserSettingsTable";
@@ -8,11 +8,21 @@ import { Loader2 } from "lucide-react";
 import { useLocation } from "wouter";
 import type { User } from "@db/schema";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function UsersPage() {
   const { user } = useUser();
   const { toast } = useToast();
   const [, setLocation] = useLocation();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
 
   const { data: users, isLoading, error } = useQuery<User[]>({
     queryKey: ['users'],
@@ -66,10 +76,42 @@ export default function UsersPage() {
     );
   }
 
+  const filteredUsers = useMemo(() => {
+    if (!users) return [];
+    
+    return users.filter(user => {
+      const matchesSearch = user.email.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesStatus = !statusFilter || user.status === statusFilter;
+      return matchesSearch && matchesStatus;
+    });
+  }, [users, searchTerm, statusFilter]);
+
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">User Management</h1>
+      <div className="space-y-4">
+        <div className="flex justify-between items-center">
+          <h1 className="text-3xl font-bold">User Management</h1>
+        </div>
+        
+        <div className="flex gap-4">
+          <Input
+            placeholder="Search by email..."
+            className="max-w-sm"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <Select value={statusFilter} onValueChange={setStatusFilter}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Filter by status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="">All statuses</SelectItem>
+              <SelectItem value="connected">Connected</SelectItem>
+              <SelectItem value="disconnected">Disconnected</SelectItem>
+              <SelectItem value="unauthenticated">Unauthenticated</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
       
       <Tabs defaultValue="users">
@@ -78,7 +120,7 @@ export default function UsersPage() {
           <TabsTrigger value="settings">User Settings</TabsTrigger>
         </TabsList>
         <TabsContent value="users">
-          <UserTable users={users} />
+          <UserTable users={filteredUsers} />
         </TabsContent>
         <TabsContent value="settings">
           <UserSettingsTable />
