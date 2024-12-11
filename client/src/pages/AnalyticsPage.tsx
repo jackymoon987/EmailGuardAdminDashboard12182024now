@@ -29,7 +29,12 @@ export default function AnalyticsPage() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Company wide stats</h1>
+        <h1 className="text-3xl font-bold">
+          {location.includes('?email=') 
+            ? `Approved sender list for ${decodeURIComponent(location.split('?email=')[1])}`
+            : 'Company wide stats'
+          }
+        </h1>
         <Tabs defaultValue="monthly" onValueChange={setTimeRange}>
           <TabsList>
             <TabsTrigger value="monthly">Monthly</TabsTrigger>

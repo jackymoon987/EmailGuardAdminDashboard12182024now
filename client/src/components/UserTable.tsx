@@ -91,7 +91,7 @@ export function UserTable({ users }: UserTableProps) {
                       <DropdownMenuItem onClick={() => setLocation(`/approved-senders/${user.id}`)}>
                         Approved sender list
                       </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => setLocation(`/analytics/${user.id}`)}>
+                      <DropdownMenuItem onClick={() => setLocation(`/analytics/${user.id}?email=${encodeURIComponent(user.email)}`)}>
                         Analytics
                       </DropdownMenuItem>
                     </DropdownMenuContent>
