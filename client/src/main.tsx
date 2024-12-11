@@ -40,36 +40,11 @@ function Router() {
     return <OnboardingPage />;
   }
 
-  if (!user) {
-    return <AuthPage />;
-  }
-
-  return (
-    <Layout>
-      <Switch>
-        <Route path="/get-started" component={EmailProviderPage} />
-        <Route path="/settings" component={SettingsPage} />
-        <Route path="/" component={DashboardPage} />
-        <Route path="/users" component={UsersPage} />
-        <Route path="/filters" component={FiltersPage} />
-        <Route path="/analytics">
-          <AnalyticsPage />
-        </Route>
-        <Route path="/analytics/:userId">
-          <AnalyticsPage />
-        </Route>
-        <Route path="/approved-senders/:userId" component={ApprovedSendersPage} />
-        <Route>404 Page Not Found</Route>
-      </Switch>
-    </Layout>
-  );
-
   // Show initial setup for new users
   if (user.showInitialSetup) {
     return (
       <InitialSetup
         onComplete={async (settings) => {
-          // Update user preferences in the database
           await fetch('/api/user/preferences', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -87,6 +62,8 @@ function Router() {
   return (
     <Layout>
       <Switch>
+        <Route path="/get-started" component={EmailProviderPage} />
+        <Route path="/settings" component={SettingsPage} />
         <Route path="/" component={DashboardPage} />
         <Route path="/users" component={UsersPage} />
         <Route path="/filters" component={FiltersPage} />
