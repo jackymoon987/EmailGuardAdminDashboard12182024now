@@ -67,7 +67,7 @@ export default function UsersPage() {
     
     return users.filter(user => {
       const matchesSearch = user.email.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesStatus = statusFilter === 'all' || user.status === statusFilter;
+      const matchesStatus = statusFilter === 'all' || (user.status || 'disconnected') === statusFilter;
       return matchesSearch && matchesStatus;
     });
   }, [users, searchTerm, statusFilter]);

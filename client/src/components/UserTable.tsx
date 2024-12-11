@@ -25,10 +25,9 @@ interface UserTableProps {
 export function UserTable({ users }: UserTableProps) {
   const [, setLocation] = useLocation();
 
-  // Function to randomly assign status
-  const getRandomStatus = () => {
-    const statuses = ['connected', 'disconnected', 'unauthenticated'];
-    return statuses[Math.floor(Math.random() * statuses.length)];
+  // Helper function to get user status
+  const getUserStatus = (user: User) => {
+    return user.status || 'disconnected';
   };
 
   return (
@@ -56,7 +55,7 @@ export function UserTable({ users }: UserTableProps) {
         </TableHeader>
         <TableBody>
           {users.map((user) => {
-            const status = getRandomStatus();
+            const status = getUserStatus(user);
             return (
               <TableRow key={user.id}>
                 <TableCell>{user.firstName}</TableCell>

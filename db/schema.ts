@@ -11,7 +11,7 @@ export const users = pgTable("users", {
   role: text("role").notNull().default("user"),
   createdAt: timestamp("created_at").defaultNow(),
   showInitialSetup: boolean("show_initial_setup").default(true),
-  status: text("status").notNull().default("disconnected"),
+  status: text("status", { enum: ['connected', 'disconnected', 'unauthenticated'] }).notNull().default("disconnected"),
 });
 
 export const approvedSenders = pgTable("approved_senders", {
