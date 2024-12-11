@@ -133,7 +133,7 @@ export default function UsersPage() {
           <UserTable users={filteredUsers} />
         </TabsContent>
         <TabsContent value="settings">
-          <UserSettingsTable />
+          <UserSettingsTable searchTerm={searchTerm} />
         </TabsContent>
       </Tabs>
     </div>

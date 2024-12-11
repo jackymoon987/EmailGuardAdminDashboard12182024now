@@ -37,14 +37,15 @@ const dummySettings: UserSetting[] = [
 
 interface UserSettingsTableProps {
   settings?: UserSetting[];
+  searchTerm: string;
 }
 
-export function UserSettingsTable({ settings: initialSettings = dummySettings }: UserSettingsTableProps) {
+export function UserSettingsTable({ settings: initialSettings = dummySettings, searchTerm }: UserSettingsTableProps) {
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const [settings, setSettings] = useState(initialSettings);
   const [selectedUsers, setSelectedUsers] = useState<number[]>([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  
 
   type ToggleMutationVariables = {
     ids: number[];
@@ -131,12 +132,7 @@ export function UserSettingsTable({ settings: initialSettings = dummySettings }:
 
   return (
     <div className="space-y-4">
-      <Input
-        placeholder="Search by email..."
-        className="max-w-sm"
-        value={searchTerm}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
-      />
+      
       {selectedUsers.length > 0 && (
         <div className="flex gap-4 items-center bg-muted p-4 rounded-md">
           <span className="text-sm font-medium">{selectedUsers.length} users selected</span>
