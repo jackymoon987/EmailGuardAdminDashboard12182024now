@@ -27,7 +27,7 @@ export default function SettingsPage() {
   };
 
   const handleReviewSenders = () => {
-    setLocation('/filters');
+    setLocation('/review-senders');
   };
 
   return (
