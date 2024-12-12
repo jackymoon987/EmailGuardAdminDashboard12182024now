@@ -60,14 +60,21 @@ function Router() {
             });
             if (response.ok) {
               // Force navigation to dashboard
-              window.location.replace('/');
+              window.location.href = '/';
+              setTimeout(() => {
+                window.location.replace('/');
+              }, 100);
             }
           } catch (error) {
             console.error('Failed to save preferences:', error);
           }
         }}
-        onReviewSenders={() => {
-          window.location.replace('/review-senders');
+        onNext={() => {
+          // Force navigation to dashboard
+          window.location.href = '/';
+          setTimeout(() => {
+            window.location.replace('/');
+          }, 100);
         }}
       />
     );
