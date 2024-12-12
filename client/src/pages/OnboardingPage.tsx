@@ -52,8 +52,15 @@ export default function OnboardingPage() {
       });
 
       // Wait for toast to be visible then redirect
-      // After onboarding, redirect to email provider selection
-      setLocation('/get-started');
+      setTimeout(() => {
+        // Force a hard navigation to ensure clean state
+        window.location.href = '/get-started';
+        
+        // Fallback if the above doesn't work
+        setTimeout(() => {
+          window.location.replace('/get-started');
+        }, 100);
+      }, 500);
     } catch (error: any) {
       console.error('Onboarding error:', error);
       toast({

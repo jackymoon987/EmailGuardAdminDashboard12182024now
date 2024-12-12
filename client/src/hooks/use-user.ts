@@ -42,7 +42,7 @@ async function handleRequest(
   }
 }
 
-async function fetchUser(): Promise<UserWithStatus | null> {
+async function fetchUser(): Promise<User | null> {
   const response = await fetch('/api/user', {
     credentials: 'include'
   });
