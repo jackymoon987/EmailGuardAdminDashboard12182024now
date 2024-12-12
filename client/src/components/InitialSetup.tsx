@@ -20,15 +20,15 @@ export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps)
   const [surveyEmailDefault, setSurveyEmailDefault] = useState<DefaultValue>("no");
   const [evaluatingFolderDefault, setEvaluatingFolderDefault] = useState<DefaultValue>("yes");
 
-  const handleComplete = (reviewNow: boolean) => {
+  const handleComplete = () => {
     onComplete({
       surveyEmailDefault,
       evaluatingFolderDefault,
     });
-    
-    if (reviewNow) {
-      onReviewSenders();
-    }
+  };
+
+  const handleReviewSenders = () => {
+    onReviewSenders();
   };
 
   const handleEvaluatingFolderChange = (value: DefaultValue) => {
@@ -107,12 +107,12 @@ export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps)
                   Would you like to review and configure your company's approved sender list now?
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
-                  <Button onClick={() => handleComplete(true)} className="flex-1">
+                  <Button onClick={handleReviewSenders} className="flex-1">
                     Review now
                   </Button>
                   <Button 
                     variant="outline" 
-                    onClick={() => handleComplete(false)} 
+                    onClick={handleComplete} 
                     className="flex-1"
                   >
                     Add later
@@ -137,13 +137,13 @@ export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps)
         <div className="flex flex-col sm:flex-row gap-3 mt-6">
           <Button 
             variant="outline" 
-            onClick={() => handleComplete(false)} 
+            onClick={handleComplete} 
             className="flex-1"
           >
             Do later
           </Button>
           <Button 
-            onClick={() => handleComplete(true)} 
+            onClick={handleComplete} 
             className="flex-1"
           >
             Next

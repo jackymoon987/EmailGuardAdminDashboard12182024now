@@ -219,9 +219,9 @@ export default function ReviewSendersPage() {
             <Button
               className="w-32"
               onClick={() => {
-                window.location.href = '/company-settings';
+                window.location.href = '/settings';
                 setTimeout(() => {
-                  window.location.replace('/company-settings');
+                  window.location.replace('/settings');
                 }, 100);
               }}
             >
