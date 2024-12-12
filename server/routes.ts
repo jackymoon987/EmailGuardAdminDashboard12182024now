@@ -135,9 +135,13 @@ export function registerRoutes(app: Express) {
       });
     } catch (error) {
       console.error('Error updating user information:', error);
+      const errorMessage = error instanceof Error 
+        ? error.message 
+        : 'An unknown error occurred';
+      
       res.status(500).json({ 
         error: "Failed to update user information",
-        details: error.message
+        details: errorMessage
       });
     }
   });
