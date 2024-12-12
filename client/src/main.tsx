@@ -59,15 +59,15 @@ function Router() {
               body: JSON.stringify(settings)
             });
             if (response.ok) {
-              // Navigate to dashboard
-              window.location.href = '/';
+              // Force navigation to dashboard
+              window.location.replace('/');
             }
           } catch (error) {
-            // Don't log the error to avoid showing it to users
+            console.error('Failed to save preferences:', error);
           }
         }}
         onReviewSenders={() => {
-          window.location.href = '/review-senders';
+          window.location.replace('/review-senders');
         }}
       />
     );
