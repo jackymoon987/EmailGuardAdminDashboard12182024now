@@ -70,7 +70,6 @@ export default function ReviewSendersPage() {
     <div className="container mx-auto py-8 space-y-6">
       <div className="space-y-2">
         <h1 className="text-2xl font-bold">Add some domains to your company wide approved sender list.</h1>
-        <p className="text-sm text-muted-foreground">{senders?.[0]?.domain}</p>
       </div>
 
       <div className="space-y-4">
