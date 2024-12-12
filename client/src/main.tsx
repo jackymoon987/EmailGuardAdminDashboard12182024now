@@ -69,11 +69,11 @@ function Router() {
             console.error('Failed to save preferences:', error);
           }
         }}
-        onNext={() => {
-          // Force navigation to dashboard
-          window.location.href = '/';
+        onReviewSenders={() => {
+          // Navigate to review senders page
+          window.location.href = '/review-senders';
           setTimeout(() => {
-            window.location.replace('/');
+            window.location.replace('/review-senders');
           }, 100);
         }}
       />

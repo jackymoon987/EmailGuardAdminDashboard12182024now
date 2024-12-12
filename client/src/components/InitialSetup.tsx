@@ -12,7 +12,7 @@ interface InitialSetupProps {
   onComplete: (settings: {
     surveyEmailDefault: DefaultValue;
     evaluatingFolderDefault: DefaultValue;
-  }) => void;
+  }) => Promise<void> | void;
   onReviewSenders: () => void;
 }
 
