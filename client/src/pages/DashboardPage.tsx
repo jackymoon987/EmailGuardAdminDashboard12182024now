@@ -5,6 +5,8 @@ import { useWebSocket } from "../hooks/use-ws";
 import { useLocation } from "wouter";
 import { cn } from "@/lib/utils";
 
+import type { User } from "@db/schema";
+
 export default function DashboardPage() {
   const [, setLocation] = useLocation();
   useWebSocket('/ws');

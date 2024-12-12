@@ -134,13 +134,13 @@ export function setupAuth(app: Express) {
       const [newUser] = await db
         .insert(users)
         .values({
+          firstName: "",
+          lastName: "",
           email,
           password: hashedPassword,
-          firstName: null,
-          lastName: null,
           role: "admin", // All users are admins by default
-          createdAt: new Date(),
-          showInitialSetup: true, // Flag for new users
+          status: "unauthenticated",
+          showInitialSetup: true // Flag for new users
         })
         .returning();
 

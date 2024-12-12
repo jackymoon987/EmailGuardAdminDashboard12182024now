@@ -121,8 +121,6 @@ export function registerRoutes(app: Express) {
         .set({ 
           firstName,
           lastName,
-          referralEmail: referralEmail || null,
-          accountType: accountType || 'individual',
           role: req.user.role // Preserve existing role
         })
         .where(eq(users.id, req.user.id));
@@ -132,10 +130,7 @@ export function registerRoutes(app: Express) {
         user: {
           ...req.user,
           firstName,
-          lastName,
-          phoneNumber,
-          referralEmail,
-          accountType
+          lastName
         }
       });
     } catch (error) {
