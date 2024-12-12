@@ -28,11 +28,6 @@ export default function FiltersPage() {
       if (!response.ok) {
         throw new Error('Failed to add entries');
       }
-
-      toast({
-        title: "Success",
-        description: `Successfully ${action}ed ${entries.length} ${entries.length === 1 ? 'entry' : 'entries'}`
-      });
     } catch (error) {
       toast({
         variant: "destructive",

@@ -39,10 +39,6 @@ export function EmailFilterTable({ filters }: EmailFilterTableProps) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['filters'] });
-      toast({
-        title: "Success",
-        description: "Filter updated successfully"
-      });
     },
     onError: () => {
       toast({
