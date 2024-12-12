@@ -114,14 +114,13 @@ export function registerRoutes(app: Express) {
       return res.status(401).send("Not authenticated");
     }
     
-    const { firstName, lastName, phoneNumber, referralEmail, accountType } = req.body;
+    const { firstName, lastName, referralEmail, accountType } = req.body;
     
     try {
       await db.update(users)
         .set({ 
           firstName,
           lastName,
-          phoneNumber: phoneNumber || null,
           referralEmail: referralEmail || null,
           accountType: accountType || 'individual',
           role: req.user.role // Preserve existing role

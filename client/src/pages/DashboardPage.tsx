@@ -27,7 +27,7 @@ export default function DashboardPage() {
     }
   });
 
-  const { data: users } = useQuery({
+  const { data: users } = useQuery<User[]>({
     queryKey: ['users'],
     queryFn: async () => {
       const res = await fetch('/api/users');
@@ -37,8 +37,8 @@ export default function DashboardPage() {
   });
 
   const stats = {
-    usersConnected: users?.filter(u => u.status === 'connected').length ?? 0,
-    unauthenticatedUsers: users?.filter(u => u.status === 'unauthenticated').length ?? 0,
+    usersConnected: users?.filter((u: User) => u.status === 'connected').length ?? 0,
+    unauthenticatedUsers: users?.filter((u: User) => u.status === 'unauthenticated').length ?? 0,
     blockedEmailsMonth: 1583
   };
 

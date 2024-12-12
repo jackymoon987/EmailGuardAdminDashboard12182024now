@@ -13,7 +13,7 @@ export default function ApprovedSendersPage() {
   const [, setLocation] = useLocation();
   
   // Using dummy data for now
-  const dummyUser = {
+  const dummyUser: User = {
     id: parseInt(userId || '1'),
     email: 'new@test7.com',
     firstName: 'John',
