@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { useLocation } from "wouter";
 import { Separator } from "@/components/ui/separator";
 import { Building2, CreditCard, UserPlus, AlertTriangle } from "lucide-react";
@@ -17,6 +18,38 @@ export default function AdminProfilePage() {
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-bold">Admin Profile</h1>
+      
+      <Card>
+        <CardHeader>
+          <CardTitle>Admin Account</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-1">
+            <p className="text-sm font-medium">Email address</p>
+            <p className="text-sm text-muted-foreground">{user?.email}</p>
+          </div>
+          <div className="space-y-1">
+            <p className="text-sm font-medium">Status</p>
+            <Badge 
+              variant={
+                user?.status === 'connected' ? 'default' :
+                user?.status === 'disconnected' ? 'secondary' :
+                'destructive'
+              }
+            >
+              {user?.status === 'connected' ? 'Connected' :
+               user?.status === 'disconnected' ? 'Disconnected' :
+               'Unauthenticated'}
+            </Badge>
+          </div>
+          <Button 
+            variant="outline"
+            onClick={() => setLocation(`/users?email=${encodeURIComponent(user?.email || '')}`)}
+          >
+            Go to account
+          </Button>
+        </CardContent>
+      </Card>
       
       <div className="grid gap-6">
         <Card>
