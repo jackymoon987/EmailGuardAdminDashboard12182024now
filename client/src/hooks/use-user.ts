@@ -1,5 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { User, InsertUser } from "@db/schema";
+import { type User, type InsertUser, users } from "@db/schema";
+import { type InferModel } from 'drizzle-orm';
+
+type UserStatus = typeof users.status.enumValues[number];
+type UserWithStatus = Omit<User, 'status'> & {
+  status: UserStatus;
+};
 
 type RequestResult = {
   ok: true;
@@ -59,7 +65,7 @@ async function fetchUser(): Promise<User | null> {
 export function useUser() {
   const queryClient = useQueryClient();
 
-  const { data: user, error, isLoading } = useQuery<User | null, Error>({
+  const { data: user, error, isLoading } = useQuery<UserWithStatus | null, Error>({
     queryKey: ['user'],
     queryFn: fetchUser,
     staleTime: Infinity,
