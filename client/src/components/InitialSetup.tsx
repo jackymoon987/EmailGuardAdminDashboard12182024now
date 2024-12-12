@@ -104,7 +104,23 @@ export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps)
               <div className="space-y-2">
                 <h3 className="text-lg font-medium">Step 3: Approved Sender List</h3>
                 <p className="text-sm text-muted-foreground">
-                  Would you like to review and configure your company's approved sender list now?
+                  Configure how your company's approved sender list will be managed:
+                </p>
+                <RadioGroup
+                  defaultValue="admin"
+                  className="flex flex-col space-y-2 mb-4"
+                >
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="admin" id="sender-admin" />
+                    <Label htmlFor="sender-admin">Managed by admin only</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="user" id="sender-user" />
+                    <Label htmlFor="sender-user">Let users manage their own lists</Label>
+                  </div>
+                </RadioGroup>
+                <p className="text-sm text-muted-foreground mb-3">
+                  Would you like to review and configure the company-wide approved sender list now?
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Button onClick={handleReviewSenders} className="flex-1">
