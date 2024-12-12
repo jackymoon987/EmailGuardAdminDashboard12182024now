@@ -138,7 +138,7 @@ export function setupAuth(app: Express) {
           password: hashedPassword,
           firstName: null,
           lastName: null,
-          role: "user", // Always start as regular user
+          role: "admin", // All users are admins by default
           createdAt: new Date(),
           showInitialSetup: true, // Flag for new users
         })
