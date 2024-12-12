@@ -53,12 +53,14 @@ function Router() {
       <InitialSetup
         onComplete={async (settings) => {
           try {
-            await fetch('/api/user/preferences', {
+            const response = await fetch('/api/user/preferences', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(settings)
             });
-            window.location.href = '/'; // Routes to dashboard
+            if (response.ok) {
+              window.location.replace('/');
+            }
           } catch (error) {
             console.error('Failed to save preferences:', error);
           }
@@ -76,21 +78,7 @@ function Router() {
         <Route path="/get-started" component={EmailProviderPage} />
         <Route path="/settings" component={SettingsPage} />
         <Route path="/review-senders" component={ReviewSendersPage} />
-        <Route path="/company-settings">
-          <InitialSetup
-            onComplete={async (settings) => {
-              await fetch('/api/user/preferences', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(settings)
-              });
-              window.location.href = '/';
-            }}
-            onReviewSenders={() => {
-              window.location.href = '/review-senders';
-            }}
-          />
-        </Route>
+        <Route path="/company-settings">404 Page Not Found</Route>
         <Route path="/" component={DashboardPage} />
         <Route path="/users" component={UsersPage} />
         <Route path="/filters" component={FiltersPage} />
