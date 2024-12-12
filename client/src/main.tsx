@@ -59,6 +59,9 @@ function Router() {
           });
           window.location.href = '/';
         }}
+        onReviewSenders={() => {
+          window.location.href = '/review-senders';
+        }}
       />
     );
   }
@@ -78,6 +81,9 @@ function Router() {
                 body: JSON.stringify(settings)
               });
               window.location.href = '/';
+            }}
+            onReviewSenders={() => {
+              window.location.href = '/review-senders';
             }}
           />
         </Route>
