@@ -72,6 +72,28 @@ export default function ReviewSendersPage() {
         <h1 className="text-2xl font-bold">Add some domains to your company wide approved sender list.</h1>
       </div>
 
+      <div className="grid md:grid-cols-2 gap-4">
+        <div className="p-6 border rounded-lg bg-card hover:shadow-md transition-shadow">
+          <h3 className="font-semibold mb-2">Add Domains in Bulk</h3>
+          <p className="text-sm text-muted-foreground mb-4">
+            Quickly add multiple domains at once by entering them in a list format.
+          </p>
+          <Button variant="outline" className="w-full">
+            Add Multiple Domains
+          </Button>
+        </div>
+
+        <div className="p-6 border rounded-lg bg-card hover:shadow-md transition-shadow">
+          <h3 className="font-semibold mb-2">Import from CSV</h3>
+          <p className="text-sm text-muted-foreground mb-4">
+            Upload a CSV file containing your approved domains.
+          </p>
+          <Button variant="outline" className="w-full">
+            Upload CSV File
+          </Button>
+        </div>
+      </div>
+
       <div className="space-y-4">
         <div className="bg-muted/50 p-4 rounded-lg">
           <p className="text-sm">
