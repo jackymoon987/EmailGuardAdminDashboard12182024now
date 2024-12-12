@@ -100,7 +100,7 @@ export default function ReviewSendersPage() {
         <h1 className="text-2xl font-bold">Add some domains to your company wide approved sender list.</h1>
       </div>
 
-      <div className="max-w-lg mx-auto p-6 border rounded-lg bg-card hover:shadow-md transition-shadow">
+      <div className="max-w-lg p-6 border rounded-lg bg-card hover:shadow-md transition-shadow">
         <h3 className="font-semibold mb-2">Add Domains in Bulk</h3>
         <p className="text-sm text-muted-foreground mb-4">
           Quickly add multiple domains at once.
@@ -210,35 +210,7 @@ export default function ReviewSendersPage() {
           </TableBody>
         </Table>
 
-        <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger asChild>
-            <Button>Add Multiple Domains</Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Add Multiple Domains</DialogTitle>
-              <DialogDescription>
-                Enter domains separated by new lines.
-              </DialogDescription>
-            </DialogHeader>
-            <Textarea placeholder="Enter domains here..." />
-            <RadioGroup defaultValue="approve" >
-              <RadioGroupItem value="approve" >
-                <Label>Approve</Label>
-              </RadioGroupItem>
-              <RadioGroupItem value="block">
-                <Label>Block</Label>
-              </RadioGroupItem>
-            </RadioGroup>
-          </DialogContent>
-          <DialogFooter>
-            <Button onClick={() => setOpen(false)}>Cancel</Button>
-            <Button type="submit" onClick={()=> {
-              const textarea = document.querySelector('textarea') as HTMLTextAreaElement;
-              handleAddDomains(textarea.value, (document.querySelector('input[type="radio"]:checked') as HTMLInputElement).value)
-            }}>Add Domains</Button>
-          </DialogFooter>
-        </Dialog>
+        
 
         <div className="flex justify-between items-center">
           <span className="text-sm text-muted-foreground">{remainingSenders} remaining</span>
