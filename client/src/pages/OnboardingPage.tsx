@@ -84,7 +84,7 @@ export default function OnboardingPage() {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-6">
             <div className="space-y-2">
-              <h3 className="text-lg font-medium">Do you need an individual account or a business account?</h3>
+              <h3 className="text-lg font-medium">Are you setting up this account for personal use or for your business?</h3>
               <RadioGroup
                 value={formData.accountType}
                 onValueChange={(value) => setFormData(prev => ({ ...prev, accountType: value as "individual" | "business" }))}
@@ -92,11 +92,11 @@ export default function OnboardingPage() {
               >
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="individual" id="individual" />
-                  <Label htmlFor="individual">Individual</Label>
+                  <Label htmlFor="individual">Personal use</Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="business" id="business" />
-                  <Label htmlFor="business">Business</Label>
+                  <Label htmlFor="business">Business use</Label>
                 </div>
               </RadioGroup>
             </div>
