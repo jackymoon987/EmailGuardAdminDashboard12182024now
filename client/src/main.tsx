@@ -52,12 +52,16 @@ function Router() {
     return (
       <InitialSetup
         onComplete={async (settings) => {
-          await fetch('/api/user/preferences', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(settings)
-          });
-          window.location.href = '/';
+          try {
+            await fetch('/api/user/preferences', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(settings)
+            });
+            window.location.href = '/'; // Routes to dashboard
+          } catch (error) {
+            console.error('Failed to save preferences:', error);
+          }
         }}
         onReviewSenders={() => {
           window.location.href = '/review-senders';
