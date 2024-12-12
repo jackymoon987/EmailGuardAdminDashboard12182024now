@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { Switch, Route } from "wouter";
+import { Switch, Route, useLocation } from "wouter";
 import "./index.css";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
@@ -22,6 +22,7 @@ import { InitialSetup } from "./components/InitialSetup";
 
 function Router() {
   const { user, isLoading } = useUser();
+  const [, setLocation] = useLocation();
 
   if (isLoading) {
     return (
@@ -41,13 +42,12 @@ function Router() {
   }
 
   // After onboarding, show email provider selection
-  const path = window.location.pathname;
-  if (path === '/get-started') {
+  if (window.location.pathname === '/get-started') {
     return <EmailProviderPage />;
   }
 
   // Show company settings only after email provider selection
-  if (path === '/company-settings') {
+  if (window.location.pathname === '/company-settings') {
     return (
       <InitialSetup
         onComplete={async (settings) => {
@@ -56,10 +56,10 @@ function Router() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(settings)
           });
-          window.location.href = '/';
+          setLocation('/');
         }}
         onReviewSenders={() => {
-          window.location.href = '/filters';
+          setLocation('/filters');
         }}
       />
     );
