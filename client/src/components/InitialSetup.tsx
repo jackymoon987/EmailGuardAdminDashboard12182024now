@@ -120,7 +120,7 @@ export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps)
                   </div>
                 </RadioGroup>
                 <p className="text-sm text-muted-foreground mb-3">
-                  Would you like to review and configure the company-wide approved sender list now?
+                  Would you like to add some domains to your company wide approved sender list now?
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Button onClick={handleReviewSenders} className="flex-1">
