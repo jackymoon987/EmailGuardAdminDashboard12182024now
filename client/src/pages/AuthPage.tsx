@@ -106,7 +106,7 @@ export default function AuthPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <div className="w-full max-w-md space-y-8">
-        <div className="text-right">
+        <div className="text-center">
           {isLogin ? (
             <>
               <span className="text-sm text-muted-foreground">Don't have an account? </span>
