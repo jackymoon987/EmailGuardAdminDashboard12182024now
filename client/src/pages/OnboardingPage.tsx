@@ -84,7 +84,7 @@ export default function OnboardingPage() {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-6">
             <div className="space-y-2">
-              <h3 className="text-lg font-medium">Are you setting up this account for personal use or for your business?</h3>
+              <h3 className="text-lg font-medium">Are you setting up this account for personal use or for your business (ie- you need admin controls on employee accounts)?</h3>
               <RadioGroup
                 value={formData.accountType}
                 onValueChange={(value) => setFormData(prev => ({ ...prev, accountType: value as "individual" | "business" }))}

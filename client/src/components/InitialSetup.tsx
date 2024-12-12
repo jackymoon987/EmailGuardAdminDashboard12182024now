@@ -50,7 +50,7 @@ export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps)
               Company Wide Settings
             </CardTitle>
             <p className="text-sm text-center text-muted-foreground">
-              Are you setting up this account for personal use or for your business (ie- you need admin controls on employee accounts)?
+              Let's configure some default settings for your company
             </p>
           </CardHeader>
           <CardContent>
