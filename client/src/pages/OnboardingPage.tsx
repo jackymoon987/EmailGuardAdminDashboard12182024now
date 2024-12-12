@@ -52,15 +52,8 @@ export default function OnboardingPage() {
       });
 
       // Wait for toast to be visible then redirect
-      setTimeout(() => {
-        // Force a hard navigation to ensure clean state
-        window.location.href = '/get-started';
-        
-        // Fallback if the above doesn't work
-        setTimeout(() => {
-          window.location.replace('/get-started');
-        }, 100);
-      }, 500);
+      // Use setLocation for client-side routing
+      setLocation('/get-started');
     } catch (error: any) {
       console.error('Onboarding error:', error);
       toast({

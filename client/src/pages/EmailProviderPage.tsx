@@ -1,7 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { useLocation } from "wouter";
 
 export default function EmailProviderPage() {
+  const [, setLocation] = useLocation();
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-background p-4">
       <div className="w-full max-w-md">
@@ -29,7 +31,7 @@ export default function EmailProviderPage() {
                 variant="outline"
                 onClick={() => {
                   // After Google sign in, redirect to company settings
-                  window.location.href = '/company-settings';
+                  setLocation('/company-settings');
                 }}
               >
                 Sign in to Google

@@ -12,6 +12,7 @@ import AnalyticsPage from "./pages/AnalyticsPage";
 import AuthPage from "./pages/AuthPage";
 import OnboardingPage from "./pages/OnboardingPage";
 import AdminProfilePage from "./pages/AdminProfilePage";
+import ReviewSendersPage from "./pages/ReviewSendersPage";
 import EmailProviderPage from "./pages/EmailProviderPage";
 import ApprovedSendersPage from "./pages/ApprovedSendersPage";
 import SettingsPage from "./pages/SettingsPage";
@@ -81,7 +82,7 @@ function Router() {
               window.location.href = '/';
             }}
             onReviewSenders={() => {
-              window.location.href = '/filters';
+              window.location.href = '/review-senders';
             }}
           />
         </Route>
@@ -95,6 +96,7 @@ function Router() {
           <AnalyticsPage />
         </Route>
         <Route path="/approved-senders/:userId" component={ApprovedSendersPage} />
+        <Route path="/review-senders" component={ReviewSendersPage} />
         <Route path="/admin-profile" component={AdminProfilePage} />
         <Route>404 Page Not Found</Route>
       </Switch>
