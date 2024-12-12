@@ -14,6 +14,7 @@ import OnboardingPage from "./pages/OnboardingPage";
 import AdminProfilePage from "./pages/AdminProfilePage";
 import EmailProviderPage from "./pages/EmailProviderPage";
 import ApprovedSendersPage from "./pages/ApprovedSendersPage";
+import ReviewSendersPage from "./pages/ReviewSendersPage";
 import SettingsPage from "./pages/SettingsPage";
 import Layout from "./components/Layout";
 import { useUser } from "./hooks/use-user";
@@ -59,7 +60,7 @@ function Router() {
           window.location.href = '/';
         }}
         onReviewSenders={() => {
-          window.location.href = '/filters';
+          window.location.href = '/review-senders';
         }}
       />
     );
@@ -70,6 +71,7 @@ function Router() {
       <Switch>
         <Route path="/get-started" component={EmailProviderPage} />
         <Route path="/settings" component={SettingsPage} />
+        <Route path="/review-senders" component={ReviewSendersPage} />
         <Route path="/company-settings">
           <InitialSetup
             onComplete={async (settings) => {
@@ -81,7 +83,7 @@ function Router() {
               window.location.href = '/';
             }}
             onReviewSenders={() => {
-              window.location.href = '/filters';
+              window.location.href = '/review-senders';
             }}
           />
         </Route>
