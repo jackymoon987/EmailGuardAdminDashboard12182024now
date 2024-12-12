@@ -1,7 +1,19 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
-import { useState } from "react";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import {
   Table,
   TableBody,
@@ -22,6 +34,9 @@ type EmailSender = {
 export default function ReviewSendersPage() {
   const { toast } = useToast();
   const [remainingSenders, setRemainingSenders] = useState(8);
+  const [bulkAction, setBulkAction] = useState<'approve' | 'block'>('approve');
+  const [bulkDomains, setBulkDomains] = useState('');
+  const [open, setOpen] = useState(false);
 
   // Mock data for demonstration
   const mockSenders: EmailSender[] = [
@@ -58,6 +73,19 @@ export default function ReviewSendersPage() {
     setRemainingSenders(prev => Math.max(0, prev - 1));
   };
 
+  const handleAddDomains = (domains: string, action: 'approve' | 'block') => {
+    const domainList = domains.split('\n').map(domain => domain.trim()).filter(domain => domain !== '');
+    domainList.forEach(domain => {
+        if (action === 'approve') {
+          handleApprove(domain);
+        } else {
+          handleBlock(domain);
+        }
+    })
+    setOpen(false);
+  }
+
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -72,27 +100,6 @@ export default function ReviewSendersPage() {
         <h1 className="text-2xl font-bold">Add some domains to your company wide approved sender list.</h1>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-4">
-        <div className="p-6 border rounded-lg bg-card hover:shadow-md transition-shadow">
-          <h3 className="font-semibold mb-2">Add Domains in Bulk</h3>
-          <p className="text-sm text-muted-foreground mb-4">
-            Quickly add multiple domains at once by entering them in a list format.
-          </p>
-          <Button variant="outline" className="w-full">
-            Add Multiple Domains
-          </Button>
-        </div>
-
-        <div className="p-6 border rounded-lg bg-card hover:shadow-md transition-shadow">
-          <h3 className="font-semibold mb-2">Import from CSV</h3>
-          <p className="text-sm text-muted-foreground mb-4">
-            Upload a CSV file containing your approved domains.
-          </p>
-          <Button variant="outline" className="w-full">
-            Upload CSV File
-          </Button>
-        </div>
-      </div>
 
       <div className="space-y-4">
         <div className="bg-muted/50 p-4 rounded-lg">
@@ -144,11 +151,41 @@ export default function ReviewSendersPage() {
           </TableBody>
         </Table>
 
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogTrigger asChild>
+            <Button>Add Multiple Domains</Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Add Multiple Domains</DialogTitle>
+              <DialogDescription>
+                Enter domains separated by new lines.
+              </DialogDescription>
+            </DialogHeader>
+            <Textarea placeholder="Enter domains here..." />
+            <RadioGroup defaultValue="approve" >
+              <RadioGroupItem value="approve" >
+                <Label>Approve</Label>
+              </RadioGroupItem>
+              <RadioGroupItem value="block">
+                <Label>Block</Label>
+              </RadioGroupItem>
+            </RadioGroup>
+          </DialogContent>
+          <DialogFooter>
+            <Button onClick={() => setOpen(false)}>Cancel</Button>
+            <Button type="submit" onClick={()=> {
+              const textarea = document.querySelector('textarea') as HTMLTextAreaElement;
+              handleAddDomains(textarea.value, (document.querySelector('input[type="radio"]:checked') as HTMLInputElement).value)
+            }}>Add Domains</Button>
+          </DialogFooter>
+        </Dialog>
+
         <div className="flex justify-between items-center">
           <span className="text-sm text-muted-foreground">{remainingSenders} remaining</span>
           <div className="flex gap-2">
             <Button variant="outline" className="w-32">What's a domain?</Button>
-            <Button 
+            <Button
               className="w-32"
               onClick={() => {
                 window.location.href = '/company-settings';
@@ -157,6 +194,65 @@ export default function ReviewSendersPage() {
               Save preferences
             </Button>
           </div>
+        </div>
+
+        <div className="mt-8 p-6 border rounded-lg bg-card hover:shadow-md transition-shadow">
+          <h3 className="font-semibold mb-2">Add Domains in Bulk</h3>
+          <p className="text-sm text-muted-foreground mb-4">
+            Quickly add multiple domains at once.
+          </p>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline" className="w-full">
+                Add Multiple Domains
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Add Multiple Domains</DialogTitle>
+                <DialogDescription>
+                  Enter one domain per line. You can copy and paste multiple domains at once.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="grid gap-4 py-4">
+                <Textarea
+                  placeholder="example.com&#10;another-domain.com&#10;third-domain.com"
+                  value={bulkDomains}
+                  onChange={(e) => setBulkDomains(e.target.value)}
+                  className="min-h-[150px]"
+                />
+                <RadioGroup value={bulkAction} onValueChange={(value) => setBulkAction(value as 'approve' | 'block')}>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="approve" id="approve" />
+                    <Label htmlFor="approve">Approve all</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="block" id="block" />
+                    <Label htmlFor="block">Block all</Label>
+                  </div>
+                </RadioGroup>
+              </div>
+              <DialogFooter>
+                <Button onClick={() => {
+                  // Handle bulk action here
+                  const domainList = bulkDomains.split('\n').map(domain => domain.trim()).filter(domain => domain !== '');
+                  domainList.forEach(domain => {
+                    if (bulkAction === 'approve') {
+                      handleApprove(domain);
+                    } else {
+                      handleBlock(domain);
+                    }
+                  });
+                  toast({
+                    title: "Domains " + (bulkAction === 'approve' ? 'approved' : 'blocked'),
+                    description: `${domainList.length} domains have been ${bulkAction}d.`
+                  });
+                }}>
+                  Confirm
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
     </div>
