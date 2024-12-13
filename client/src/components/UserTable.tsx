@@ -61,24 +61,13 @@ export function UserTable({ users }: UserTableProps) {
 
   // Helper function to get user status
   const getUserStatus = (user: User) => {
-    // If no status is set, check if it's one of our specific emails
+    // If no status is set, randomly assign one including no_account
     if (!user.status) {
-      const noAccountEmails = [
-        'jrice7733@gmail.com',
-        'new@account.com',
-        'new@test1.com',
-        'newingtesting@test.com'
-      ];
-      
-      if (noAccountEmails.includes(user.email)) {
-        return 'no_account';
-      }
-      
-      // For other users without status, randomly assign one
       const random = Math.random();
-      if (random < 0.33) return 'connected';
-      if (random < 0.66) return 'disconnected';
-      return 'unauthenticated';
+      if (random < 0.25) return 'connected';
+      if (random < 0.5) return 'disconnected';
+      if (random < 0.75) return 'unauthenticated';
+      return 'no_account';
     }
     return user.status;
   };
