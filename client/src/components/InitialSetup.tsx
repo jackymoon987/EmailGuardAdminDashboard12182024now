@@ -25,9 +25,7 @@ export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps)
   const handleComplete = () => {
     onComplete({
       surveyEmailDefault,
-      surveyEmailOverride,
       evaluatingFolderDefault,
-      evaluatingFolderOverride,
     });
   };
 
@@ -165,9 +163,9 @@ export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps)
               </div>
 
               <div className="space-y-2">
-                <h3 className="text-lg font-medium">Step 4: Invite Your Teammates</h3>
+                <h3 className="text-lg font-medium">Step 4: Add Additional Administrators</h3>
                 <p className="text-sm text-muted-foreground">
-                  Would you like to add any other admins to your Bulletproof Inbox account?
+                  Inputting the addresses below will give them adminstratative permissions when they create their account. You can always change this later.
                 </p>
                 <Input
                   type="email"
