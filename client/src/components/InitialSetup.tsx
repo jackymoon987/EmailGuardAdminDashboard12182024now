@@ -165,7 +165,7 @@ export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps)
               <div className="space-y-2">
                 <h3 className="text-lg font-medium">Step 4: Add Additional Administrators</h3>
                 <p className="text-sm text-muted-foreground">
-                  Inputting the addresses below will give them adminstratative permissions when they create their account. You can always change this later.
+                  Inputting the addresses below will give them administrative permissions when they create their account. You can always change this later.
                 </p>
                 <Input
                   type="email"
