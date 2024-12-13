@@ -50,7 +50,7 @@ export function UserSettingsTable({ settings: initialSettings = dummySettings, s
 
   type ToggleMutationVariables = {
     ids: number[];
-    field: 'surveyEmail' | 'evaluatingFolder';
+    field: 'surveyEmail' | 'evaluatingFolder' | 'allowUserOverride';
     value: boolean;
   };
 

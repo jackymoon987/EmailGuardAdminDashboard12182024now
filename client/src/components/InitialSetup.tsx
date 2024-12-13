@@ -12,6 +12,8 @@ interface InitialSetupProps {
   onComplete: (settings: {
     surveyEmailDefault: DefaultValue;
     evaluatingFolderDefault: DefaultValue;
+    overrideSettings: "all" | "some";
+    overrideUsers: string;
   }) => Promise<void> | void;
   onReviewSenders: () => void;
 }
