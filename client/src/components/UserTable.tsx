@@ -61,9 +61,13 @@ export function UserTable({ users }: UserTableProps) {
 
   // Helper function to get user status
   const getUserStatus = (user: User) => {
-    // If no status is set, randomly assign 'no_account' or 'disconnected'
+    // If no status is set, randomly assign one of the possible statuses
     if (!user.status) {
-      return Math.random() < 0.3 ? 'no_account' : 'disconnected';
+      const random = Math.random();
+      if (random < 0.25) return 'connected';
+      if (random < 0.5) return 'disconnected';
+      if (random < 0.75) return 'unauthenticated';
+      return 'no_account';
     }
     return user.status;
   };
