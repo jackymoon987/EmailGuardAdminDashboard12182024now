@@ -61,7 +61,11 @@ export function UserTable({ users }: UserTableProps) {
 
   // Helper function to get user status
   const getUserStatus = (user: User) => {
-    return user.status || 'disconnected';
+    // If no status is set, randomly assign 'no_account' or 'disconnected'
+    if (!user.status) {
+      return Math.random() < 0.3 ? 'no_account' : 'disconnected';
+    }
+    return user.status;
   };
 
   return (
@@ -105,11 +109,13 @@ export function UserTable({ users }: UserTableProps) {
                     variant={
                       status === 'connected' ? 'default' :
                       status === 'disconnected' ? 'secondary' :
+                      status === 'no_account' ? 'outline' :
                       'destructive'
                     }
                   >
                     {status === 'connected' ? 'Connected' :
                      status === 'disconnected' ? 'Disconnected' :
+                     status === 'no_account' ? 'No Account Yet' :
                      'Unauthenticated'}
                   </Badge>
                 </TableCell>

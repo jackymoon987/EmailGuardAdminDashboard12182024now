@@ -151,6 +151,7 @@ export default function UsersPage() {
               <SelectItem value="connected">Connected</SelectItem>
               <SelectItem value="disconnected">Disconnected</SelectItem>
               <SelectItem value="unauthenticated">Unauthenticated</SelectItem>
+              <SelectItem value="no_account">No Account Yet</SelectItem>
             </SelectContent>
           </Select>
         </div>
