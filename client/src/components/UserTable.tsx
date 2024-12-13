@@ -61,16 +61,50 @@ export function UserTable({ users }: UserTableProps) {
 
   // Helper function to get user status
   const getUserStatus = (user: User) => {
-    // If no status is set, randomly assign one including no_account
+    // For our new dummy users with specific emails, always return no_account
+    const noAccountEmails = [
+      'newuser1@example.com',
+      'newuser2@example.com',
+      'newuser3@example.com',
+      'newuser4@example.com',
+      'newuser5@example.com',
+      'newuser6@example.com',
+      'newuser7@example.com',
+      'newuser8@example.com',
+      'newuser9@example.com',
+      'newuser10@example.com'
+    ];
+    
+    if (noAccountEmails.includes(user.email)) {
+      return 'no_account';
+    }
+    
+    // For other users, return their status or randomly assign one
     if (!user.status) {
       const random = Math.random();
-      if (random < 0.25) return 'connected';
-      if (random < 0.5) return 'disconnected';
-      if (random < 0.75) return 'unauthenticated';
-      return 'no_account';
+      if (random < 0.33) return 'connected';
+      if (random < 0.66) return 'disconnected';
+      return 'unauthenticated';
     }
     return user.status;
   };
+
+  // Add dummy users for testing
+  const dummyUsers: User[] = [
+    { id: 100, email: 'newuser1@example.com', firstName: 'New', lastName: 'User1', role: 'user' },
+    { id: 101, email: 'newuser2@example.com', firstName: 'New', lastName: 'User2', role: 'user' },
+    { id: 102, email: 'newuser3@example.com', firstName: 'New', lastName: 'User3', role: 'user' },
+    { id: 103, email: 'newuser4@example.com', firstName: 'New', lastName: 'User4', role: 'user' },
+    { id: 104, email: 'newuser5@example.com', firstName: 'New', lastName: 'User5', role: 'user' },
+    { id: 105, email: 'newuser6@example.com', firstName: 'New', lastName: 'User6', role: 'user' },
+    { id: 106, email: 'newuser7@example.com', firstName: 'New', lastName: 'User7', role: 'user' },
+    { id: 107, email: 'newuser8@example.com', firstName: 'New', lastName: 'User8', role: 'user' },
+    { id: 108, email: 'newuser9@example.com', firstName: 'New', lastName: 'User9', role: 'user' },
+    { id: 109, email: 'newuser10@example.com', firstName: 'New', lastName: 'User10', role: 'user' }
+  ];
+
+  // Merge dummy users with actual users
+  const allUsers = [...users, ...dummyUsers];
 
   return (
     <div className="space-y-4">
@@ -96,7 +130,7 @@ export function UserTable({ users }: UserTableProps) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {users.map((user) => {
+          {allUsers.map((user) => {
             const status = getUserStatus(user);
             return (
               <TableRow key={user.id}>
