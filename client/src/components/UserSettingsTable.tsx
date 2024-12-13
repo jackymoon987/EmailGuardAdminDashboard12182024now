@@ -20,19 +20,20 @@ type UserSetting = {
   email: string;
   surveyEmail: boolean;
   evaluatingFolder: boolean;
+  allowUserOverride: boolean;
 };
 
 const dummySettings: UserSetting[] = [
-  { id: 1, email: "new@test7.com", surveyEmail: true, evaluatingFolder: false },
-  { id: 2, email: "new@test8.com", surveyEmail: false, evaluatingFolder: true },
-  { id: 3, email: "jack.rice@company.com", surveyEmail: true, evaluatingFolder: true },
-  { id: 4, email: "emma.wilson@company.com", surveyEmail: false, evaluatingFolder: false },
-  { id: 5, email: "david.chen@company.com", surveyEmail: true, evaluatingFolder: false },
-  { id: 6, email: "sarah.taylor@company.com", surveyEmail: false, evaluatingFolder: true },
-  { id: 7, email: "michael.johnson@company.com", surveyEmail: true, evaluatingFolder: true },
-  { id: 8, email: "lisa.brown@company.com", surveyEmail: false, evaluatingFolder: false },
-  { id: 9, email: "robert.smith@company.com", surveyEmail: true, evaluatingFolder: true },
-  { id: 10, email: "anna.white@company.com", surveyEmail: false, evaluatingFolder: true }
+  { id: 1, email: "new@test7.com", surveyEmail: true, evaluatingFolder: false, allowUserOverride: true },
+  { id: 2, email: "new@test8.com", surveyEmail: false, evaluatingFolder: true, allowUserOverride: false },
+  { id: 3, email: "jack.rice@company.com", surveyEmail: true, evaluatingFolder: true, allowUserOverride: true },
+  { id: 4, email: "emma.wilson@company.com", surveyEmail: false, evaluatingFolder: false, allowUserOverride: false },
+  { id: 5, email: "david.chen@company.com", surveyEmail: true, evaluatingFolder: false, allowUserOverride: true },
+  { id: 6, email: "sarah.taylor@company.com", surveyEmail: false, evaluatingFolder: true, allowUserOverride: false },
+  { id: 7, email: "michael.johnson@company.com", surveyEmail: true, evaluatingFolder: true, allowUserOverride: true },
+  { id: 8, email: "lisa.brown@company.com", surveyEmail: false, evaluatingFolder: false, allowUserOverride: false },
+  { id: 9, email: "robert.smith@company.com", surveyEmail: true, evaluatingFolder: true, allowUserOverride: true },
+  { id: 10, email: "anna.white@company.com", surveyEmail: false, evaluatingFolder: true, allowUserOverride: false }
 ];
 
 interface UserSettingsTableProps {
@@ -187,6 +188,7 @@ export function UserSettingsTable({ settings: initialSettings = dummySettings, s
             <TableHead>Email Address</TableHead>
             <TableHead>Survey Email</TableHead>
             <TableHead>Evaluating Folder</TableHead>
+            <TableHead>Allow User Override</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -232,6 +234,19 @@ export function UserSettingsTable({ settings: initialSettings = dummySettings, s
                       );
                     }
                     toggleMutation.mutate({ ids: [setting.id], field: 'evaluatingFolder', value: checked });
+                  }}
+                />
+              </TableCell>
+              <TableCell>
+                <Checkbox
+                  checked={setting.allowUserOverride}
+                  onCheckedChange={(checked) => {
+                    setSettings(currentSettings =>
+                      currentSettings.map(s =>
+                        s.id === setting.id ? { ...s, allowUserOverride: checked as boolean } : s
+                      )
+                    );
+                    toggleMutation.mutate({ ids: [setting.id], field: 'allowUserOverride', value: checked as boolean });
                   }}
                 />
               </TableCell>
