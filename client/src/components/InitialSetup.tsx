@@ -112,11 +112,11 @@ export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps)
                   >
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="all" id="override-all" />
-                      <Label htmlFor="override-all">All users can override these settings</Label>
+                      <Label htmlFor="override-all">All users can override the above settings</Label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="some" id="override-some" />
-                      <Label htmlFor="override-some">Only some users can override</Label>
+                      <Label htmlFor="override-some">Only some users can override the above settings</Label>
                     </div>
                   </RadioGroup>
                   
