@@ -18,12 +18,16 @@ interface InitialSetupProps {
 
 export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps) {
   const [surveyEmailDefault, setSurveyEmailDefault] = useState<DefaultValue>("no");
+  const [surveyEmailOverride, setSurveyEmailOverride] = useState<"all" | "some">("all");
   const [evaluatingFolderDefault, setEvaluatingFolderDefault] = useState<DefaultValue>("yes");
+  const [evaluatingFolderOverride, setEvaluatingFolderOverride] = useState<"all" | "some">("all");
 
   const handleComplete = () => {
     onComplete({
       surveyEmailDefault,
+      surveyEmailOverride,
       evaluatingFolderDefault,
+      evaluatingFolderOverride,
     });
   };
 
@@ -55,50 +59,90 @@ export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps)
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              <div className="space-y-2">
+              <div className="space-y-4">
                 <h3 className="text-lg font-medium">Step 1: Survey Email Default Setting</h3>
-                <RadioGroup
-                  defaultValue="no"
-                  value={surveyEmailDefault}
-                  onValueChange={(value) => setSurveyEmailDefault(value as DefaultValue)}
-                  className="flex flex-col space-y-2"
-                >
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="no" id="survey-no" />
-                    <Label htmlFor="survey-no">Turn it off</Label>
+                <div className="pl-4 space-y-4">
+                  <div className="space-y-2">
+                    <h4 className="font-medium">Part 1: Default Behavior</h4>
+                    <RadioGroup
+                      defaultValue="no"
+                      value={surveyEmailDefault}
+                      onValueChange={(value) => setSurveyEmailDefault(value as DefaultValue)}
+                      className="flex flex-col space-y-2"
+                    >
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="no" id="survey-no" />
+                        <Label htmlFor="survey-no">Turn it off</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="yes" id="survey-yes" />
+                        <Label htmlFor="survey-yes">Leave it on</Label>
+                      </div>
+                    </RadioGroup>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="yes" id="survey-yes" />
-                    <Label htmlFor="survey-yes">Leave it on</Label>
+                  
+                  <div className="space-y-2">
+                    <h4 className="font-medium">Part 2: User Override Settings</h4>
+                    <RadioGroup
+                      defaultValue="all"
+                      value={surveyEmailOverride}
+                      onValueChange={(value) => setSurveyEmailOverride(value as "all" | "some")}
+                      className="flex flex-col space-y-2"
+                    >
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="all" id="survey-override-all" />
+                        <Label htmlFor="survey-override-all">All users can override these settings</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="some" id="survey-override-some" />
+                        <Label htmlFor="survey-override-some">Only some users can override (specify later)</Label>
+                      </div>
+                    </RadioGroup>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="later" id="survey-later" />
-                    <Label htmlFor="survey-later">Let the user decide</Label>
-                  </div>
-                </RadioGroup>
+                </div>
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-4">
                 <h3 className="text-lg font-medium">Step 2: Evaluating Folder Default Setting</h3>
-                <RadioGroup
-                  defaultValue="yes"
-                  value={evaluatingFolderDefault}
-                  onValueChange={(value) => handleEvaluatingFolderChange(value as DefaultValue)}
-                  className="flex flex-col space-y-2"
-                >
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="no" id="folder-no" />
-                    <Label htmlFor="folder-no">Turn it off</Label>
+                <div className="pl-4 space-y-4">
+                  <div className="space-y-2">
+                    <h4 className="font-medium">Part 1: Default Behavior</h4>
+                    <RadioGroup
+                      defaultValue="yes"
+                      value={evaluatingFolderDefault}
+                      onValueChange={(value) => handleEvaluatingFolderChange(value as DefaultValue)}
+                      className="flex flex-col space-y-2"
+                    >
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="no" id="folder-no" />
+                        <Label htmlFor="folder-no">Turn it off</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="yes" id="folder-yes" />
+                        <Label htmlFor="folder-yes">Leave it on</Label>
+                      </div>
+                    </RadioGroup>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="yes" id="folder-yes" />
-                    <Label htmlFor="folder-yes">Leave it on</Label>
+                  
+                  <div className="space-y-2">
+                    <h4 className="font-medium">Part 2: User Override Settings</h4>
+                    <RadioGroup
+                      defaultValue="all"
+                      value={evaluatingFolderOverride}
+                      onValueChange={(value) => setEvaluatingFolderOverride(value as "all" | "some")}
+                      className="flex flex-col space-y-2"
+                    >
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="all" id="folder-override-all" />
+                        <Label htmlFor="folder-override-all">All users can override these settings</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="some" id="folder-override-some" />
+                        <Label htmlFor="folder-override-some">Only some users can override (specify later)</Label>
+                      </div>
+                    </RadioGroup>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="later" id="folder-later" />
-                    <Label htmlFor="folder-later">Let the user decide</Label>
-                  </div>
-                </RadioGroup>
+                </div>
               </div>
 
               <div className="space-y-2">
