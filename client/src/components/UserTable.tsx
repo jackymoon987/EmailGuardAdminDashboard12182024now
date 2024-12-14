@@ -147,45 +147,64 @@ export function UserTable({ users, setSettings }: UserTableProps) {
                     <DropdownMenuContent align="end" className="w-[180px]">
                       <DropdownMenuItem 
                         onClick={async () => {
-                          try {
-                            const response = await fetch(`/api/users/${user.id}/role`, {
-                              method: 'PUT',
-                              headers: { 'Content-Type': 'application/json' },
-                              body: JSON.stringify({ role: 'user' }),
-                              credentials: 'include'
-                            });
+                           // Optimistically update the UI
+                           if (setSettings) {
+                             setSettings(prevSettings => 
+                               (prevSettings || []).map((s: ExtendedUser) => 
+                                 s.id === user.id ? { ...s, role: 'user' } : s
+                               )
+                             );
+                           }
+                           
+                           try {
+                             const response = await fetch(`/api/users/${user.id}/role`, {
+                               method: 'PUT',
+                               headers: { 'Content-Type': 'application/json' },
+                               body: JSON.stringify({ role: 'user' }),
+                               credentials: 'include'
+                             });
                             
-                            if (!response.ok) {
-                              const errorText = await response.text();
-                              toast({
-                                variant: "destructive",
-                                title: "Failed to update role",
-                                description: errorText || "An error occurred while updating the role"
-                              });
-                              return;
-                            }
+                             if (!response.ok) {
+                               const errorText = await response.text();
+                               toast({
+                                 variant: "destructive",
+                                 title: "Failed to update role",
+                                 description: errorText || "An error occurred while updating the role"
+                               });
+                               
+                               //Revert UI update if API call fails
+                               if (setSettings) {
+                                 setSettings(prevSettings => 
+                                   (prevSettings || []).map((s: ExtendedUser) => 
+                                     s.id === user.id ? { ...s, role: user.role } : s
+                                   )
+                                 );
+                               }
+                               return;
+                             }
                             
-                            toast({
-                              title: "Role updated",
-                              description: "User role has been updated to user"
-                            });
+                             toast({
+                               title: "Role updated",
+                               description: "User role has been updated to user"
+                             });
                             
-                            // Update local state if setSettings is provided
-                            if (setSettings) {
-                              setSettings(prevSettings => 
-                                prevSettings.map(s => 
-                                  s.id === user.id ? { ...s, role: 'user' } : s
-                                )
-                              );
-                            }
-                          } catch (error) {
-                            console.error('Error updating role:', error);
-                            toast({
-                              variant: "destructive",
-                              title: "Error",
-                              description: "Failed to update user role"
-                            });
-                          }
+                             
+                           } catch (error) {
+                             console.error('Error updating role:', error);
+                             toast({
+                               variant: "destructive",
+                               title: "Error",
+                               description: "Failed to update user role"
+                             });
+                             //Revert UI update if API call fails
+                             if (setSettings) {
+                               setSettings(prevSettings => 
+                                 (prevSettings || []).map((s: ExtendedUser) => 
+                                   s.id === user.id ? { ...s, role: user.role } : s
+                                 )
+                               );
+                             }
+                           }
                         }}
                         className="justify-between"
                       >
@@ -194,6 +213,15 @@ export function UserTable({ users, setSettings }: UserTableProps) {
                       </DropdownMenuItem>
                       <DropdownMenuItem
                         onClick={async () => {
+                          // Optimistically update the UI
+                          if (setSettings) {
+                            setSettings(prevSettings => 
+                              (prevSettings || []).map((s: ExtendedUser) => 
+                                s.id === user.id ? { ...s, role: 'admin' } : s
+                              )
+                            );
+                          }
+                          
                           try {
                             const response = await fetch(`/api/users/${user.id}/role`, {
                               method: 'PUT',
@@ -209,6 +237,14 @@ export function UserTable({ users, setSettings }: UserTableProps) {
                                 title: "Failed to update role",
                                 description: errorText || "An error occurred while updating the role"
                               });
+                              //Revert UI update if API call fails
+                              if (setSettings) {
+                                setSettings(prevSettings => 
+                                  (prevSettings || []).map((s: ExtendedUser) => 
+                                    s.id === user.id ? { ...s, role: user.role } : s
+                                  )
+                                );
+                              }
                               return;
                             }
                             
@@ -217,14 +253,7 @@ export function UserTable({ users, setSettings }: UserTableProps) {
                               description: "User role has been updated to administrator"
                             });
                             
-                            // Update local state if setSettings is provided
-                            if (setSettings) {
-                              setSettings(prevSettings => 
-                                prevSettings.map(s => 
-                                  s.id === user.id ? { ...s, role: 'admin' } : s
-                                )
-                              );
-                            }
+                            
                           } catch (error) {
                             console.error('Error updating role:', error);
                             toast({
@@ -232,6 +261,14 @@ export function UserTable({ users, setSettings }: UserTableProps) {
                               title: "Error",
                               description: "Failed to update user role"
                             });
+                            //Revert UI update if API call fails
+                            if (setSettings) {
+                              setSettings(prevSettings => 
+                                (prevSettings || []).map((s: ExtendedUser) => 
+                                  s.id === user.id ? { ...s, role: user.role } : s
+                                )
+                              );
+                            }
                           }
                         }}
                         className="justify-between"
