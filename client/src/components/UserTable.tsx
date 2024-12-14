@@ -25,19 +25,34 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { ChevronDown, ArrowLeft } from "lucide-react";
+import { ChevronDown, ArrowLeft, Check } from "lucide-react";
 import { useLocation } from "wouter";
-import { User } from "@db/schema";
 import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
-interface UserTableProps {
-  users: User[];
+// Extended User type to include 'no_account' status
+interface ExtendedUser {
+  id: number;
+  firstName: string | null;
+  lastName: string | null;
+  email: string;
+  password: string;
+  role: string;
+  createdAt: Date | null;
+  showInitialSetup: boolean | null;
+  status: 'connected' | 'disconnected' | 'unauthenticated' | 'no_account';
 }
 
-export function UserTable({ users }: UserTableProps) {
+interface UserTableProps {
+  users: ExtendedUser[];
+  setSettings?: (settings: ExtendedUser[]) => void;
+}
+
+export function UserTable({ users, setSettings }: UserTableProps) {
   const [, setLocation] = useLocation();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [userToDelete, setUserToDelete] = useState<User | null>(null);
+  const [userToDelete, setUserToDelete] = useState<ExtendedUser | null>(null);
+  const { toast } = useToast();
 
   const handleDeleteUser = async (userId: number) => {
     try {
@@ -50,22 +65,25 @@ export function UserTable({ users }: UserTableProps) {
         throw new Error('Failed to delete user');
       }
       
-      // Close the dialog and refresh the page to update the user list
       setShowDeleteDialog(false);
       window.location.reload();
     } catch (error) {
       console.error('Error deleting user:', error);
-      // Here you might want to show an error toast
+      toast({
+        variant: "destructive",
+        title: "Error deleting user",
+        description: error instanceof Error ? error.message : "An unknown error occurred"
+      });
     }
   };
 
   // Helper function to get user status
-  const getUserStatus = (user: User) => {
+  const getUserStatus = (user: ExtendedUser) => {
     return user.status || 'unauthenticated';
   };
 
   // Add dummy users for testing
-  const dummyUsers: User[] = [
+  const dummyUsers: ExtendedUser[] = [
     { id: 100, email: 'newuser1@example.com', firstName: 'New', lastName: 'User1', role: 'user', password: '', createdAt: null, showInitialSetup: null, status: 'no_account' },
     { id: 101, email: 'newuser2@example.com', firstName: 'New', lastName: 'User2', role: 'user', password: '', createdAt: null, showInitialSetup: null, status: 'no_account' },
     { id: 102, email: 'newuser3@example.com', firstName: 'New', lastName: 'User3', role: 'user', password: '', createdAt: null, showInitialSetup: null, status: 'no_account' },
@@ -115,13 +133,20 @@ export function UserTable({ users }: UserTableProps) {
                 <TableCell>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" className="h-8 w-full justify-start p-2">
-                        <Badge variant={user.role === 'admin' ? 'default' : 'secondary'}>
-                          {user.role === 'admin' ? 'administrator' : user.role}
-                        </Badge>
+                      <Button 
+                        variant="outline" 
+                        className="h-8 w-full justify-between px-3 hover:bg-accent"
+                      >
+                        <div className="flex items-center gap-2">
+                          <Badge variant={user.role === 'admin' ? 'default' : 'secondary'}>
+                            {user.role === 'admin' ? 'administrator' : user.role}
+                          </Badge>
+                          <span className="text-xs text-muted-foreground">(click to edit)</span>
+                        </div>
+                        <ChevronDown className="h-4 w-4 opacity-50" />
                       </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
+                    <DropdownMenuContent align="end" className="w-[160px]">
                       <DropdownMenuItem 
                         onClick={async () => {
                           try {
@@ -132,15 +157,42 @@ export function UserTable({ users }: UserTableProps) {
                               credentials: 'include'
                             });
                             
-                            if (!response.ok) throw new Error('Failed to update role');
+                            if (!response.ok) {
+                              const errorText = await response.text();
+                              toast({
+                                variant: "destructive",
+                                title: "Failed to update role",
+                                description: errorText || "An error occurred while updating the role"
+                              });
+                              return;
+                            }
                             
-                            window.location.reload();
+                            toast({
+                              title: "Role updated",
+                              description: "User role has been updated to user"
+                            });
+                            
+                            // Update local state if setSettings is provided
+                            if (setSettings) {
+                              setSettings(prevSettings => 
+                                prevSettings.map(s => 
+                                  s.id === user.id ? { ...s, role: 'user' } : s
+                                )
+                              );
+                            }
                           } catch (error) {
                             console.error('Error updating role:', error);
+                            toast({
+                              variant: "destructive",
+                              title: "Error",
+                              description: "Failed to update user role"
+                            });
                           }
                         }}
+                        className="justify-between"
                       >
-                        user
+                        User
+                        {user.role === 'user' && <Check className="h-4 w-4" />}
                       </DropdownMenuItem>
                       <DropdownMenuItem
                         onClick={async () => {
@@ -152,15 +204,42 @@ export function UserTable({ users }: UserTableProps) {
                               credentials: 'include'
                             });
                             
-                            if (!response.ok) throw new Error('Failed to update role');
+                            if (!response.ok) {
+                              const errorText = await response.text();
+                              toast({
+                                variant: "destructive",
+                                title: "Failed to update role",
+                                description: errorText || "An error occurred while updating the role"
+                              });
+                              return;
+                            }
                             
-                            window.location.reload();
+                            toast({
+                              title: "Role updated",
+                              description: "User role has been updated to administrator"
+                            });
+                            
+                            // Update local state if setSettings is provided
+                            if (setSettings) {
+                              setSettings(prevSettings => 
+                                prevSettings.map(s => 
+                                  s.id === user.id ? { ...s, role: 'admin' } : s
+                                )
+                              );
+                            }
                           } catch (error) {
                             console.error('Error updating role:', error);
+                            toast({
+                              variant: "destructive",
+                              title: "Error",
+                              description: "Failed to update user role"
+                            });
                           }
                         }}
+                        className="justify-between"
                       >
-                        administrator
+                        Administrator
+                        {user.role === 'admin' && <Check className="h-4 w-4" />}
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
@@ -188,13 +267,11 @@ export function UserTable({ users }: UserTableProps) {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
-                      
                       <DropdownMenuItem onClick={() => setLocation(`/approved-senders/${user.id}`)}>
                         Approved sender list
                       </DropdownMenuItem>
                       <DropdownMenuItem onClick={() => {
                         setLocation(`/analytics/${user.id}?email=${encodeURIComponent(user.email)}`);
-                        window.location.reload();
                       }}>
                         Analytics
                       </DropdownMenuItem>
@@ -229,7 +306,7 @@ export function UserTable({ users }: UserTableProps) {
             <AlertDialogCancel>No, Cancel</AlertDialogCancel>
             <AlertDialogAction
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-              onClick={() => handleDeleteUser(userToDelete!.id)}
+              onClick={() => userToDelete && handleDeleteUser(userToDelete.id)}
             >
               Yes, Delete It
             </AlertDialogAction>
