@@ -135,15 +135,16 @@ export function UserTable({ users, setSettings }: UserTableProps) {
                     <DropdownMenuTrigger asChild>
                       <Button 
                         variant="outline" 
-                        className="h-7 w-[140px] justify-between px-2 hover:bg-accent"
+                        className="h-8 w-[180px] justify-between px-2 hover:bg-accent"
                       >
-                        <Badge variant={user.role === 'admin' ? 'default' : 'secondary'} className="text-xs">
+                        <Badge variant={user.role === 'admin' ? 'default' : 'secondary'}>
                           {user.role === 'admin' ? 'admin' : 'user'}
                         </Badge>
-                        <ChevronDown className="h-3 w-3 opacity-50 ml-1" />
+                        <span className="text-xs text-muted-foreground ml-1">(click to edit)</span>
+                        <ChevronDown className="h-4 w-4 opacity-50" />
                       </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-[140px]">
+                    <DropdownMenuContent align="end" className="w-[180px]">
                       <DropdownMenuItem 
                         onClick={async () => {
                           try {
