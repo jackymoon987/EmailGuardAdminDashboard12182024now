@@ -100,10 +100,10 @@ export default function AdminProfilePage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <UserPlus className="h-5 w-5" />
-              Invite Administrators
+              Add Administrators
             </CardTitle>
             <CardDescription>
-              Add more administrators to help manage the platform
+              Add more administrators to help manage the platform. These users will have admin access when they create their account.
             </CardDescription>
           </CardHeader>
           <CardContent>
