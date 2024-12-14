@@ -132,6 +132,22 @@ export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps)
                         onChange={(e) => setOverrideUsers(e.target.value)}
                         placeholder="user1@example.com, user2@example.com"
                       />
+                      <Button 
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          // Save the override users
+                          onComplete({
+                            surveyEmailDefault,
+                            evaluatingFolderDefault,
+                            overrideSettings,
+                            overrideUsers,
+                          });
+                        }}
+                        className="w-full mt-2"
+                      >
+                        Save Override Users
+                      </Button>
                     </div>
                   )}
                 </div>
