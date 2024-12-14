@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { ChevronDown, ArrowLeft, Check } from "lucide-react";
 import { useLocation } from "wouter";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 
 // Extended User type to include 'no_account' status
