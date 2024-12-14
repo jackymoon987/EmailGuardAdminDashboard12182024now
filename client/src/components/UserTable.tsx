@@ -135,14 +135,12 @@ export function UserTable({ users, setSettings }: UserTableProps) {
                     <DropdownMenuTrigger asChild>
                       <Button 
                         variant="outline" 
-                        className="h-8 w-full justify-between px-3 hover:bg-accent"
+                        className="h-8 w-[160px] justify-between px-2 hover:bg-accent"
                       >
-                        <div className="flex items-center gap-2">
-                          <Badge variant={user.role === 'admin' ? 'default' : 'secondary'}>
-                            {user.role === 'admin' ? 'administrator' : user.role}
-                          </Badge>
-                          <span className="text-xs text-muted-foreground">(click to edit)</span>
-                        </div>
+                        <Badge variant={user.role === 'admin' ? 'default' : 'secondary'}>
+                          {user.role === 'admin' ? 'admin' : 'user'}
+                        </Badge>
+                        <span className="text-xs text-muted-foreground ml-1">edit</span>
                         <ChevronDown className="h-4 w-4 opacity-50" />
                       </Button>
                     </DropdownMenuTrigger>
