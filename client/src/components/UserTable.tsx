@@ -45,14 +45,31 @@ interface ExtendedUser {
 
 interface UserTableProps {
   users: ExtendedUser[];
-  setUsers?: (users: ExtendedUser[]) => void; // Added setUsers for direct state update
+  setUsers?: (users: ExtendedUser[]) => void;
 }
 
-export function UserTable({ users, setUsers }: UserTableProps) {
+export function UserTable({ users: initialUsers, setUsers }: UserTableProps) {
   const [, setLocation] = useLocation();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [userToDelete, setUserToDelete] = useState<ExtendedUser | null>(null);
+  const [users, setLocalUsers] = useState<ExtendedUser[]>(initialUsers);
   const { toast } = useToast();
+
+  // Update local state when props change
+  useEffect(() => {
+    setLocalUsers(initialUsers);
+  }, [initialUsers]);
+
+  // Function to update user role both locally and in parent
+  const updateUserRole = (userId: number, newRole: string) => {
+    const newUsers = users.map(user =>
+      user.id === userId ? { ...user, role: newRole } : user
+    );
+    setLocalUsers(newUsers);
+    if (setUsers) {
+      setUsers(newUsers);
+    }
+  };
 
   const handleDeleteUser = async (userId: number) => {
     try {
@@ -147,21 +164,17 @@ export function UserTable({ users, setUsers }: UserTableProps) {
                     <DropdownMenuContent align="end" className="w-[180px]">
                       <DropdownMenuItem 
                         onClick={async () => {
-                           const newRole = 'user';
-                           // Immediately update local state
-                           setUsers(prevUsers => 
-                             prevUsers.map(s => 
-                               s.id === user.id ? { ...s, role: newRole } : s
-                             )
-                           );
-                           
-                           try {
-                             const response = await fetch(`/api/users/${user.id}/role`, {
-                               method: 'PUT',
-                               headers: { 'Content-Type': 'application/json' },
-                               body: JSON.stringify({ role: newRole }),
-                               credentials: 'include'
-                             });
+                          const newRole = 'user';
+                          // Immediately update local state
+                          updateUserRole(user.id, newRole);
+                          
+                          try {
+                            const response = await fetch(`/api/users/${user.id}/role`, {
+                              method: 'PUT',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({ role: newRole }),
+                              credentials: 'include'
+                            });
                             
                              if (!response.ok) {
                                const errorText = await response.text();
@@ -201,11 +214,7 @@ export function UserTable({ users, setUsers }: UserTableProps) {
                         onClick={async () => {
                           const newRole = 'admin';
                           // Immediately update local state
-                          setUsers(prevUsers => 
-                            prevUsers.map(s => 
-                              s.id === user.id ? { ...s, role: newRole } : s
-                            )
-                          );
+                          updateUserRole(user.id, newRole);
                           
                           try {
                             const response = await fetch(`/api/users/${user.id}/role`, {
