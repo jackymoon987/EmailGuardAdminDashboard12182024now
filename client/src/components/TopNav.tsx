@@ -7,6 +7,7 @@ import {
   BarChart,
   LogOut,
   Menu,
+  Settings,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useUser } from "../hooks/use-user";
@@ -18,7 +19,7 @@ const menuItems = [
   { icon: Users, label: "Users", href: "/users" },
   { icon: Shield, label: "Global Approved Sender List", href: "/filters" },
   { icon: BarChart, label: "Analytics", href: "/analytics" },
-  { icon: Users, label: "Company Settings", href: "/settings" },
+  { icon: Settings, label: "Company Settings", href: "/settings" },
 ];
 
 export default function TopNav() {
