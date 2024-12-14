@@ -24,23 +24,25 @@ export default function AdminProfilePage() {
           <CardTitle>Admin Account</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="space-y-1">
-            <p className="text-sm font-medium">Email address</p>
-            <p className="text-sm text-muted-foreground">{user?.email}</p>
-          </div>
-          <div className="space-y-1">
-            <p className="text-sm font-medium">Status</p>
-            <Badge 
-              variant={
-                user?.status === 'connected' ? 'default' :
-                user?.status === 'disconnected' ? 'secondary' :
-                'destructive'
-              }
-            >
-              {user?.status === 'connected' ? 'Connected' :
-               user?.status === 'disconnected' ? 'Disconnected' :
-               'Unauthenticated'}
-            </Badge>
+          <div className="flex justify-between items-center">
+            <div>
+              <p className="text-sm font-medium">Email address</p>
+              <p className="text-sm text-muted-foreground">{user?.email}</p>
+            </div>
+            <div>
+              <p className="text-sm font-medium">Status</p>
+              <Badge 
+                variant={
+                  user?.status === 'connected' ? 'default' :
+                  user?.status === 'disconnected' ? 'secondary' :
+                  'destructive'
+                }
+              >
+                {user?.status === 'connected' ? 'Connected' :
+                 user?.status === 'disconnected' ? 'Disconnected' :
+                 'Unauthenticated'}
+              </Badge>
+            </div>
           </div>
           <Button 
             variant="outline"
