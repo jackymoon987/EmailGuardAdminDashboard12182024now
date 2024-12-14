@@ -24,7 +24,7 @@ export default function AdminProfilePage() {
           <CardTitle>Admin Account</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex justify-between items-center">
+          <div className="flex items-center gap-8">
             <div>
               <p className="text-sm font-medium">Email address</p>
               <p className="text-sm text-muted-foreground">{user?.email}</p>
