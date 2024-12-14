@@ -113,9 +113,57 @@ export function UserTable({ users }: UserTableProps) {
                 <TableCell>{user.lastName}</TableCell>
                 <TableCell>{user.email}</TableCell>
                 <TableCell>
-                  <Badge variant={user.role === 'admin' ? 'default' : 'secondary'}>
-                    {user.role}
-                  </Badge>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" className="h-8 w-full justify-start p-2">
+                        <Badge variant={user.role === 'admin' ? 'default' : 'secondary'}>
+                          {user.role === 'admin' ? 'administrator' : user.role}
+                        </Badge>
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem 
+                        onClick={async () => {
+                          try {
+                            const response = await fetch(`/api/users/${user.id}/role`, {
+                              method: 'PUT',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({ role: 'user' }),
+                              credentials: 'include'
+                            });
+                            
+                            if (!response.ok) throw new Error('Failed to update role');
+                            
+                            window.location.reload();
+                          } catch (error) {
+                            console.error('Error updating role:', error);
+                          }
+                        }}
+                      >
+                        user
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={async () => {
+                          try {
+                            const response = await fetch(`/api/users/${user.id}/role`, {
+                              method: 'PUT',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({ role: 'admin' }),
+                              credentials: 'include'
+                            });
+                            
+                            if (!response.ok) throw new Error('Failed to update role');
+                            
+                            window.location.reload();
+                          } catch (error) {
+                            console.error('Error updating role:', error);
+                          }
+                        }}
+                      >
+                        administrator
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </TableCell>
                 <TableCell>
                   <Badge 
