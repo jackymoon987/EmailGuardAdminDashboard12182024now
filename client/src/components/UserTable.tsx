@@ -91,16 +91,16 @@ export function UserTable({ users }: UserTableProps) {
 
   // Add dummy users for testing
   const dummyUsers: User[] = [
-    { id: 100, email: 'newuser1@example.com', firstName: 'John', lastName: 'Smith', role: 'user', status: 'no_account' },
-    { id: 101, email: 'newuser2@example.com', firstName: 'Emma', lastName: 'Johnson', role: 'user', status: 'no_account' },
-    { id: 102, email: 'newuser3@example.com', firstName: 'Michael', lastName: 'Brown', role: 'user', status: 'no_account' },
-    { id: 103, email: 'newuser4@example.com', firstName: 'Sarah', lastName: 'Davis', role: 'user', status: 'no_account' },
-    { id: 104, email: 'newuser5@example.com', firstName: 'David', lastName: 'Wilson', role: 'user', status: 'no_account' },
-    { id: 105, email: 'newuser6@example.com', firstName: 'Lisa', lastName: 'Anderson', role: 'user', status: 'no_account' },
-    { id: 106, email: 'newuser7@example.com', firstName: 'James', lastName: 'Taylor', role: 'user', status: 'no_account' },
-    { id: 107, email: 'newuser8@example.com', firstName: 'Emily', lastName: 'Thomas', role: 'user', status: 'no_account' },
-    { id: 108, email: 'newuser9@example.com', firstName: 'Daniel', lastName: 'Martinez', role: 'user', status: 'no_account' },
-    { id: 109, email: 'newuser10@example.com', firstName: 'Jessica', lastName: 'Garcia', role: 'user', status: 'no_account' }
+    { id: 100, email: 'newuser1@example.com', firstName: 'New', lastName: 'User1', role: 'user' },
+    { id: 101, email: 'newuser2@example.com', firstName: 'New', lastName: 'User2', role: 'user' },
+    { id: 102, email: 'newuser3@example.com', firstName: 'New', lastName: 'User3', role: 'user' },
+    { id: 103, email: 'newuser4@example.com', firstName: 'New', lastName: 'User4', role: 'user' },
+    { id: 104, email: 'newuser5@example.com', firstName: 'New', lastName: 'User5', role: 'user' },
+    { id: 105, email: 'newuser6@example.com', firstName: 'New', lastName: 'User6', role: 'user' },
+    { id: 106, email: 'newuser7@example.com', firstName: 'New', lastName: 'User7', role: 'user' },
+    { id: 107, email: 'newuser8@example.com', firstName: 'New', lastName: 'User8', role: 'user' },
+    { id: 108, email: 'newuser9@example.com', firstName: 'New', lastName: 'User9', role: 'user' },
+    { id: 109, email: 'newuser10@example.com', firstName: 'New', lastName: 'User10', role: 'user' }
   ];
 
   // Merge dummy users with actual users
