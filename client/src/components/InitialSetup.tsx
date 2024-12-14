@@ -146,7 +146,7 @@ export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps)
                         }}
                         className="w-full mt-2"
                       >
-                        Save Override Users
+                        Save Override Settings
                       </Button>
                     </div>
                   )}
