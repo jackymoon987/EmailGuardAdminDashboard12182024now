@@ -7,13 +7,16 @@ import { Shield } from "lucide-react";
 import { useState } from "react";
 
 type DefaultValue = "yes" | "no" | "later";
+type OverrideType = "all" | "some" | "none";
 
 interface InitialSetupProps {
   onComplete: (settings: {
     surveyEmailDefault: DefaultValue;
     evaluatingFolderDefault: DefaultValue;
-    overrideSettings: "all" | "some";
+    overrideSettings: OverrideType;
     overrideUsers: string;
+    domainReviewSettings: OverrideType;
+    domainReviewUsers: string;
   }) => Promise<void> | void;
   onReviewSenders: () => void;
 }
@@ -21,8 +24,10 @@ interface InitialSetupProps {
 export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps) {
   const [surveyEmailDefault, setSurveyEmailDefault] = useState<DefaultValue>("no");
   const [evaluatingFolderDefault, setEvaluatingFolderDefault] = useState<DefaultValue>("yes");
-  const [overrideSettings, setOverrideSettings] = useState<"all" | "some">("all");
+  const [overrideSettings, setOverrideSettings] = useState<OverrideType>("all");
   const [overrideUsers, setOverrideUsers] = useState<string>("");
+  const [domainReviewSettings, setDomainReviewSettings] = useState<OverrideType>("all");
+  const [domainReviewUsers, setDomainReviewUsers] = useState<string>("");
 
   const handleComplete = () => {
     onComplete({
@@ -30,6 +35,8 @@ export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps)
       evaluatingFolderDefault,
       overrideSettings,
       overrideUsers: overrideSettings === "some" ? overrideUsers : "",
+      domainReviewSettings,
+      domainReviewUsers: domainReviewSettings === "some" ? domainReviewUsers : "",
     });
   };
 
@@ -109,7 +116,7 @@ export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps)
                   <RadioGroup
                     defaultValue="all"
                     value={overrideSettings}
-                    onValueChange={(value) => setOverrideSettings(value as "all" | "some")}
+                    onValueChange={(value) => setOverrideSettings(value as OverrideType)}
                     className="flex flex-col space-y-2"
                   >
                     <div className="flex items-center space-x-2">
@@ -117,11 +124,15 @@ export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps)
                       <Label htmlFor="override-all">All users can override the above settings</Label>
                     </div>
                     <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="none" id="override-none" />
+                      <Label htmlFor="override-none">No users can override the above settings</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
                       <RadioGroupItem value="some" id="override-some" />
                       <Label htmlFor="override-some">Only some users can override the above settings</Label>
                     </div>
                   </RadioGroup>
-                  
+
                   {overrideSettings === "some" && (
                     <div className="space-y-2">
                       <Label htmlFor="override-users">Enter email addresses (separated by commas)</Label>
@@ -132,28 +143,12 @@ export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps)
                         onChange={(e) => setOverrideUsers(e.target.value)}
                         placeholder="user1@example.com, user2@example.com"
                       />
-                      <Button 
-                        variant="outline"
-                        size="sm"
-                        onClick={() => {
-                          // Save the override users
-                          onComplete({
-                            surveyEmailDefault,
-                            evaluatingFolderDefault,
-                            overrideSettings,
-                            overrideUsers,
-                          });
-                        }}
-                        className="w-full mt-2"
-                      >
-                        Save Override Settings
-                      </Button>
                     </div>
                   )}
                 </div>
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-4">
                 <h3 className="text-lg font-medium">Step 4: Add domains to your company wide Approved Sender List</h3>
                 <p className="text-sm text-muted-foreground mb-4">
                   We highly recommend you take a few minutes now to approve your clients & venders. You can also block the most annoying companies that email your employees.
@@ -169,6 +164,47 @@ export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps)
                   >
                     Add later
                   </Button>
+                </div>
+
+                <div className="mt-6 space-y-4">
+                  <h3 className="text-lg font-medium">Set User Override Settings for the Approved Sender List</h3>
+                  <p className="text-sm text-muted-foreground">
+                    By default, any domains you approve/block as an administrator will be applied to all users accounts. However, users will be able to override domains & approve/block new domains unless you restrict this permission below.
+                  </p>
+                  <div className="pl-4 space-y-4">
+                    <RadioGroup
+                      defaultValue="all"
+                      value={domainReviewSettings}
+                      onValueChange={(value) => setDomainReviewSettings(value as OverrideType)}
+                      className="flex flex-col space-y-2"
+                    >
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="all" id="domain-review-all" />
+                        <Label htmlFor="domain-review-all">All users can review their own domains</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="none" id="domain-review-none" />
+                        <Label htmlFor="domain-review-none">No users can review their own domains</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="some" id="domain-review-some" />
+                        <Label htmlFor="domain-review-some">Only some users can review their own domains</Label>
+                      </div>
+                    </RadioGroup>
+
+                    {domainReviewSettings === "some" && (
+                      <div className="space-y-2">
+                        <Label htmlFor="domain-review-users">Enter email addresses (separated by commas)</Label>
+                        <Input
+                          id="domain-review-users"
+                          type="text"
+                          value={domainReviewUsers}
+                          onChange={(e) => setDomainReviewUsers(e.target.value)}
+                          placeholder="user1@example.com, user2@example.com"
+                        />
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
 
