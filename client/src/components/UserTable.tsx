@@ -77,11 +77,11 @@ export function UserTable({ users: initialUsers, setUsers }: UserTableProps) {
         method: 'DELETE',
         credentials: 'include',
       });
-      
+
       if (!response.ok) {
         throw new Error('Failed to delete user');
       }
-      
+
       setShowDeleteDialog(false);
       window.location.reload();
     } catch (error) {
@@ -119,15 +119,15 @@ export function UserTable({ users: initialUsers, setUsers }: UserTableProps) {
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-4">
-        <Button 
-          variant="ghost" 
+        <Button
+          variant="ghost"
           size="icon"
           onClick={() => setLocation('/users')}
         >
           <ArrowLeft className="h-4 w-4" />
         </Button>
       </div>
-      
+
       <Table>
         <TableHeader>
           <TableRow>
@@ -150,8 +150,8 @@ export function UserTable({ users: initialUsers, setUsers }: UserTableProps) {
                 <TableCell>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button 
-                        variant="outline" 
+                      <Button
+                        variant="outline"
                         className="h-8 w-[180px] justify-between px-2 hover:bg-accent"
                       >
                         <Badge variant={user.role === 'admin' ? 'default' : 'secondary'}>
@@ -162,12 +162,12 @@ export function UserTable({ users: initialUsers, setUsers }: UserTableProps) {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-[180px]">
-                      <DropdownMenuItem 
+                      <DropdownMenuItem
                         onClick={async () => {
                           const newRole = 'user';
                           // Immediately update local state
                           updateUserRole(user.id, newRole);
-                          
+
                           try {
                             const response = await fetch(`/api/users/${user.id}/role`, {
                               method: 'PUT',
@@ -175,35 +175,34 @@ export function UserTable({ users: initialUsers, setUsers }: UserTableProps) {
                               body: JSON.stringify({ role: newRole }),
                               credentials: 'include'
                             });
-                            
-                             if (!response.ok) {
-                               const errorText = await response.text();
-                               toast({
-                                 variant: "destructive",
-                                 title: "Failed to update role",
-                                 description: errorText || "An error occurred while updating the role"
-                               });
-                               
-                               //Revert UI update if API call fails
-                               
-                               return;
-                             }
-                            
-                             toast({
-                               title: "Role updated",
-                               description: "User role has been updated to user"
-                             });
-                            
-                             
-                           } catch (error) {
-                             console.error('Error updating role:', error);
-                             toast({
-                               variant: "destructive",
-                               title: "Error",
-                               description: "Failed to update user role"
-                             });
-                             
-                           }
+
+                            if (!response.ok) {
+                              const errorText = await response.text();
+                              toast({
+                                variant: "destructive",
+                                title: "Failed to update role",
+                                description: errorText || "An error occurred while updating the role"
+                              });
+
+                              //Revert UI update if API call fails
+                              return;
+                            }
+
+                            toast({
+                              title: "Role updated",
+                              description: "User role has been updated to user"
+                            });
+
+
+                          } catch (error) {
+                            console.error('Error updating role:', error);
+                            toast({
+                              variant: "destructive",
+                              title: "Error",
+                              description: "Failed to update user role"
+                            });
+
+                          }
                         }}
                         className="justify-between"
                       >
@@ -215,7 +214,7 @@ export function UserTable({ users: initialUsers, setUsers }: UserTableProps) {
                           const newRole = 'admin';
                           // Immediately update local state
                           updateUserRole(user.id, newRole);
-                          
+
                           try {
                             const response = await fetch(`/api/users/${user.id}/role`, {
                               method: 'PUT',
@@ -223,7 +222,7 @@ export function UserTable({ users: initialUsers, setUsers }: UserTableProps) {
                               body: JSON.stringify({ role: newRole }),
                               credentials: 'include'
                             });
-                            
+
                             if (!response.ok) {
                               const errorText = await response.text();
                               toast({
@@ -231,16 +230,16 @@ export function UserTable({ users: initialUsers, setUsers }: UserTableProps) {
                                 title: "Failed to update role",
                                 description: errorText || "An error occurred while updating the role"
                               });
-                              
+
                               return;
                             }
-                            
+
                             toast({
                               title: "Role updated",
                               description: "User role has been updated to administrator"
                             });
-                            
-                            
+
+
                           } catch (error) {
                             console.error('Error updating role:', error);
                             toast({
@@ -248,7 +247,7 @@ export function UserTable({ users: initialUsers, setUsers }: UserTableProps) {
                               title: "Error",
                               description: "Failed to update user role"
                             });
-                            
+
                           }
                         }}
                         className="justify-between"
@@ -260,18 +259,18 @@ export function UserTable({ users: initialUsers, setUsers }: UserTableProps) {
                   </DropdownMenu>
                 </TableCell>
                 <TableCell>
-                  <Badge 
+                  <Badge
                     variant={
                       status === 'connected' ? 'default' :
-                      status === 'disconnected' ? 'secondary' :
-                      status === 'no_account' ? 'outline' :
-                      'destructive'
+                        status === 'disconnected' ? 'secondary' :
+                          status === 'no_account' ? 'outline' :
+                            'destructive'
                     }
                   >
                     {status === 'connected' ? 'Connected' :
-                     status === 'disconnected' ? 'Disconnected' :
-                     status === 'no_account' ? 'No Account Yet' :
-                     'Unauthenticated'}
+                      status === 'disconnected' ? 'Disconnected' :
+                        status === 'no_account' ? 'No Account Yet' :
+                          'Unauthenticated'}
                   </Badge>
                 </TableCell>
                 <TableCell>

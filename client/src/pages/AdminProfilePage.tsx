@@ -21,7 +21,10 @@ export default function AdminProfilePage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Admin Account</CardTitle>
+          <CardTitle>Admin's Individual Account</CardTitle>
+          <CardDescription>
+            When you navigate to the admin's individual account, any changes made will only apply at the account level and NOT for the entire company.
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center gap-8">
