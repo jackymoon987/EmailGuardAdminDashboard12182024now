@@ -157,9 +157,9 @@ export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps)
                   <Button onClick={handleReviewSenders} className="flex-1">
                     Review now
                   </Button>
-                  <Button 
-                    variant="outline" 
-                    onClick={handleComplete} 
+                  <Button
+                    variant="outline"
+                    onClick={handleComplete}
                     className="flex-1"
                   >
                     Add later
@@ -223,15 +223,15 @@ export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps)
           </CardContent>
         </Card>
         <div className="flex flex-col sm:flex-row gap-3 mt-6">
-          <Button 
-            variant="outline" 
-            onClick={handleComplete} 
+          <Button
+            variant="outline"
+            onClick={handleComplete}
             className="flex-1"
           >
             Do later
           </Button>
-          <Button 
-            onClick={handleComplete} 
+          <Button
+            onClick={handleComplete}
             className="flex-1"
           >
             Next
