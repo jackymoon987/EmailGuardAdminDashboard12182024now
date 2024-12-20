@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { useLocation } from "wouter";
 import { Separator } from "@/components/ui/separator";
-import { Building2, CreditCard, UserPlus, AlertTriangle } from "lucide-react";
+import { Building2, CreditCard, AlertTriangle } from "lucide-react";
 import { useUser } from "../hooks/use-user";
 
 export default function AdminProfilePage() {
@@ -18,7 +18,7 @@ export default function AdminProfilePage() {
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-bold">Admin Profile</h1>
-      
+
       <Card>
         <CardHeader>
           <CardTitle>Admin Account</CardTitle>
@@ -52,7 +52,7 @@ export default function AdminProfilePage() {
           </Button>
         </CardContent>
       </Card>
-      
+
       <div className="grid gap-6">
         <Card>
           <CardHeader>
@@ -92,23 +92,6 @@ export default function AdminProfilePage() {
             </div>
             <Button variant="outline">
               Manage Subscription
-            </Button>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <UserPlus className="h-5 w-5" />
-              Add Administrators
-            </CardTitle>
-            <CardDescription>
-              Add more administrators to help manage the platform. These users will have admin access when they create their account.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button variant="outline">
-              Invite Admin
             </Button>
           </CardContent>
         </Card>
