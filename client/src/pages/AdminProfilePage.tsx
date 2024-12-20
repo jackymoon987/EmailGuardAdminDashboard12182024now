@@ -51,7 +51,7 @@ export default function AdminProfilePage() {
             variant="outline"
             onClick={() => setLocation(`/users?email=${encodeURIComponent(user?.email || '')}`)}
           >
-            Go to my account
+            Go to Admin's Individual Account
           </Button>
         </CardContent>
       </Card>
