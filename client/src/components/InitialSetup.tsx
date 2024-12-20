@@ -180,15 +180,15 @@ export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps)
                     >
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="all" id="domain-review-all" />
-                        <Label htmlFor="domain-review-all">All users can review their own domains</Label>
+                        <Label htmlFor="domain-review-all">All users can manage their own domains</Label>
                       </div>
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="none" id="domain-review-none" />
-                        <Label htmlFor="domain-review-none">No users can review their own domains</Label>
+                        <Label htmlFor="domain-review-none">No users can manage their own domains</Label>
                       </div>
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="some" id="domain-review-some" />
-                        <Label htmlFor="domain-review-some">Only some users can review their own domains</Label>
+                        <Label htmlFor="domain-review-some">Only some users can manage their own domains</Label>
                       </div>
                     </RadioGroup>
 
