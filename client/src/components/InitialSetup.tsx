@@ -111,7 +111,7 @@ export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps)
               </div>
 
               <div className="space-y-4">
-                <h3 className="text-lg font-medium">Step 3: Set User Override Settings</h3>
+                <h3 className="text-lg font-medium">Step 3: Set User Override Settings for Survey email & Evaluating folder</h3>
                 <div className="pl-4 space-y-4">
                   <RadioGroup
                     defaultValue="all"
@@ -169,7 +169,7 @@ export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps)
                 <div className="mt-6 space-y-4">
                   <h3 className="text-lg font-medium">Set User Override Settings for the Approved Sender List</h3>
                   <p className="text-sm text-muted-foreground">
-                    By default, any domains you approve/block as an administrator will be applied to all users accounts. However, users will be able to override domains & approve/block new domains unless you restrict this permission below.
+                    By default, any domains you approve/block as an administrator will be applied to all user accounts. However, users will be able to override domains & approve/block new domains unless you restrict this permission below.
                   </p>
                   <div className="pl-4 space-y-4">
                     <RadioGroup
@@ -206,18 +206,6 @@ export function InitialSetup({ onComplete, onReviewSenders }: InitialSetupProps)
                     )}
                   </div>
                 </div>
-              </div>
-
-              <div className="space-y-2">
-                <h3 className="text-lg font-medium">Step 5: Add Additional Administrators</h3>
-                <p className="text-sm text-muted-foreground">
-                  Inputting the addresses below will give them administrative permissions when they create their account. You can always change this later.
-                </p>
-                <Input
-                  type="email"
-                  placeholder="Enter email addresses (separated by commas)"
-                  className="mt-2"
-                />
               </div>
             </div>
           </CardContent>
